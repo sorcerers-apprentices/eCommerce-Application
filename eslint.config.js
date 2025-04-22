@@ -7,7 +7,7 @@ import eslintPluginUnicorn from 'eslint-plugin-unicorn'
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended'
 
 export default tseslint.config(
-  {ignores: ['dist']},
+  { ignores: ['dist'] },
   {
     extends: [js.configs.recommended, eslintPluginPrettierRecommended, ...tseslint.configs.recommended],
     files: ['**/*.{ts,tsx}'],
@@ -21,15 +21,12 @@ export default tseslint.config(
     plugins: {
       'react-hooks': reactHooks,
       'react-refresh': reactRefresh,
-      'unicorn': eslintPluginUnicorn,
+      unicorn: eslintPluginUnicorn,
     },
     rules: {
       // react specific rules
       ...reactHooks.configs.recommended.rules,
-      'react-refresh/only-export-components': [
-        'warn',
-        {allowConstantExport: true},
-      ],
+      'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
 
       // general code style rules
       'max-lines-per-function': ['error', { max: 40, skipComments: true, skipBlankLines: true }],
@@ -51,9 +48,7 @@ export default tseslint.config(
       'unicorn/no-null': 'off',
       'unicorn/number-literal-case': 'off',
       'unicorn/numeric-separators-style': 'off',
-      'unicorn/prevent-abbreviations': [
-        'error',
-      ],
+      'unicorn/prevent-abbreviations': ['error'],
     },
-  },
+  }
 )
