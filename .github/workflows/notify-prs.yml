@@ -1,0 +1,54 @@
+name: Notify In-Review PRs
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'
+  workflow_dispatch:
+
+jobs:
+  notify-stale-reviews:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check PRs and Notify Discord
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const HOURS_THRESHOLD = 5;
+            const REVIEW_LABEL = 'In review';
+            const webhook = process.env.DISCORD_WEBHOOK_URL;
+            const now = new Date();
+
+            const { data: prs } = await github.rest.pulls.list({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: "open",
+              per_page: 100,
+            });
+
+            for (const pr of prs) {
+              const issue = await github.rest.issues.get({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: pr.number,
+              });
+
+              const labels = issue.data.labels.map(label => label.name);
+              if (!labels.includes(REVIEW_LABEL)) continue;
+
+              const createdAt = new Date(pr.created_at);
+              const ageInHours = (now - createdAt) / (1000 * 60 * 60);
+
+              if (ageInHours >= HOURS_THRESHOLD) {
+                const message = {
+                  content: `⏰ PR #${pr.number} (${pr.title}) [${pr.html_url}] находится в статусе **In review** уже ${ageInHours.toFixed(1)} часа(ов)!`,
+                };
+
+                await fetch(webhook, {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify(message),
+                });
+              }
+            }
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
