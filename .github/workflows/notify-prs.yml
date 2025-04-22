@@ -2,7 +2,7 @@ name: Notify In-Review PRs
 
 on:
   schedule:
-    - cron: '*/5 * * * *'
+    - cron: '0 */4 * * *'
   workflow_dispatch:
 
 jobs:
@@ -13,7 +13,7 @@ jobs:
         uses: actions/github-script@v7
         with:
           script: |
-            const HOURS_THRESHOLD = 2 / 60;
+            const HOURS_THRESHOLD = 5;
             const REVIEW_LABEL = 'In review';
             const webhook = process.env.DISCORD_WEBHOOK_URL;
             const now = new Date();
@@ -42,8 +42,6 @@ jobs:
                 const message = {
                   content: `⏰ PR #${pr.number} (${pr.title}) [${pr.html_url}] находится в статусе **In review** уже ${ageInHours.toFixed(1)} часа(ов)!`,
                 };
-            
-                console.log(message);
 
                 await fetch(webhook, {
                   method: 'POST',
