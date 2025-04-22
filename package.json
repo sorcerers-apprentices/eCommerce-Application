@@ -15,6 +15,7 @@
     "stylelint": "stylelint '**/*.{css,scss}'",
     "stylelint:fix": "stylelint '**/*.{css,scss}' --fix",
     "lint": "eslint .",
+    "lint:fix": "eslint --fix .",
     "prepare": "husky .husky"
   },
   "dependencies": {
