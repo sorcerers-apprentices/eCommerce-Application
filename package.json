@@ -1,10 +1,35 @@
 {
   "name": "ecommerce-application",
   "version": "1.0.0",
-  "description": "",
+  "description": "This platform replicates real-world shopping experiences in a digital environment, allowing users to browse products, add them to a cart, and complete purchases. It includes features like user authentication, product management, and order processing.",
   "main": "index.js",
+  "type": "module",
+  "private": true,
   "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "deploy": "tsc --noEmit && npm run build && gh-pages -d dist",
+    "lint": "eslint .",
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.22.0",
+    "@types/react": "^19.0.10",
+    "@types/react-dom": "^19.0.4",
+    "@vitejs/plugin-react": "^4.3.4",
+    "eslint": "^9.22.0",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-react-refresh": "^0.4.19",
+    "gh-pages": "^6.3.0",
+    "globals": "^16.0.0",
+    "typescript": "~5.7.2",
+    "typescript-eslint": "^8.26.1",
+    "vite": "^6.3.1"
   },
   "repository": {
     "type": "git",
