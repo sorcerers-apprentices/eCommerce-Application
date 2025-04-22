@@ -6,12 +6,11 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "dev": "vite",
+    "start": "vite",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
     "deploy": "tsc --noEmit && npm run build && gh-pages -d dist",
-    "lint": "eslint .",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "lint": "eslint ."
   },
   "dependencies": {
     "react": "^19.0.0",
