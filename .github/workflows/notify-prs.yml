@@ -42,6 +42,8 @@ jobs:
                 const message = {
                   content: `⏰ PR #${pr.number} (${pr.title}) [${pr.html_url}] находится в статусе **In review** уже ${ageInHours.toFixed(1)} часа(ов)!`,
                 };
+            
+                console.log(message);
 
                 await fetch(webhook, {
                   method: 'POST',
