@@ -1,4 +1,13 @@
 {
-  "*.{ts,tsx}": ["npm run lint", "npm run format:check"],
-  "*.{css,scss}": ["npm run stylelint"]
+  "*.{ts,tsx}": [
+    "npm run format",
+    "npm run lint:ts:fix"
+  ],
+  "*.{css,scss}": [
+    "npm run format",
+    "npm run lint:scss:fix"
+  ],
+  "*.{test,spec}.{ts,tsx}": [
+    "npm run test:unit"
+  ]
 }

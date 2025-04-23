@@ -20,15 +20,18 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - name: install modules
         run: npm ci
+      - name: build production project
+        run: npm run build
+        if: always()
       - name: lint typescript
-        run: npm run lint
+        run: npm run lint:ts
         if: always()
       - name: lint styles
-        run: npm run stylelint
+        run: npm run lint:scss
         if: always()
       - name: check format with prettier
         run: npm run format:check
         if: always()
-      - name: build production project
-        run: npm run build
+      - name: unit testing
+        run: npm run test:unit
         if: always()
