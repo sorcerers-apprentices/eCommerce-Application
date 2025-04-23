@@ -5,14 +5,15 @@ import tsconfigPaths from "vite-tsconfig-paths";
 export default defineConfig({
   plugins: [react(), tsconfigPaths()],
   base: "./",
+
   build: {
     sourcemap: true,
     minify: false,
-    outDir: "dist",
+    outDir: 'dist',
   },
   css: {
     modules: {
-      scopeBehaviour: "local",
+      scopeBehaviour: 'local',
     },
   },
-});
+})

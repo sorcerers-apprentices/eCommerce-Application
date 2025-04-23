@@ -1,15 +1,15 @@
 name: CI
 on:
   push:
-    branches: [ main, develop ]
+    branches: [main, develop]
   pull_request:
-    branches: [ main, develop ]
+    branches: [main, develop]
 jobs:
   pipeline:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [ 22.x ]
+        node-version: [22.x]
 
     steps:
       - uses: actions/checkout@v2
