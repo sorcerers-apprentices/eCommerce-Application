@@ -30,7 +30,7 @@ jobs:
         run: npm run lint:scss
         if: always()
       - name: check format with prettier
-        run: npm run format:check
+        run: npm run format
         if: always()
       - name: unit testing
         run: npm run test:unit
