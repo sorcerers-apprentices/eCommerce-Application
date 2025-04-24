@@ -17,7 +17,7 @@
     "lint:ts:fix": "eslint --fix .",
     "lint:scss": "stylelint '**/*.{css,scss}'",
     "lint:scss:fix": "stylelint '**/*.{css,scss}' --fix",
-    "test:unit": "vitest --config ./config/vitest/vitest.config.ts"
+    "test:unit": "vitest"
   },
   "dependencies": {
     "react": "^19.0.0",
