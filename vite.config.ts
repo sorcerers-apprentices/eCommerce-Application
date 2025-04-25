@@ -15,5 +15,4 @@ export default defineConfig({
       scopeBehaviour: 'local',
     },
   },
-  envPrefix: ['API_'],
 })
