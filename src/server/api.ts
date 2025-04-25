@@ -1,6 +1,6 @@
 import type { ClientResponse } from '@commercetools/platform-sdk'
 import type { ProductPagedQueryResponse } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/product'
-import { createRequestBuilder } from '@/sdk/client.ts'
+import { createRequestBuilder } from '@/server/client.ts'
 
 /**
  *
