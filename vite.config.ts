@@ -5,7 +5,6 @@ import tsconfigPaths from 'vite-tsconfig-paths'
 export default defineConfig({
   plugins: [react(), tsconfigPaths()],
   base: './',
-
   build: {
     sourcemap: true,
     minify: false,
@@ -16,4 +15,5 @@ export default defineConfig({
       scopeBehaviour: 'local',
     },
   },
+  envPrefix: ['API_'],
 })
