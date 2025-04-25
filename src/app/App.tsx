@@ -1,9 +1,9 @@
+import './styles/index.scss'
 import type { ReactElement } from 'react'
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
+import reactLogo from '@/assets/react.svg'
 import viteLogo from '/vite.svg'
-import './App.scss'
-import { fetchProducts, isError } from '@/server/api.ts'
+import { fetchProducts, isError } from '@/server/api'
 import type { ClientResponse } from '@commercetools/platform-sdk'
 import type { ProductPagedQueryResponse } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/product'
 
