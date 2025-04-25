@@ -1,7 +1,6 @@
 {
   "name": "ecommerce-application",
   "version": "1.0.0",
-  "description": "This platform replicates real-world shopping experiences in a digital environment, allowing users to browse products, add them to a cart, and complete purchases. It includes features like user authentication, product management, and order processing.",
   "main": "index.js",
   "type": "module",
   "private": true,
@@ -58,8 +57,8 @@
     "type": "git",
     "url": "git+https://github.com/sorcerers-apprentices/eCommerce-Application.git"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "The Sorcerer's Apprentices",
+  "license": "MIT License",
   "bugs": {
     "url": "https://github.com/sorcerers-apprentices/eCommerce-Application/issues"
   },
