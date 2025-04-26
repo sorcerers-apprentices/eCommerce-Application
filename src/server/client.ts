@@ -4,9 +4,9 @@ import {
   type AuthMiddlewareOptions,
   type HttpMiddlewareOptions,
 } from '@commercetools/sdk-client-v2'
-import type { ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk/dist/declarations/src/generated/client/by-project-key-request-builder'
+import { environment } from '@/app/types/environment'
 import { createApiBuilderFromCtpClient } from '@commercetools/platform-sdk'
-import { environment } from '@/environment.ts'
+import type { ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk/dist/declarations/src/generated/client/by-project-key-request-builder'
 
 // Configure httpMiddlewareOptions
 const httpMiddlewareOptions: HttpMiddlewareOptions = {
