@@ -27,14 +27,11 @@ const createClient = (): Client => {
     fetch,
   }
 
-  return (
-    new ClientBuilder()
-      .withProjectKey(environment.PROJECT_KEY)
-      .withHttpMiddleware(httpMiddlewareOptions)
-      .withClientCredentialsFlow(authMiddlewareOptions)
-      // .withLoggerMiddleware()
-      .build()
-  )
+  return new ClientBuilder()
+    .withProjectKey(environment.PROJECT_KEY)
+    .withHttpMiddleware(httpMiddlewareOptions)
+    .withClientCredentialsFlow(authMiddlewareOptions)
+    .build()
 }
 
 export const createRequestBuilder = (): ByProjectKeyRequestBuilder => {
