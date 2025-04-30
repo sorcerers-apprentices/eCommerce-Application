@@ -1,5 +1,4 @@
 import './App.scss'
-import { NavigateButtons } from './components/NavigateButtons'
 import type { ReactElement } from 'react'
 import { fetchProducts } from '@/server/api'
 import { useFetch } from '@/shared/hooks/useFetch'
@@ -11,7 +10,6 @@ function App(): ReactElement {
   return (
     <div className="container">
       <h1>eCommerce Application</h1>
-      <NavigateButtons />
       {isLoading && <div>Loading...</div>}
       {error && <div>{error.message}</div>}
       {data && <div>Status code: {data.statusCode}</div>}
