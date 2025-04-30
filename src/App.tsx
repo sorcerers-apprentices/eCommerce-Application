@@ -7,9 +7,8 @@ import type { ProductPagedQueryResponse } from '@commercetools/platform-sdk/dist
 
 function App(): ReactElement {
   const { data, error, isLoading } = useFetch<ClientResponse<ProductPagedQueryResponse>>(fetchProducts)
-
   return (
-    <div>
+    <div className="container">
       <h1>eCommerce Application</h1>
       {isLoading && <div>Loading...</div>}
       {error && <div>{error.message}</div>}
