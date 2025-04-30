@@ -53,14 +53,6 @@ import type { ProductPagedQueryResponse } from '@commercetools/platform-sdk/dist
  * https://github.com/commercetools/commercetools-sdk-typescript/tree/master/packages/platform-sdk/test/integration-tests
  */
 
-export const isError = (object: Error | ClientResponse): object is Error => {
-  return 'name' in object && 'message' in object && 'stack' in object
-}
-
-export const isClientResponse = (object: ClientResponse | Error): object is ClientResponse => {
-  return 'body' in object
-}
-
 export const fetchProducts = async (): Promise<ClientResponse<ProductPagedQueryResponse> | Error> => {
   return createRequestBuilder()
     .products()
