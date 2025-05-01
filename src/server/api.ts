@@ -1,6 +1,7 @@
 import { createRequestBuilder } from '@/server/client'
-import type { ClientResponse } from '@commercetools/platform-sdk'
-import type { ProductPagedQueryResponse } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/product'
+import type { ClientResponse, ProductPagedQueryResponse } from '@commercetools/platform-sdk'
+import type { CustomerSignInResult } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/customer'
+import type { ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk/dist/declarations/src/generated/client/by-project-key-request-builder'
 
 /**
  *
@@ -53,8 +54,20 @@ import type { ProductPagedQueryResponse } from '@commercetools/platform-sdk/dist
  * https://github.com/commercetools/commercetools-sdk-typescript/tree/master/packages/platform-sdk/test/integration-tests
  */
 
+let builder: ByProjectKeyRequestBuilder | undefined
+
+export const authenticate = (email: string, password: string): Promise<ClientResponse<CustomerSignInResult>> => {
+  builder = createRequestBuilder(email, password)
+  return builder
+    .login()
+    .post({
+      body: { email, password },
+    })
+    .execute()
+}
+
 export const fetchProducts = async (): Promise<ClientResponse<ProductPagedQueryResponse> | Error> => {
-  return createRequestBuilder()
+  return builder!
     .products()
     .get()
     .execute()

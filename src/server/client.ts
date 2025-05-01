@@ -1,8 +1,8 @@
 import {
   ClientBuilder,
   type Client,
-  type AuthMiddlewareOptions,
   type HttpMiddlewareOptions,
+  type PasswordAuthMiddlewareOptions,
 } from '@commercetools/sdk-client-v2'
 import { environment } from '@/app/types/environment'
 import { createApiBuilderFromCtpClient } from '@commercetools/platform-sdk'
@@ -15,14 +15,24 @@ const httpMiddlewareOptions: HttpMiddlewareOptions = {
 }
 
 // Export the ClientBuilder
-const createClient = (): Client => {
-  const authMiddlewareOptions: AuthMiddlewareOptions = {
+const createClient = (username: string, password: string): Client => {
+  const authMiddlewareOptions: PasswordAuthMiddlewareOptions = {
     host: environment.AUTH_URL,
     projectKey: environment.PROJECT_KEY,
     credentials: {
       clientId: environment.CLIENT_ID,
       clientSecret: environment.CLIENT_SECRET,
+      user: { username, password },
     },
+    // tokenCache: {
+    //   get(): TokenStore {
+    //     const tokenStoreJson = localStorage.getItem('TOKEN_CACHE_KEY')!
+    //     return JSON.parse(tokenStoreJson)
+    //   },
+    //   set(cache: TokenStore): void {
+    //     localStorage.setItem('TOKEN_CACHE_KEY', JSON.stringify(cache))
+    //   },
+    // },
     scopes: environment.SCOPES,
     fetch,
   }
@@ -30,11 +40,11 @@ const createClient = (): Client => {
   return new ClientBuilder()
     .withProjectKey(environment.PROJECT_KEY)
     .withHttpMiddleware(httpMiddlewareOptions)
-    .withClientCredentialsFlow(authMiddlewareOptions)
+    .withPasswordFlow(authMiddlewareOptions)
     .build()
 }
 
-export const createRequestBuilder = (): ByProjectKeyRequestBuilder => {
-  const client = createClient()
+export const createRequestBuilder = (username: string, password: string): ByProjectKeyRequestBuilder => {
+  const client = createClient(username, password)
   return createApiBuilderFromCtpClient(client).withProjectKey({ projectKey: environment.PROJECT_KEY })
 }
