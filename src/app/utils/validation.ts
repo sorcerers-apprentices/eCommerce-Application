@@ -18,6 +18,7 @@ export const passwordValidation: (value: string) => boolean = (value: string): b
   const minLength = 8
   return (
     value === value.trim() &&
+    !value.includes(' ') &&
     /[A-Z]/.test(value) &&
     /[a-z]/.test(value) &&
     /[0-9]/.test(value) &&
