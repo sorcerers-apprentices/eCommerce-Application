@@ -1,10 +1,11 @@
 import './App.scss'
+import './index.scss'
 import type { ReactElement } from 'react'
-import { authenticate, fetchProducts } from '@/server/api'
 import { useFetch } from '@/shared/hooks/useFetch'
+import { authenticate, fetchProducts } from '@/server/api'
+import { LoginForm } from '@/components/LoginForm/LoginForm'
 import type { ClientResponse, ProductPagedQueryResponse } from '@commercetools/platform-sdk'
 import type { CustomerSignInResult } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/customer'
-import { LoginForm } from './components/LoginForm/LoginForm'
 
 function App(): ReactElement {
   const {
