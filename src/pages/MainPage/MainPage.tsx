@@ -1,4 +1,5 @@
 import type { ReactElement } from 'react'
+import Loader from '@/shared/ui/Loader/Loader'
 import { useFetch } from '@/shared/hooks/useFetch'
 import { authenticate, fetchProducts } from '@/server/api'
 import type { ClientResponse, ProductPagedQueryResponse } from '@commercetools/platform-sdk'
@@ -15,12 +16,12 @@ const MainPage = (): ReactElement => {
   return (
     <div className="container">
       <h1>eCommerce Application Login</h1>
-      {authIsLoading && <div>Loading...</div>}
+      {authIsLoading && <Loader />}
       {authError && <div>{authError.message}</div>}
       {authData && <div>Status code: {authData.statusCode}</div>}
 
       <h1>eCommerce Application Products</h1>
-      {isLoading && <div>Loading...</div>}
+      {isLoading && <Loader />}
       {error && <div>{error.message}</div>}
       {data && <div>Status code: {data.statusCode}</div>}
     </div>
