@@ -1,32 +1,17 @@
 import './App.scss'
 import './index.scss'
 import type { ReactElement } from 'react'
-import { useFetch } from '@/shared/hooks/useFetch'
-import { authenticate, fetchProducts } from '@/server/api'
-import { LoginForm } from '@/components/LoginForm/LoginForm'
-import type { ClientResponse, ProductPagedQueryResponse } from '@commercetools/platform-sdk'
-import type { CustomerSignInResult } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/customer'
+import { Route, Routes } from 'react-router-dom'
+import MainPage from '@/pages/MainPage/MainPage'
+import LoginPage from '@/pages/LoginPage/LoginPage'
 
 function App(): ReactElement {
-  const {
-    data: authData,
-    error: authError,
-    isLoading: authIsLoading,
-  } = useFetch<ClientResponse<CustomerSignInResult>>(() => authenticate('example', 'example'))
-  const { data, error, isLoading } = useFetch<ClientResponse<ProductPagedQueryResponse>>(fetchProducts)
   return (
-    <div className="container">
-      <h1>eCommerce Application Login</h1>
-      {authIsLoading && <div>Loading...</div>}
-      {authError && <div>{authError.message}</div>}
-      {authData && <div>Status code: {authData.statusCode}</div>}
-
-      <h1>eCommerce Application Products</h1>
-      {isLoading && <div>Loading...</div>}
-      {error && <div>{error.message}</div>}
-      {data && <div>Status code: {data.statusCode}</div>}
-
-      <LoginForm />
+    <div>
+      <Routes>
+        <Route path={'/'} element={<MainPage />} />
+        <Route path={'/login'} element={<LoginPage />} />
+      </Routes>
     </div>
   )
 }
