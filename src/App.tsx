@@ -4,6 +4,7 @@ import { authenticate, fetchProducts } from '@/server/api'
 import { useFetch } from '@/shared/hooks/useFetch'
 import type { ClientResponse, ProductPagedQueryResponse } from '@commercetools/platform-sdk'
 import type { CustomerSignInResult } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/customer'
+import { LoginForm } from './components/LoginForm/LoginForm'
 
 function App(): ReactElement {
   const {
@@ -23,6 +24,8 @@ function App(): ReactElement {
       {isLoading && <div>Loading...</div>}
       {error && <div>{error.message}</div>}
       {data && <div>Status code: {data.statusCode}</div>}
+
+      <LoginForm />
     </div>
   )
 }
