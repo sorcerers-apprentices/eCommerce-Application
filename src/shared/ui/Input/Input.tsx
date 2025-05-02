@@ -6,6 +6,8 @@ type TInputProperties = {
   type?: 'text' | 'email' | 'password' | 'number' | 'search' | 'tel' | 'url'
   name?: string
   required?: boolean
+  id?: string
+  disabled?: boolean
 }
 
 export const Input: React.FC<TInputProperties> = ({
