@@ -8,7 +8,7 @@ const AppRouter = (): ReactElement => {
     <Suspense fallback={<Loader />}>
       <Routes>
         {routeConfig.map(({ element, path }) => (
-          <Route key={path} element={element} path={path} />
+          <Route element={element} path={path} />
         ))}
       </Routes>
     </Suspense>
