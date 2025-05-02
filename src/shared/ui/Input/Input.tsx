@@ -1,6 +1,7 @@
 type TInputProperties = {
   value?: string
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void
+  onKeyDown?: (event: React.KeyboardEvent<HTMLInputElement>) => void
   placeholder?: string
   className?: string[]
   type?: 'text' | 'email' | 'password' | 'number' | 'search' | 'tel' | 'url'
@@ -13,17 +14,23 @@ type TInputProperties = {
 export const Input: React.FC<TInputProperties> = ({
   value,
   onChange,
+  onKeyDown,
+  id,
   placeholder,
   className = [],
   type,
   name,
   required = false,
-}) => {
+  disabled = false,
+}: TInputProperties & {}) => {
   return (
     <input
       type={type}
       value={value}
       onChange={onChange}
+      onKeyDown={onKeyDown}
+      id={id}
+      disabled={disabled}
       placeholder={placeholder}
       name={name}
       required={required}
