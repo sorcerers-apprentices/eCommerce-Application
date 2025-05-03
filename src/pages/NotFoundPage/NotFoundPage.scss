@@ -1,0 +1,59 @@
+@use '../../app/mixins';
+
+body:has(.not-found-page) {
+  background-color: #fff;
+}
+
+.not-found-page {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-width: 100vw;
+  height: 100%;
+  padding-top: 30px;
+  padding-left: 40px;
+  background-color: #fff;
+
+  &_number {
+    align-self: flex-start;
+    margin: 0;
+
+    @include mixins.text('Caveat', normal, black, 32px, 32px, 300);
+  }
+
+  &_title {
+    align-self: flex-start;
+    max-width: 400px;
+    margin: 0;
+    text-align: start;
+
+    @include mixins.text('SingleDay-Regular', normal, black, 42px, 42px, 400);
+  }
+
+  &_text {
+    align-self: flex-start;
+    margin: 0;
+
+    @include mixins.text('Caveat', normal, black, 32px, 32px, 300);
+  }
+
+  &_link {
+    align-self: flex-start;
+    margin: 0;
+
+    @include mixins.text('Caveat', normal, black, 32px, 32px, 300);
+  }
+
+  &_image {
+    position: relative;
+    bottom: 180px;
+    align-self: center;
+    max-width: 570px;
+  }
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
