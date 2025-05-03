@@ -1,13 +1,22 @@
+import type { FC, ReactNode } from 'react'
+
 type TButtonProperties = {
-  children: React.ReactNode
+  children: ReactNode
   onClick?: () => void
-  className?: string[]
+  classNames?: string[]
   type?: 'button' | 'submit' | 'reset'
+  disabled?: boolean
 }
 
-export const Button: React.FC<TButtonProperties> = ({ children, onClick, className = [], type = 'button' }) => {
+export const Button: FC<TButtonProperties> = ({
+  children,
+  onClick,
+  classNames = [],
+  type = 'button',
+  disabled = false,
+}) => {
   return (
-    <button type={type} className={['btn', ...className].join(' ')} onClick={onClick}>
+    <button type={type} className={['btn', ...classNames].join(' ')} onClick={onClick} disabled={disabled}>
       {children}
     </button>
   )
