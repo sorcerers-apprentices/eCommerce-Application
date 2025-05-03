@@ -2,13 +2,13 @@ import { Link } from 'react-router-dom'
 import type { ReactElement } from 'react'
 import { RoutePath } from '@/shared/config/routeConfig/routeConfig'
 
-const ProfilePage = (): ReactElement => {
+const RegisterPage = (): ReactElement => {
   return (
     <div>
-      <h1>Profile Page</h1>
+      <h1>Registration Pages</h1>
       <Link to={RoutePath.MAIN}>Go Home Page</Link>
     </div>
   )
 }
 
-export default ProfilePage
+export default RegisterPage
