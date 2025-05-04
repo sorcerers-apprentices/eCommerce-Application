@@ -1,4 +1,5 @@
 @use 'fonts';
+@use 'variables';
 
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
@@ -9,18 +10,18 @@
   color: rgb(255 255 255 / 87%);
   text-rendering: optimizelegibility;
   color-scheme: light dark;
-  background-color: #242424;
+  background-color: variables.$black;
   font-synthesis: none;
 }
 
 a {
   font-weight: 500;
-  color: #646cff;
+  color: variables.$light-purple;
   text-decoration: inherit;
 }
 
 a:hover {
-  color: #535bf2;
+  color: variables.$dark-purple;
 }
 
 body {
@@ -44,12 +45,12 @@ button {
   font-family: inherit;
   font-size: 1em;
   font-weight: 500;
-  background-color: #1a1a1a;
+  background-color: variables.$dark-black;
   transition: border-color 0.25s;
 }
 
 button:hover {
-  border-color: #646cff;
+  border-color: variables.$light-purple;
 }
 
 button:focus,
@@ -59,15 +60,15 @@ button:focus-visible {
 
 @media (prefers-color-scheme: light) {
   :root {
-    color: #213547;
-    background-color: #fff;
+    color: variables.$dark-blue;
+    background-color: variables.$white;
   }
 
   a:hover {
-    color: #747bff;
+    color: variables.$midl-purple;
   }
 
   button {
-    background-color: #f9f9f9;
+    background-color: variables.$beige;
   }
 }

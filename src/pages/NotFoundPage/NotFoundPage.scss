@@ -1,7 +1,8 @@
 @use '../../app/mixins';
+@use '../../app/variables';
 
 body:has(.not-found-page) {
-  background-color: #fff;
+  background-color: variables.$white;
 }
 
 .not-found-page {
@@ -12,43 +13,158 @@ body:has(.not-found-page) {
   height: 100%;
   padding-top: 30px;
   padding-left: 40px;
-  background-color: #fff;
+  background-color: variables.$white;
 
   &_number {
     align-self: flex-start;
-    margin: 0;
+    margin: 0 0 20px;
 
-    @include mixins.text('Caveat', normal, black, 32px, 32px, 300);
+    @include mixins.text('Caveat', normal, variables.$dark-black, 34px, 34px, 600);
+
+    @media only screen and (width <= 1000px) and (width >= 761px) {
+      @include mixins.text('Caveat', normal, variables.$dark-black, 24px, 24px, 600);
+
+      margin: 0 0 10px;
+    }
+
+    @media only screen and (width <= 760px) {
+      margin: 0;
+
+      @include mixins.text('Caveat', normal, variables.$dark-black, 18px, 18px, 500);
+    }
   }
 
   &_title {
     align-self: flex-start;
     max-width: 400px;
-    margin: 0;
+    margin: 0 0 10px;
     text-align: start;
 
-    @include mixins.text('SingleDay-Regular', normal, black, 42px, 42px, 400);
+    @include mixins.text('SingleDay-Regular', normal, variables.$dark-black, 42px, 42px, 400);
+
+    @media only screen and (width <= 1000px) and (width >= 761px) {
+      @include mixins.text('SingleDay-Regular', normal, variables.$dark-black, 32px, 32px, 400);
+
+      max-width: 300px;
+    }
+
+    @media only screen and (width <= 760px) {
+      max-width: 250px;
+      margin: 0 0 5px;
+
+      @include mixins.text('SingleDay-Regular', normal, variables.$dark-black, 24px, 24px, 400);
+    }
   }
 
   &_text {
     align-self: flex-start;
-    margin: 0;
+    margin: 0 0 20px;
 
-    @include mixins.text('Caveat', normal, black, 32px, 32px, 300);
+    @include mixins.text('Caveat', normal, variables.$dark-black, 26px, 26px, 300);
+
+    @media only screen and (width <= 1390px) and (width >= 1001px) {
+      @include mixins.text('Caveat', normal, variables.$dark-black, 22px, 22px, 300);
+    }
+
+    @media only screen and (width <= 1000px) and (width >= 761px) {
+      @include mixins.text('Caveat', normal, variables.$dark-black, 18px, 18px, 300);
+
+      margin: 0 0 10px;
+    }
+
+    @media only screen and (width <= 760px) {
+      margin: 0;
+
+      @include mixins.text('Caveat', normal, variables.$dark-black, 14px, 14px, 300);
+    }
   }
 
   &_link {
     align-self: flex-start;
+    min-width: 300px;
     margin: 0;
+    padding: 0.5%;
+    border: 1px solid variables.$gray;
+    border-radius: 8px;
+    background-color: variables.$gray;
 
-    @include mixins.text('Caveat', normal, black, 32px, 32px, 300);
+    @include mixins.center;
+    @include mixins.text('Caveat', normal, variables.$dark-black, 32px, 32px, 300);
+
+    @media (hover: hover) {
+      &:hover {
+        border-color: variables.$light-gray;
+        color: variables.$dark-blue-2;
+        background-color: variables.$light-gray;
+      }
+    }
+
+    @media only screen and (width <= 1100px) and (width >= 1001px) {
+      min-width: 250px;
+
+      @include mixins.text('Caveat', normal, variables.$dark-black, 26px, 26px, 300);
+    }
+
+    @media only screen and (width <= 1000px) and (width >= 761px) {
+      min-width: 200px;
+
+      @include mixins.text('Caveat', normal, variables.$dark-black, 20px, 20px, 300);
+    }
+
+    @media only screen and (width <= 760px) {
+      min-width: 180px;
+      border-radius: 6px;
+
+      @include mixins.text('Caveat', normal, variables.$dark-black, 14px, 14px, 300);
+    }
   }
 
   &_image {
     position: relative;
+    right: 60px;
     bottom: 180px;
     align-self: center;
-    max-width: 570px;
+    max-width: 500px;
+
+    @media only screen and (width <= 1260px) and (width >= 1150px) {
+      bottom: 140px;
+      max-width: 380px;
+    }
+
+    @media only screen and (width <= 1149px) and (width >= 1001px) {
+      bottom: 100px;
+      max-width: 350px;
+    }
+
+    @media only screen and (width <= 1000px) and (width >= 761px) {
+      right: 20px;
+      bottom: 50px;
+      max-width: 300px;
+    }
+
+    @media only screen and (width <= 760px) and (width >= 471px) {
+      right: 0;
+      bottom: 0;
+      max-width: 300px;
+    }
+
+    @media only screen and (width <= 470px) and (width >= 361px) {
+      right: 0;
+      bottom: 0;
+      align-self: start;
+      max-width: 300px;
+    }
+
+    @media only screen and (width <= 360px) {
+      right: 0;
+      bottom: 0;
+      align-self: start;
+      max-width: 250px;
+    }
+  }
+
+  @media only screen and (width <= 500px) {
+    padding-left: 20px;
   }
 }
 
