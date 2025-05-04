@@ -1,6 +1,6 @@
 import { Label } from '@/shared/ui/Label/Label.tsx'
 import { Input } from '@/shared/ui/Input/Input.tsx'
-import { type ChangeEvent, useState } from 'react'
+import { type ChangeEvent } from 'react'
 import type { JSX } from 'react'
 import * as React from 'react'
 
@@ -11,11 +11,8 @@ export const EmailInput = ({
   errors: string | null | undefined
   onChange: (email: string) => void
 }): JSX.Element => {
-  const [email, setEmail] = useState('')
-
   const handleChange = (event: ChangeEvent<HTMLInputElement>): void => {
     const value = event.target.value
-    setEmail(value)
     onChange(value)
   }
 
@@ -32,7 +29,6 @@ export const EmailInput = ({
       </Label>
       <Input
         id={'email'}
-        value={email}
         type="email"
         name="email"
         onKeyDown={handleKeyDown}

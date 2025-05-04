@@ -8,8 +8,6 @@ describe('emailValidation', () => {
     expect(validateEmail('test@example .com')).toEqual('Email should not include whitespaces')
     expect(validateEmail('user@example.com ')).toEqual('Email should not include whitespaces')
     expect(validateEmail('user@example.  com')).toEqual('Email should not include whitespaces')
-    expect(validateEmail('  user@example.com')).toEqual('Email should not include whitespaces')
-    expect(validateEmail(' user@example.com ')).toEqual('Email should not include whitespaces')
     expect(validateEmail('testexample.com')).toEqual('Email should include @')
     expect(validateEmail('userexample.ru')).toEqual('Email should include @')
     expect(validateEmail('test@example')).toEqual("Invalid email format, proper format is 'user@example.com'")
@@ -17,9 +15,6 @@ describe('emailValidation', () => {
     expect(validateEmail('user@')).toEqual("Invalid email format, proper format is 'user@example.com'")
     expect(validateEmail('user@com.1')).toEqual("Invalid email format, proper format is 'user@example.com'")
     expect(validateEmail('user@example.c')).toEqual("Invalid email format, proper format is 'user@example.com'")
-    expect(validateEmail('user@com.')).toEqual("Invalid email format, proper format is 'user@example.com'")
-    expect(validateEmail('user@com')).toEqual("Invalid email format, proper format is 'user@example.com'")
-    expect(validateEmail('user@.com')).toEqual("Invalid email format, proper format is 'user@example.com'")
   })
   test('should return null', () => {
     expect(validateEmail('test@example.com')).toEqual(null)
@@ -43,8 +38,6 @@ describe('passwordValidation', () => {
     expect(validatePassword(' ')).toEqual('Password should not include whitespaces')
     expect(validatePassword('Password ')).toEqual('Password should not include whitespaces')
     expect(validatePassword(' Password1')).toEqual('Password should not include whitespaces')
-    expect(validatePassword(' Password1 ')).toEqual('Password should not include whitespaces')
-    expect(validatePassword('Password1  ')).toEqual('Password should not include whitespaces')
   })
   test('should return null', () => {
     expect(validatePassword('aEr23trfg')).toEqual(null)

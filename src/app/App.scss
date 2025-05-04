@@ -1,5 +1,8 @@
+@use 'variables';
+
 #root {
-  max-width: 1280px;
+  overflow: hidden;
+  max-width: variables.$max-width;
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
@@ -13,11 +16,11 @@
 }
 
 .logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
+  filter: drop-shadow(0 0 2em variables.$light-purple);
 }
 
 .logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+  filter: drop-shadow(0 0 2em variables.$blue);
 }
 
 @keyframes logo-spin {
@@ -41,5 +44,5 @@
 }
 
 .read-the-docs {
-  color: #888;
+  color: variables.$gray;
 }

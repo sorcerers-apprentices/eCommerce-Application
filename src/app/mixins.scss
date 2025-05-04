@@ -1,0 +1,36 @@
+@mixin text($ff: false, $fst: false, $color: false, $fs: false, $lh: false, $fw: false, $ls: false) {
+  @if ($ff) {
+    font-family: $ff;
+  }
+
+  @if ($fst) {
+    font-style: $fst;
+  }
+
+  @if ($color) {
+    color: $color;
+  }
+
+  @if ($fs) {
+    font-size: $fs;
+  }
+
+  @if ($lh) {
+    line-height: $lh;
+  }
+
+  @if ($fw) {
+    font-weight: $fw;
+  }
+
+  @if ($ls) {
+    letter-spacing: $ls;
+  }
+}
+
+@mixin center() {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
