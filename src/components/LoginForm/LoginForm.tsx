@@ -4,7 +4,7 @@ import { type FormEvent, type JSX, useEffect, useState } from 'react'
 import './style.scss'
 import { EmailInput } from '@/components/LoginForm/Input/EmailInput.tsx'
 import { PasswordInput } from '@/components/LoginForm/Input/PasswordInput.tsx'
-import { authenticate } from '@/server/api.ts'
+import { ApiErrorCode, authenticate } from '@/server/api.ts'
 import { validateEmail, validatePassword } from '@/components/LoginForm/validation.ts'
 
 const toString = (value: FormDataEntryValue | null): string | null => {
@@ -56,7 +56,7 @@ export const LoginForm = (): JSX.Element => {
     } catch (error) {
       if (isCommerceToolsError(error)) {
         const firstError = error.body.errors[0]
-        if (firstError.code === 'invalid_customer_account_credentials') {
+        if (firstError.code === ApiErrorCode.INVALID_CUSTOMER_ACCOUNT_CREDENTIALS) {
           setEmailErrors(firstError.message)
           setPasswordErrors(firstError.message)
           return

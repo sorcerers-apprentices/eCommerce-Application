@@ -2,7 +2,7 @@
 
 #root {
   overflow: hidden;
-  max-width: 1440px;
+  max-width: variables.$max-width;
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
