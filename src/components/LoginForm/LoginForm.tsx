@@ -2,43 +2,12 @@ import { Form } from '@/shared/ui/Form/Form'
 import { FormButton } from './FormButton'
 import { type FormEvent, type JSX, useEffect, useState } from 'react'
 import './style.scss'
-import { EmailInput } from '@/components/LoginForm/Input/EmailInput.tsx'
-import { PasswordInput } from '@/components/LoginForm/Input/PasswordInput.tsx'
+import { EmailInput } from '@/components/Input/EmailInput.tsx'
+import { PasswordInput } from '@/components/Input/PasswordInput.tsx'
 import { ApiErrorCode, authenticate } from '@/server/api.ts'
 import { validateEmail, validatePassword } from '@/components/LoginForm/validation.ts'
-
-const toString = (value: FormDataEntryValue | null): string | null => {
-  if (typeof value === 'string' || value === null) {
-    return value
-  } else {
-    throw Error('Unexpected type: ' + typeof value)
-  }
-}
-
-const required = <T,>(value: T | null): T => {
-  if (value === null) {
-    throw new Error('Unexpected null value')
-  }
-  return value
-}
-
-type CommerceToolsError = {
-  body: {
-    errors: Array<{ code: string; message: string }>
-  }
-}
-
-const isObject = (value: unknown): value is object => {
-  return typeof value === 'object' && value !== null
-}
-
-const isCommerceToolsError = (error: unknown): error is CommerceToolsError => {
-  if (isObject(error) && 'body' in error) {
-    return isObject(error.body) && 'errors' in error.body
-  } else {
-    return false
-  }
-}
+import { readString, required } from '@/shared/utilities/form-utilities.ts'
+import { isCommerceToolsError } from '@/shared/utilities/type-utilities.ts'
 
 export const LoginForm = (): JSX.Element => {
   const [emailErrors, setEmailErrors] = useState<string | null | undefined>(undefined)
@@ -48,8 +17,8 @@ export const LoginForm = (): JSX.Element => {
   const onSubmit = async (event: FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault()
     const formData = new FormData(event.currentTarget)
-    const email = required(toString(formData.get('email')))
-    const password = required(toString(formData.get('password')))
+    const email = required(readString(formData.get('email')))
+    const password = required(readString(formData.get('password')))
 
     try {
       await authenticate(email, password)
@@ -75,7 +44,7 @@ export const LoginForm = (): JSX.Element => {
     <Form className={['form']} onSubmit={onSubmit}>
       <EmailInput errors={emailErrors} onChange={onEmailChange} />
       <PasswordInput errors={passwordErrors} onChange={onPasswordChange} />
-      <FormButton disabled={formDisabled} />
+      <FormButton value={'Login'} disabled={formDisabled} />
     </Form>
   )
 }

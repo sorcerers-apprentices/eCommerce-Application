@@ -3,7 +3,8 @@ import { Input } from '@/shared/ui/Input/Input.tsx'
 import { useState } from 'react'
 import type { JSX } from 'react'
 import * as React from 'react'
-import { TogglePasswordButton } from '@/components/LoginForm/Input/TogglePasswordButton/TogglePasswordButton.tsx'
+import { LuEye, LuEyeClosed } from 'react-icons/lu'
+import { Button } from '@/shared/ui/Button/Button.tsx'
 
 export const PasswordInput = ({
   errors = null,
@@ -42,7 +43,13 @@ export const PasswordInput = ({
         placeholder="Kedavra"
       />
       {errors && <span className="form__error">{errors}</span>}
-      <TogglePasswordButton show={showPassword} toggle={() => setShowPassword((previous) => !previous)} />
+      <Button
+        type="button"
+        classNames={['form__button', 'visibility']}
+        onClick={() => setShowPassword((previous) => !previous)}
+      >
+        {showPassword ? <LuEye /> : <LuEyeClosed />}
+      </Button>
     </div>
   )
 }

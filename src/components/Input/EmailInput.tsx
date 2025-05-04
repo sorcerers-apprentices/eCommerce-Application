@@ -2,7 +2,6 @@ import { Label } from '@/shared/ui/Label/Label.tsx'
 import { Input } from '@/shared/ui/Input/Input.tsx'
 import { type ChangeEvent } from 'react'
 import type { JSX } from 'react'
-import * as React from 'react'
 
 export const EmailInput = ({
   errors = null,
@@ -16,12 +15,6 @@ export const EmailInput = ({
     onChange(value)
   }
 
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>): void => {
-    if (event.key === ' ') {
-      event.preventDefault()
-    }
-  }
-
   return (
     <div className="form__item">
       <Label htmlFor={'email'} className={['form__label']}>
@@ -31,7 +24,7 @@ export const EmailInput = ({
         id={'email'}
         type="email"
         name="email"
-        onKeyDown={handleKeyDown}
+        allowWhitespaces={false}
         onChange={handleChange}
         required
         className={['form__input', errors ? 'input--error' : '']}

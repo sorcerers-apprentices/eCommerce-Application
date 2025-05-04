@@ -70,6 +70,25 @@ export const authenticate = (email: string, password: string): Promise<ClientRes
     .execute()
 }
 
+export const register = (
+  email: string,
+  firstName: string,
+  lastName: string,
+  street: string,
+  city: string,
+  postalCode: string,
+  country: string,
+  password: string
+): Promise<ClientResponse<CustomerSignInResult>> => {
+  builder = createRequestBuilder(email, password)
+  return builder
+    .customers()
+    .post({
+      body: { email, firstName, lastName, addresses: [{ streetName: street, city, postalCode, country }], password },
+    })
+    .execute()
+}
+
 export const fetchProducts = async (): Promise<ClientResponse<ProductPagedQueryResponse> | Error> => {
   return builder!
     .products()

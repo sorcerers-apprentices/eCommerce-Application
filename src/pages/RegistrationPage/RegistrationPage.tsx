@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import type { ReactElement } from 'react'
 import { RoutePath } from '@/shared/config/routeConfig/routeConfig'
 
-const RegisterPage = (): ReactElement => {
+const RegistrationPage = (): ReactElement => {
   return (
     <div>
       <h1>Registration Pages</h1>
@@ -11,4 +11,4 @@ const RegisterPage = (): ReactElement => {
   )
 }
 
-export default RegisterPage
+export default RegistrationPage

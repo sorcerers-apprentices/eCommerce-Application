@@ -27,3 +27,47 @@ export const validatePassword = (password: string): string | null => {
     return null
   }
 }
+
+export const validateFirstName = (firstName: string): string | null => {
+  if (!firstName.length) {
+    return 'First name cannot be empty'
+  } else if (!firstName.match(/[^a-zA-Z0-9]/)) {
+    return 'First name cannot include special characters'
+  } else if (!firstName.match(/[^a-zA-Z]/)) {
+    return 'First name cannot include numbers'
+  } else {
+    return null
+  }
+}
+
+export const validateLastName = (lastName: string): string | null => {
+  if (!lastName.length) {
+    return 'Last name cannot be empty'
+  } else if (!lastName.match(/[^a-zA-Z0-9]/)) {
+    return 'Last name cannot include special characters'
+  } else if (!lastName.match(/[^a-zA-Z]/)) {
+    return 'Last name cannot include numbers'
+  } else {
+    return null
+  }
+}
+
+export const validateStreet = (street: string): string | null => {
+  if (!street.length) {
+    return 'Street cannot be empty'
+  } else {
+    return null
+  }
+}
+
+export const validateCity = (city: string): string | null => {
+  if (!city.length) {
+    return 'City cannot be empty'
+  } else if (!city.match(/[^a-zA-Z0-9]/)) {
+    return 'City cannot include special characters'
+  } else if (!city.match(/[^a-zA-Z]/)) {
+    return 'City cannot include numbers'
+  } else {
+    return null
+  }
+}

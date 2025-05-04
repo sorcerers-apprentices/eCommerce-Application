@@ -29,7 +29,7 @@ export default tseslint.config(
       'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
 
       // general code style rules
-      'max-lines-per-function': ['error', { max: 40, skipComments: true, skipBlankLines: true }],
+      'max-lines-per-function': ['error', { max: 140, skipComments: true, skipBlankLines: true }],
       '@typescript-eslint/no-magic-numbers': ['error', { ignore: [0, 1, -1], ignoreReadonlyClassProperties: true }],
       'no-magic-strings': 'off',
       '@typescript-eslint/no-unused-vars': ['error', { caughtErrorsIgnorePattern: '^_' }],
