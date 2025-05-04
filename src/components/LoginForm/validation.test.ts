@@ -1,0 +1,56 @@
+import { describe, expect } from 'vitest'
+import { validateEmail, validatePassword } from './validation.ts'
+
+describe('emailValidation', () => {
+  test('should return error text', () => {
+    expect(validateEmail('test @example.com')).toEqual('Email should not include whitespaces')
+    expect(validateEmail('test@ example.com')).toEqual('Email should not include whitespaces')
+    expect(validateEmail('test@example .com')).toEqual('Email should not include whitespaces')
+    expect(validateEmail('user@example.com ')).toEqual('Email should not include whitespaces')
+    expect(validateEmail('user@example.  com')).toEqual('Email should not include whitespaces')
+    expect(validateEmail('  user@example.com')).toEqual('Email should not include whitespaces')
+    expect(validateEmail(' user@example.com ')).toEqual('Email should not include whitespaces')
+    expect(validateEmail('testexample.com')).toEqual('Email should include @')
+    expect(validateEmail('userexample.ru')).toEqual('Email should include @')
+    expect(validateEmail('test@example')).toEqual("Invalid email format, proper format is 'user@example.com'")
+    expect(validateEmail('user@.com.')).toEqual("Invalid email format, proper format is 'user@example.com'")
+    expect(validateEmail('user@')).toEqual("Invalid email format, proper format is 'user@example.com'")
+    expect(validateEmail('user@com.1')).toEqual("Invalid email format, proper format is 'user@example.com'")
+    expect(validateEmail('user@example.c')).toEqual("Invalid email format, proper format is 'user@example.com'")
+    expect(validateEmail('user@com.')).toEqual("Invalid email format, proper format is 'user@example.com'")
+    expect(validateEmail('user@com')).toEqual("Invalid email format, proper format is 'user@example.com'")
+    expect(validateEmail('user@.com')).toEqual("Invalid email format, proper format is 'user@example.com'")
+  })
+  test('should return null', () => {
+    expect(validateEmail('test@example.com')).toEqual(null)
+    expect(validateEmail('user.name+tag@example.co.uk')).toEqual(null)
+    expect(validateEmail('user_name@example.org')).toEqual(null)
+    expect(validateEmail('user-name@example.com')).toEqual(null)
+    expect(validateEmail('user123@example.net')).toEqual(null)
+    expect(validateEmail('user_123@exam.ru')).toEqual(null)
+  })
+})
+
+describe('passwordValidation', () => {
+  test('should return error text', () => {
+    expect(validatePassword('a')).toEqual('Password should be at least 8 characters')
+    expect(validatePassword('short1')).toEqual('Password should be at least 8 characters')
+    expect(validatePassword('NoDigits')).toEqual('Password should include numbers')
+    expect(validatePassword('12345678')).toEqual('Password should include uppercase letters')
+    expect(validatePassword('NOLOWERCASE1')).toEqual('Password should include lowercase letters')
+    expect(validatePassword('nouppercase1')).toEqual('Password should include uppercase letters')
+    expect(validatePassword('Spaces NotAllowed1')).toEqual('Password should not include whitespaces')
+    expect(validatePassword(' ')).toEqual('Password should not include whitespaces')
+    expect(validatePassword('Password ')).toEqual('Password should not include whitespaces')
+    expect(validatePassword(' Password1')).toEqual('Password should not include whitespaces')
+    expect(validatePassword(' Password1 ')).toEqual('Password should not include whitespaces')
+    expect(validatePassword('Password1  ')).toEqual('Password should not include whitespaces')
+  })
+  test('should return null', () => {
+    expect(validatePassword('aEr23trfg')).toEqual(null)
+    expect(validatePassword('Password1')).toEqual(null)
+    expect(validatePassword('ValidPass123')).toEqual(null)
+    expect(validatePassword('StrongPass!4')).toEqual(null)
+    expect(validatePassword('NoSpaces1')).toEqual(null)
+  })
+})
