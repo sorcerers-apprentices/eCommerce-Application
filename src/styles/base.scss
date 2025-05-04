@@ -1,0 +1,29 @@
+@use './fonts.scss' as fonts;
+@use './variables.scss' as vars;
+@use './mixins.scss' as mixins;
+
+* {
+  scroll-behavior: smooth;
+  box-sizing: border-box;
+  margin: 0;
+  font-family: fonts.$font-family;
+  font-size: 16px;
+  font-weight: 400;
+  font-style: normal;
+}
+
+#root {
+  background-color: vars.$dark-primary;
+}
+
+.container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 80px;
+  text-align: center;
+  background-color: vars.$light-grey;
+}
+
+.btn {
+  @include mixins.btn;
+}

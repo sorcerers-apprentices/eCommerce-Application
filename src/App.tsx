@@ -1,4 +1,4 @@
-import './App.scss'
+import '@/styles/style.scss'
 import type { ReactElement } from 'react'
 import { authenticate, fetchProducts } from '@/server/api'
 import { useFetch } from '@/shared/hooks/useFetch'
