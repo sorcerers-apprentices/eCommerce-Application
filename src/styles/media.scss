@@ -11,8 +11,22 @@
   }
 }
 
-@media (width <= 390px) {
+@media (width <= 768px) {
+  html {
+    font-size: 14px;
+  }
+
   .container {
-    padding: 0 24px;
+    padding: 0 3rem;
+  }
+}
+
+@media (width <= 390px) {
+  html {
+    font-size: 10px;
+  }
+
+  .container {
+    padding: 0 1rem;
   }
 }

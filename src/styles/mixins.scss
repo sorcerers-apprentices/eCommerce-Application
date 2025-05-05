@@ -31,19 +31,22 @@
   }
 }
 
-@mixin center() {
+@mixin center($gap: 2rem) {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: $gap;
   align-items: center;
   justify-content: center;
+  text-align: center;
 }
 
-@mixin left() {
+@mixin left($gap: 2rem) {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: $gap;
   align-items: flex-start;
+  justify-content: start;
+  text-align: left;
 }
 
 @mixin btn($width: auto) {
@@ -111,9 +114,9 @@
   line-height: 1.5;
 }
 
-@mixin text-m {
+@mixin text-m($fs: 1rem) {
   font-family: fonts.$font-family;
-  font-size: 1rem;
+  font-size: $fs;
   font-weight: 400;
   line-height: 1.5;
 }

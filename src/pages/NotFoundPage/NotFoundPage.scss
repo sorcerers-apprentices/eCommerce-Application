@@ -1,6 +1,12 @@
 @use '@/styles/mixins.scss' as mixins;
 
-.not-found-page {
+.section-dog {
   @include mixins.headline-1;
   @include mixins.left;
+
+  height: 100vh;
+}
+
+.title {
+  font-size: 3rem;
 }
