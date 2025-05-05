@@ -71,3 +71,23 @@ export const validateCity = (city: string): string | null => {
     return null
   }
 }
+
+export const validateBirthDate = (birthDate: string): string | null => {
+  const date = new Date(birthDate)
+  const minDate = new Date('2012-01-01')
+  if (!birthDate.length) {
+    return 'Date of birthday cannot be empty'
+  } else if (date < minDate) {
+    return 'You should have 13 or more years'
+  } else {
+    return null
+  }
+}
+
+export const validatePostCode = (postCode: string): string | null => {
+  if (!postCode.length) {
+    return 'Post code cannot be empty'
+  } else {
+    return null
+  }
+}

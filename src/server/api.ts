@@ -74,6 +74,7 @@ export const register = (
   email: string,
   firstName: string,
   lastName: string,
+  dateOfBirth: string,
   street: string,
   city: string,
   postalCode: string,
@@ -84,7 +85,14 @@ export const register = (
   return builder
     .customers()
     .post({
-      body: { email, firstName, lastName, addresses: [{ streetName: street, city, postalCode, country }], password },
+      body: {
+        email,
+        firstName,
+        lastName,
+        dateOfBirth,
+        addresses: [{ streetName: street, city, postalCode, country }],
+        password,
+      },
     })
     .execute()
 }

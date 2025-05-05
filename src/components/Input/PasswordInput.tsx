@@ -22,9 +22,7 @@ export const PasswordInput = ({
     onChange(value)
   }
 
-  const handleKeyDown = (): void => {
-    onChange(password)
-  }
+  const handleKeyDown = (): void => onChange(password)
 
   return (
     <div className="form__item">

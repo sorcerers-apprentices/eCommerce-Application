@@ -6,7 +6,7 @@ type TInputProperties = {
   onKeyDown?: (event: KeyboardEvent<HTMLInputElement>) => void
   placeholder?: string
   className?: string[]
-  type?: 'text' | 'email' | 'password' | 'number' | 'search' | 'tel' | 'url'
+  type?: 'text' | 'email' | 'password' | 'number' | 'search' | 'tel' | 'url' | 'date'
   name?: string
   required?: boolean
   id?: string
