@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import type { ReactElement } from 'react'
 import Loader from '@/shared/ui/Loader/Loader'
 import { useFetch } from '@/shared/hooks/useFetch'
-import { authenticate, fetchProducts } from '@/server/api'
+import { api } from '@/server/api'
 import { RoutePath } from '@/shared/config/routeConfig/routeConfig'
 import type { ClientResponse, ProductPagedQueryResponse } from '@commercetools/platform-sdk'
 import type { CustomerSignInResult } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/customer'
@@ -12,8 +12,8 @@ const MainPage = (): ReactElement => {
     data: authData,
     error: authError,
     isLoading: authIsLoading,
-  } = useFetch<ClientResponse<CustomerSignInResult>>(() => authenticate('example', 'example'))
-  const { data, error, isLoading } = useFetch<ClientResponse<ProductPagedQueryResponse>>(fetchProducts)
+  } = useFetch<ClientResponse<CustomerSignInResult>>(() => api.user.authenticate('example', 'example'))
+  const { data, error, isLoading } = useFetch<ClientResponse<ProductPagedQueryResponse>>(api.product.fetchProducts)
 
   return (
     <div className="container">

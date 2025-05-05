@@ -1,39 +1,55 @@
 import { type FC, type ChangeEvent } from 'react'
+import { Label } from '@/shared/ui/Label/Label.tsx'
 
-type TSelectProperties = {
+type SelectProperties = {
   name: string
-  value?: string
+  label: string
   options: string[]
-  className?: string[]
+  value?: string
+  className?: string
   required?: boolean
   disabled?: boolean
   onChange?: (event: ChangeEvent<HTMLSelectElement>) => void
+  errors?: string | null
+  checkErrors?: (value: string) => void
 }
 
-export const SelectInput: FC<TSelectProperties> = ({
+export const SelectInput: FC<SelectProperties> = ({
   name,
-  value,
+  label,
   options = [],
-  className = [],
-  required = false,
+  value,
+  required = true,
   disabled = false,
-  onChange,
+  errors,
+  checkErrors = Function,
 }) => {
+  const handleChange = (event: ChangeEvent<HTMLSelectElement>): void => {
+    const value = event.target.value
+    checkErrors(value)
+  }
+
   return (
-    <select
-      name={name}
-      value={value}
-      className={['input', ...className].join(' ')}
-      required={required}
-      disabled={disabled}
-      onChange={onChange}
-    >
-      <option>Choose your {value}</option>
-      {options.map((option) => (
-        <option key={option} value={option}>
-          {option}
-        </option>
-      ))}
-    </select>
+    <div className="form__item">
+      <Label htmlFor={name} className={['form__label']}>
+        {label}
+      </Label>
+      <select
+        name={name}
+        value={value}
+        className={['input', 'form__input', errors ? 'input--error' : ''].join(' ')}
+        required={required}
+        disabled={disabled}
+        onChange={handleChange}
+      >
+        <option>Choose your {value}</option>
+        {options.map((option) => (
+          <option key={option} value={option}>
+            {option}
+          </option>
+        ))}
+      </select>
+      {errors && <span className="form__error">{errors}</span>}
+    </div>
   )
 }

@@ -1,12 +1,14 @@
 import type { FC, KeyboardEvent, ChangeEvent } from 'react'
 
+export type InputType = 'text' | 'email' | 'password' | 'number' | 'search' | 'tel' | 'url' | 'date'
+
 type TInputProperties = {
   value?: string
   onChange?: (event: ChangeEvent<HTMLInputElement>) => void
   onKeyDown?: (event: KeyboardEvent<HTMLInputElement>) => void
   placeholder?: string
   className?: string[]
-  type?: 'text' | 'email' | 'password' | 'number' | 'search' | 'tel' | 'url' | 'date'
+  type?: InputType
   name?: string
   required?: boolean
   id?: string

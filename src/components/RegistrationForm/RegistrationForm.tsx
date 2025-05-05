@@ -1,8 +1,6 @@
 import { Form } from '@/shared/ui/Form/Form'
 import { type FormEvent, type JSX, useEffect, useState } from 'react'
-import { EmailInput } from '@/components/Input/EmailInput.tsx'
-import { PasswordInput } from '@/components/Input/PasswordInput.tsx'
-import { register } from '@/server/api.ts'
+import { api } from '@/server/api.ts'
 import {
   validateBirthDate,
   validateCity,
@@ -12,13 +10,12 @@ import {
   validatePassword,
   validatePostCode,
   validateStreet,
-} from '@/components/LoginForm/validation.ts'
+} from '@/shared/utilities/validation.ts'
 import { FormButton } from '@/components/LoginForm/FormButton.tsx'
 import { readString, required } from '@/shared/utilities/form-utilities.ts'
 import { isCommerceToolsError } from '@/shared/utilities/type-utilities.ts'
-import { TextInput } from '@/components/Input/TextInput.tsx'
-import { DateInput } from '@/components/Input/DateInput.tsx'
-import { CountriesSelect } from '@/components/Input/CountriesSelect.tsx'
+import { SelectInput } from '@/shared/ui/SelectInput/SelectInput.tsx'
+import { InputComponent } from '@/shared/ui/InputComponent/InputComponent.tsx'
 
 export const RegistrationForm = (): JSX.Element => {
   const [emailErrors, setEmailErrors] = useState<string | null | undefined>(undefined)
@@ -46,7 +43,17 @@ export const RegistrationForm = (): JSX.Element => {
     const password = required(readString(formData.get('password')))
 
     try {
-      await register(email, firstName, lastName, dateOfBirth, street, city, postalCode, country, password)
+      await api.user.registration({
+        email,
+        firstName,
+        lastName,
+        dateOfBirth,
+        street,
+        city,
+        postalCode,
+        country,
+        password,
+      })
     } catch (error) {
       if (isCommerceToolsError(error)) {
         const firstError = error.body.errors[0]
@@ -73,32 +80,81 @@ export const RegistrationForm = (): JSX.Element => {
 
   return (
     <Form className={['form']} onSubmit={onSubmit}>
-      <EmailInput errors={emailErrors} onChange={onEmailChange} />
-
-      <TextInput name={'firstName'} label={'First Name'} errors={firstNameErrors} onChange={onFirstNameChange} />
-      <TextInput name={'lastName'} label={'Last Name'} errors={lastNameErrors} onChange={onLastNameChange} />
-      <DateInput
+      <InputComponent
+        name={'email'}
+        label={'Email'}
+        type={'email'}
+        placeholder={'example@email.com'}
+        errors={emailErrors}
+        onChange={onEmailChange}
+      />
+      <InputComponent
+        name={'firstName'}
+        label={'First Name'}
+        type={'text'}
+        placeholder={'Scooby'}
+        errors={firstNameErrors}
+        onChange={onFirstNameChange}
+      />
+      <InputComponent
+        name={'lastName'}
+        label={'Last Name'}
+        type={'text'}
+        placeholder={'Doo'}
+        errors={lastNameErrors}
+        onChange={onLastNameChange}
+      />
+      <InputComponent
         name={'dateOfBirth'}
-        label={'day of birthday'}
+        label={'Day of birthday'}
+        type={'date'}
         errors={dateOfBirthErrors}
         onChange={onDateOfBirthdayChange}
       />
 
       <fieldset>
-        <CountriesSelect
+        <SelectInput
           name={'countries'}
           label={'Country'}
           value={'country'}
           options={['United Kingdom', 'Poland', 'Spain']}
           errors={countryErrors}
-          onChange={onCountryChange}
+          checkErrors={onCountryChange}
         />
-        <TextInput name={'city'} label={'City'} errors={cityErrors} onChange={onCityChange} />
-        <TextInput name={'postalCode'} label={'Postal Code'} errors={postalCodeErrors} onChange={onPostalCodeChange} />
-        <TextInput name={'street'} label={'Street'} errors={streetErrors} onChange={onStreetChange} />
+        <InputComponent
+          name={'city'}
+          label={'City'}
+          type={'text'}
+          placeholder={'London'}
+          errors={cityErrors}
+          onChange={onCityChange}
+        />
+        <InputComponent
+          name={'postalCode'}
+          label={'Postal Code'}
+          type={'text'}
+          placeholder={'221B'}
+          errors={postalCodeErrors}
+          onChange={onPostalCodeChange}
+        />
+        <InputComponent
+          name={'street'}
+          label={'Street'}
+          type={'text'}
+          placeholder={'Baker Street'}
+          errors={streetErrors}
+          onChange={onStreetChange}
+        />
       </fieldset>
 
-      <PasswordInput errors={passwordErrors} onChange={onPasswordChange} />
+      <InputComponent
+        name={'password'}
+        label={'Password'}
+        type={'text'}
+        errors={passwordErrors}
+        onChange={onPasswordChange}
+        isPassword={true}
+      />
 
       <FormButton value={'Submit'} disabled={formDisabled} />
     </Form>

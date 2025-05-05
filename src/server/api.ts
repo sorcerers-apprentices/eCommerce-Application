@@ -60,47 +60,60 @@ export enum ApiErrorCode {
   INVALID_CUSTOMER_ACCOUNT_CREDENTIALS = 'invalid_customer_account_credentials',
 }
 
-export const authenticate = (email: string, password: string): Promise<ClientResponse<CustomerSignInResult>> => {
-  builder = createRequestBuilder(email, password)
-  return builder
-    .login()
-    .post({
-      body: { email, password },
-    })
-    .execute()
-}
-
-export const register = (
-  email: string,
-  firstName: string,
-  lastName: string,
-  dateOfBirth: string,
-  street: string,
-  city: string,
-  postalCode: string,
-  country: string,
+type RegistrationParameters = {
+  email: string
+  firstName: string
+  lastName: string
+  dateOfBirth: string
+  street: string
+  city: string
+  postalCode: string
+  country: string
   password: string
-): Promise<ClientResponse<CustomerSignInResult>> => {
-  builder = createRequestBuilder(email, password)
-  return builder
-    .customers()
-    .post({
-      body: {
-        email,
-        firstName,
-        lastName,
-        dateOfBirth,
-        addresses: [{ streetName: street, city, postalCode, country }],
-        password,
-      },
-    })
-    .execute()
 }
 
-export const fetchProducts = async (): Promise<ClientResponse<ProductPagedQueryResponse> | Error> => {
-  return builder!
-    .products()
-    .get()
-    .execute()
-    .catch((error: Error) => error)
+export const api = {
+  user: {
+    authenticate: async (email: string, password: string): Promise<ClientResponse<CustomerSignInResult>> => {
+      builder = createRequestBuilder(email, password)
+      return builder
+        .login()
+        .post({
+          body: { email, password },
+        })
+        .execute()
+    },
+    registration: async (parameters: RegistrationParameters): Promise<ClientResponse<CustomerSignInResult>> => {
+      builder = createRequestBuilder(parameters.email, parameters.password)
+      return builder
+        .customers()
+        .post({
+          body: {
+            email: parameters.email,
+            firstName: parameters.firstName,
+            lastName: parameters.lastName,
+            dateOfBirth: parameters.dateOfBirth,
+            addresses: [
+              {
+                streetName: parameters.street,
+                city: parameters.city,
+                postalCode: parameters.postalCode,
+                country: parameters.country,
+              },
+            ],
+            password: parameters.password,
+          },
+        })
+        .execute()
+    },
+  },
+  product: {
+    fetchProducts: async (): Promise<ClientResponse<ProductPagedQueryResponse> | Error> => {
+      return builder!
+        .products()
+        .get()
+        .execute()
+        .catch((error: Error) => error)
+    },
+  },
 }
