@@ -1,0 +1,6 @@
+@use '@/styles/mixins.scss' as mixins;
+
+.not-found-page {
+  @include mixins.headline-1;
+  @include mixins.left;
+}
