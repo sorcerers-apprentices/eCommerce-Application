@@ -11,5 +11,8 @@
   }
 }
 
-// @media (width <= 620px) {
-// }
+@media (width <= 390px) {
+  .container {
+    padding: 0 24px;
+  }
+}
