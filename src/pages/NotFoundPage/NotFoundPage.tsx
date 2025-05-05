@@ -5,10 +5,14 @@ import './NotFoundPage.scss'
 
 const NotFoundPage = (): ReactElement => {
   return (
-    <div className={'not-found-page'}>
-      <h1 className={'not-found-page_number'}>404</h1>
-      <h2 className={'not-found-page_title'}>Oops!I may have chewed up the power code</h2>
-      <h3 className={'not-found-page_text'}>Go back to main page to continue your visit</h3>
+    <div className={['section', 'section-dog'].join(' ')}>
+      <h1 className={'title'}>404</h1>
+      <h2>
+        Oops!
+        <br />I may have chewed up the power code
+        <br />
+        Go back to main page to continue your visit
+      </h2>
       <Link to={RoutePath.MAIN} className={'btn'}>
         Back to main page
       </Link>

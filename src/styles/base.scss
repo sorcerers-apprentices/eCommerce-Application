@@ -2,31 +2,41 @@
 @use './variables.scss' as vars;
 @use './mixins.scss' as mixins;
 
-* {
-  scroll-behavior: smooth;
-  box-sizing: border-box;
-  margin: 0;
-  font-family: fonts.$font-family;
+html {
   font-size: 16px;
-  font-weight: 400;
-  font-style: normal;
+  background-color: vars.$dark-primary;
 }
 
-#root {
-  background-color: vars.$dark-primary;
+* {
+  @include mixins.text-m;
+
+  scroll-behavior: smooth;
+  box-sizing: border-box;
+  font-family: fonts.$font-family;
+  font-weight: 400;
+  font-style: normal;
 }
 
 .container {
   max-width: 1440px;
   min-height: 100vh;
   margin: 0 auto;
-  padding: 80px;
+  padding: 0 5rem;
   text-align: center;
   background-color: vars.$white;
-  background-image: url('/not-found.jpg');
-  background-repeat: no-repeat;
-  background-position: bottom right;
-  background-size: contain;
+}
+
+.section {
+  padding-top: 5rem;
+
+  &-dog {
+    background-color: vars.$white;
+    background-image: url('/not-found.jpg');
+    background-repeat: no-repeat;
+    background-position: bottom right;
+    background-origin: content-box;
+    background-size: contain;
+  }
 }
 
 .btn {
