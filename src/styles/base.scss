@@ -18,10 +18,15 @@
 
 .container {
   max-width: 1440px;
+  min-height: 100vh;
   margin: 0 auto;
-  padding: 0 80px;
+  padding: 80px;
   text-align: center;
-  background-color: vars.$light-grey;
+  background-color: vars.$white;
+  background-image: url('/not-found.jpg');
+  background-repeat: no-repeat;
+  background-position: bottom right;
+  background-size: contain;
 }
 
 .btn {

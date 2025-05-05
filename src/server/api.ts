@@ -56,6 +56,10 @@ import type { ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk/dis
 
 let builder: ByProjectKeyRequestBuilder | undefined
 
+export enum ApiErrorCode {
+  INVALID_CUSTOMER_ACCOUNT_CREDENTIALS = 'invalid_customer_account_credentials',
+}
+
 export const authenticate = (email: string, password: string): Promise<ClientResponse<CustomerSignInResult>> => {
   builder = createRequestBuilder(email, password)
   return builder

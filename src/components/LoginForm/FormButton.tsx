@@ -1,9 +1,9 @@
 import { Button } from '@/shared/ui/Button/Button'
 import type { JSX } from 'react'
 
-export const FormButton = (): JSX.Element => {
+export const FormButton = ({ disabled = true }: { disabled: boolean }): JSX.Element => {
   return (
-    <Button type="submit" className={['form__button']} onClick={() => {}}>
+    <Button type="submit" classNames={['form__button']} disabled={disabled}>
       Login
     </Button>
   )

@@ -7,7 +7,6 @@ type ImportMetaEnvironment = {
   readonly VITE_SCOPES: unknown
   readonly VITE_API_URL: unknown
   readonly VITE_AUTH_URL: unknown
-  readonly VITE_NUM: unknown
 }
 
 type ImportMeta = {
