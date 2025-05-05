@@ -1,0 +1,126 @@
+@use './fonts.scss' as fonts;
+@use './variables.scss' as vars;
+
+@mixin text($ff: false, $fst: false, $color: false, $fs: false, $lh: false, $fw: false, $ls: false) {
+  @if ($ff) {
+    font-family: $ff;
+  }
+
+  @if ($fst) {
+    font-style: $fst;
+  }
+
+  @if ($color) {
+    color: $color;
+  }
+
+  @if ($fs) {
+    font-size: $fs;
+  }
+
+  @if ($lh) {
+    line-height: $lh;
+  }
+
+  @if ($fw) {
+    font-weight: $fw;
+  }
+
+  @if ($ls) {
+    letter-spacing: $ls;
+  }
+}
+
+@mixin center() {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin left() {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  align-items: flex-start;
+}
+
+@mixin btn($width: auto) {
+  display: inline-flex;
+  flex-direction: row;
+  gap: 0.62rem;
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: $width;
+  padding: 1rem 2rem;
+  font-family: fonts.$font-family;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: vars.$white;
+  background: vars.$dark-primary;
+}
+
+@mixin headline-1 {
+  font-family: fonts.$second-family;
+  font-size: 2.25rem;
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+@mixin headline-2 {
+  font-family: fonts.$second-family;
+  font-size: 2rem;
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+@mixin headline-3 {
+  font-family: fonts.$second-family;
+  font-size: 1.5rem;
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+@mixin headline-4 {
+  font-family: fonts.$second-family;
+  font-size: 1.25rem;
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+@mixin headline-5 {
+  font-family: fonts.$second-family;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+@mixin headline-6 {
+  font-family: fonts.$second-family;
+  font-size: 0.88rem;
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+@mixin text-s {
+  font-family: fonts.$font-family;
+  font-size: 0.88rem;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+@mixin text-m {
+  font-family: fonts.$font-family;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+@mixin text-l {
+  font-family: fonts.$font-family;
+  font-size: 1.12rem;
+  font-weight: 400;
+  line-height: 1.5;
+}

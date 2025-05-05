@@ -1,0 +1,18 @@
+@use './variables.scss' as vars;
+
+@media (hover: hover) {
+  .btn {
+    cursor: pointer;
+    transition: all 0.5s ease;
+
+    &:hover {
+      box-shadow: 0 0 5px vars.$primary;
+    }
+  }
+}
+
+@media (width <= 390px) {
+  .container {
+    padding: 0 24px;
+  }
+}
