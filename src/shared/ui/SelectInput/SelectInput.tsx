@@ -11,7 +11,6 @@ type SelectProperties = {
   disabled?: boolean
   onChange?: (event: ChangeEvent<HTMLSelectElement>) => void
   errors?: string | null
-  checkErrors?: (value: string) => void
 }
 
 export const SelectInput: FC<SelectProperties> = ({
@@ -22,11 +21,10 @@ export const SelectInput: FC<SelectProperties> = ({
   required = true,
   disabled = false,
   errors,
-  checkErrors = Function,
+  onChange = Function.prototype,
 }) => {
   const handleChange = (event: ChangeEvent<HTMLSelectElement>): void => {
-    const value = event.target.value
-    checkErrors(value)
+    onChange(event)
   }
 
   return (
@@ -35,6 +33,7 @@ export const SelectInput: FC<SelectProperties> = ({
         {label}
       </Label>
       <select
+        id={name}
         name={name}
         value={value}
         className={['input', 'form__input', errors ? 'input--error' : ''].join(' ')}
@@ -42,7 +41,7 @@ export const SelectInput: FC<SelectProperties> = ({
         disabled={disabled}
         onChange={handleChange}
       >
-        <option>Choose your {name}</option>
+        <option value="">Choose your {name}</option>
         {options.map((option) => (
           <option key={option} value={option}>
             {option}

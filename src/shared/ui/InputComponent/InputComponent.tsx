@@ -11,9 +11,10 @@ export const InputComponent: FC<{
   placeholder?: string
   errors?: string | null
   value?: string
-  onChange2?: (event: ChangeEvent<HTMLInputElement>) => void
+  onChange?: (event: ChangeEvent<HTMLInputElement>) => void
   required?: boolean
   isPassword?: boolean
+  allowWhitespaces?: boolean
 }> = ({
   name,
   label,
@@ -21,13 +22,14 @@ export const InputComponent: FC<{
   placeholder,
   errors = null,
   value,
-  onChange2 = Function.prototype,
+  onChange = Function.prototype,
   required = true,
   isPassword = false,
+  allowWhitespaces = false,
 }) => {
   const [showPassword, setShowPassword] = useState(false)
   const handleChange = (event: ChangeEvent<HTMLInputElement>): void => {
-    onChange2(event)
+    onChange(event)
   }
 
   return (
@@ -40,7 +42,7 @@ export const InputComponent: FC<{
         id={name}
         type={!isPassword ? type : showPassword ? 'text' : 'password'}
         name={name}
-        allowWhitespaces={false}
+        allowWhitespaces={allowWhitespaces}
         onChange={handleChange}
         required={required}
         className={['form__input', errors ? 'input--error' : '']}

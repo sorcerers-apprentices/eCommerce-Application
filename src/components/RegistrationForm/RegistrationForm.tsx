@@ -95,7 +95,7 @@ export const RegistrationForm = (): JSX.Element => {
         type={'email'}
         placeholder={'example@email.com'}
         errors={errors.email || serverErrors.email}
-        onChange2={handleChange}
+        onChange={handleChange}
       />
       <InputComponent
         value={formData.firstName.value}
@@ -103,8 +103,9 @@ export const RegistrationForm = (): JSX.Element => {
         label={'First Name'}
         type={'text'}
         placeholder={'Scooby'}
+        allowWhitespaces={true}
         errors={errors.firstName || serverErrors.firstName}
-        onChange2={handleChange}
+        onChange={handleChange}
       />
       <InputComponent
         value={formData.lastName.value}
@@ -112,8 +113,9 @@ export const RegistrationForm = (): JSX.Element => {
         label={'Last Name'}
         type={'text'}
         placeholder={'Doo'}
+        allowWhitespaces={true}
         errors={errors.lastName || serverErrors.lastName}
-        onChange2={handleChange}
+        onChange={handleChange}
       />
       <InputComponent
         value={formData.dateOfBirth.value}
@@ -121,7 +123,7 @@ export const RegistrationForm = (): JSX.Element => {
         label={'Day of birthday'}
         type={'date'}
         errors={errors.dateOfBirth || serverErrors.dateOfBirth}
-        onChange2={handleChange}
+        onChange={handleChange}
       />
 
       <fieldset>
@@ -139,8 +141,9 @@ export const RegistrationForm = (): JSX.Element => {
           label={'City'}
           type={'text'}
           placeholder={'London'}
+          allowWhitespaces={true}
           errors={errors.city || serverErrors.city}
-          onChange2={handleChange}
+          onChange={handleChange}
         />
         <InputComponent
           value={formData.postalCode.value}
@@ -148,8 +151,9 @@ export const RegistrationForm = (): JSX.Element => {
           label={'Postal Code'}
           type={'text'}
           placeholder={'221B'}
+          allowWhitespaces={true}
           errors={errors.postalCode || serverErrors.postalCode}
-          onChange2={handleChange}
+          onChange={handleChange}
         />
         <InputComponent
           value={formData.street.value}
@@ -157,8 +161,9 @@ export const RegistrationForm = (): JSX.Element => {
           label={'Street'}
           type={'text'}
           placeholder={'Baker Street'}
+          allowWhitespaces={true}
           errors={errors.street || serverErrors.street}
-          onChange2={handleChange}
+          onChange={handleChange}
         />
       </fieldset>
 
@@ -168,7 +173,7 @@ export const RegistrationForm = (): JSX.Element => {
         label={'Password'}
         type={'text'}
         errors={errors.password || serverErrors.password}
-        onChange2={handleChange}
+        onChange={handleChange}
         isPassword={true}
       />
 

@@ -45,7 +45,7 @@ export const LoginForm = (): JSX.Element => {
     <Form className={['form']} onSubmit={onSubmit}>
       <InputComponent
         value={formData.email.value}
-        onChange2={handleChange}
+        onChange={handleChange}
         name={'email'}
         label={'Email'}
         type={'email'}
@@ -54,7 +54,7 @@ export const LoginForm = (): JSX.Element => {
       />
       <InputComponent
         value={formData.password.value}
-        onChange2={handleChange}
+        onChange={handleChange}
         name={'password'}
         label={'Password'}
         type={'text'}
