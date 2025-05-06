@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react'
 
 export type ValidationErrors = { [key: string]: string | null }
+export type ValidationData = { [key: string]: { value: string; touched: boolean } }
 
 export const useValidate = (
-  state: { [key: string]: { value: string; touched: boolean } },
-  validators: { [key: string]: Array<(value: string) => string | null> }
+  state: ValidationData,
+  validators: { [key: string]: Array<(value: string, state: ValidationData) => string | null> }
 ): {
   errors: ValidationErrors
   isValid: boolean
@@ -17,7 +18,7 @@ export const useValidate = (
       const key = entry[0]
       const validators = entry[1]
       for (const validator of validators) {
-        if (validator(state[key].value)) {
+        if (validator(state[key].value, state)) {
           return false
         }
       }
@@ -28,7 +29,7 @@ export const useValidate = (
   const validate = (key: string): void => {
     const value = state[key].value
     for (const validator of validators[key]) {
-      const error = validator(value)
+      const error = validator(value, state)
       if (error) {
         setErrors((previous) => ({ ...previous, [key]: error }))
         setIsValid(false)

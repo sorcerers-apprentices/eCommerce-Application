@@ -1,3 +1,5 @@
+import type { ValidationData } from '@/shared/hooks/useValidate.tsx'
+
 export const validateEmail = (email: string): string | null => {
   const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
   if (/\s/.test(email)) {
@@ -31,9 +33,9 @@ export const validatePassword = (password: string): string | null => {
 export const validateFirstName = (firstName: string): string | null => {
   if (!firstName.length) {
     return 'First name cannot be empty'
-  } else if (!firstName.match(/[^a-zA-Z0-9]/)) {
+  } else if (/[^A-Za-z 0-9]/g.test(firstName)) {
     return 'First name cannot include special characters'
-  } else if (!firstName.match(/[^a-zA-Z]/)) {
+  } else if (/[0-9]/.test(firstName)) {
     return 'First name cannot include numbers'
   } else {
     return null
@@ -43,10 +45,22 @@ export const validateFirstName = (firstName: string): string | null => {
 export const validateLastName = (lastName: string): string | null => {
   if (!lastName.length) {
     return 'Last name cannot be empty'
-  } else if (!lastName.match(/[^a-zA-Z0-9]/)) {
+  } else if (/[^A-Za-z 0-9]/g.test(lastName)) {
     return 'Last name cannot include special characters'
-  } else if (!lastName.match(/[^a-zA-Z]/)) {
+  } else if (/[0-9]/.test(lastName)) {
     return 'Last name cannot include numbers'
+  } else {
+    return null
+  }
+}
+
+export const validateBirthDate = (birthDate: string): string | null => {
+  const date = new Date(birthDate)
+  const minDate = new Date('2012-01-01')
+  if (!birthDate.length) {
+    return 'Date of birthday cannot be empty'
+  } else if (date > minDate) {
+    return 'You should have 13 or more years'
   } else {
     return null
   }
@@ -63,9 +77,9 @@ export const validateStreet = (street: string): string | null => {
 export const validateCity = (city: string): string | null => {
   if (!city.length) {
     return 'City cannot be empty'
-  } else if (!city.match(/[^a-zA-Z0-9]/)) {
+  } else if (/[^A-Za-z 0-9]/g.test(city)) {
     return 'City cannot include special characters'
-  } else if (!city.match(/[^a-zA-Z]/)) {
+  } else if (/[0-9]/.test(city)) {
     return 'City cannot include numbers'
   } else {
     return null
@@ -75,26 +89,39 @@ export const validateCity = (city: string): string | null => {
 export const validaCountry = (country: string): string | null => {
   if (!country.length) {
     return 'Country must not be empty'
+  } else if (country !== 'United Kingdom' && country !== 'Poland' && country !== 'Spain') {
+    return 'Country must from a predefined list'
   } else {
     return null
   }
 }
 
-export const validateBirthDate = (birthDate: string): string | null => {
-  const date = new Date(birthDate)
-  const minDate = new Date('2012-01-01')
-  if (!birthDate.length) {
-    return 'Date of birthday cannot be empty'
-  } else if (date < minDate) {
-    return 'You should have 13 or more years'
-  } else {
-    return null
-  }
-}
-
-export const validatePostCode = (postCode: string): string | null => {
-  if (!postCode.length) {
+export const validatePostCode = (postCode: string, state: ValidationData): string | null => {
+  if (!state.country.touched || !state.country.value) {
+    return 'Choose your country'
+  } else if (!postCode.length) {
     return 'Post code cannot be empty'
+  } else if (state.country.value === 'United Kingdom') {
+    const regex = /^(GIR\s?0AA|[A-Z]{1,2}\d{1,2}[A-Z]?\s?\d[A-Z]{2})$/
+    if (!regex.test(postCode)) {
+      return 'Post code of United Kingdom must be format "W1U 8ED"'
+    } else {
+      return null
+    }
+  } else if (state.country.value === 'Poland') {
+    const regex = /^\d{2}-\d{3}$/
+    if (!regex.test(postCode)) {
+      return 'Post code of Poland must be format "00-001"'
+    } else {
+      return null
+    }
+  } else if (state.country.value === 'Spain') {
+    const regex = /^(?:0[1-9]|[1-4]\d|5[0-2])\d{3}$/
+    if (!regex.test(postCode)) {
+      return 'Post code of Spain must be format "08830"'
+    } else {
+      return null
+    }
   } else {
     return null
   }
