@@ -72,6 +72,14 @@ export const validateCity = (city: string): string | null => {
   }
 }
 
+export const validaCountry = (country: string): string | null => {
+  if (!country.length) {
+    return 'Country must not be empty'
+  } else {
+    return null
+  }
+}
+
 export const validateBirthDate = (birthDate: string): string | null => {
   const date = new Date(birthDate)
   const minDate = new Date('2012-01-01')

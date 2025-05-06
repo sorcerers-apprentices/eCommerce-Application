@@ -1,7 +1,8 @@
 import { Form } from '@/shared/ui/Form/Form'
-import { type FormEvent, type JSX, useEffect, useState } from 'react'
-import { api } from '@/server/api.ts'
+import { type ChangeEvent, type FormEvent, type JSX, useState } from 'react'
+import { api, ApiErrorCode } from '@/server/api.ts'
 import {
+  validaCountry,
   validateBirthDate,
   validateCity,
   validateEmail,
@@ -12,53 +13,67 @@ import {
   validateStreet,
 } from '@/shared/utilities/validation.ts'
 import { FormButton } from '@/components/LoginForm/FormButton.tsx'
-import { readString, required } from '@/shared/utilities/form-utilities.ts'
 import { isCommerceToolsError } from '@/shared/utilities/type-utilities.ts'
 import { SelectInput } from '@/shared/ui/SelectInput/SelectInput.tsx'
 import { InputComponent } from '@/shared/ui/InputComponent/InputComponent.tsx'
+import { useValidate } from '@/shared/hooks/useValidate.tsx'
 
 export const RegistrationForm = (): JSX.Element => {
-  const [emailErrors, setEmailErrors] = useState<string | null | undefined>(undefined)
-  const [passwordErrors, setPasswordErrors] = useState<string | null | undefined>(undefined)
-  const [firstNameErrors, setFirstNameErrors] = useState<string | null | undefined>(undefined)
-  const [lastNameErrors, setLastNameErrors] = useState<string | null | undefined>(undefined)
-  const [dateOfBirthErrors, setDateOfBirthErrors] = useState<string | null | undefined>(undefined)
-  const [streetErrors, setStreetErrors] = useState<string | null | undefined>(undefined)
-  const [cityErrors, setCityErrors] = useState<string | null | undefined>(undefined)
-  const [postalCodeErrors, setPostalCodeErrors] = useState<string | null | undefined>(undefined)
-  const [countryErrors, setCountryErrors] = useState<string | null | undefined>(undefined)
-  const [formDisabled, setFormDisabled] = useState<boolean>(true)
+  const [formData, setFormData] = useState({
+    email: { value: '', touched: false },
+    firstName: { value: '', touched: false },
+    lastName: { value: '', touched: false },
+    dateOfBirth: { value: '', touched: false },
+    country: { value: '', touched: false },
+    city: { value: '', touched: false },
+    postalCode: { value: '', touched: false },
+    street: { value: '', touched: false },
+    password: { value: '', touched: false },
+  })
+  const [serverErrors, setServerErrors] = useState<{
+    email?: string
+    firstName?: string
+    lastName?: string
+    dateOfBirth?: string
+    country?: string
+    city?: string
+    postalCode?: string
+    street?: string
+    password?: string
+  }>({})
+
+  const { errors, isValid } = useValidate(formData, {
+    email: [validateEmail],
+    firstName: [validateFirstName],
+    lastName: [validateLastName],
+    dateOfBirth: [validateBirthDate],
+    country: [validaCountry],
+    city: [validateCity],
+    postalCode: [validatePostCode],
+    street: [validateStreet],
+    password: [validatePassword],
+  })
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault()
-    const formData = new FormData(event.currentTarget)
-    const email = required(readString(formData.get('email')))
-    const firstName = required(readString(formData.get('firstName')))
-    const lastName = required(readString(formData.get('lastName')))
-    const dateOfBirth = required(readString(formData.get('dateOfBirth')))
-    const street = required(readString(formData.get('street')))
-    const city = required(readString(formData.get('city')))
-    const postalCode = required(readString(formData.get('postalCode')))
-    const country = required(readString(formData.get('country')))
-    const password = required(readString(formData.get('password')))
 
     try {
       await api.user.registration({
-        email,
-        firstName,
-        lastName,
-        dateOfBirth,
-        street,
-        city,
-        postalCode,
-        country,
-        password,
+        email: formData.email.value,
+        firstName: formData.firstName.value,
+        lastName: formData.lastName.value,
+        dateOfBirth: formData.dateOfBirth.value,
+        street: formData.street.value,
+        city: formData.city.value,
+        postalCode: formData.postalCode.value,
+        country: formData.country.value,
+        password: formData.password.value,
       })
     } catch (error) {
       if (isCommerceToolsError(error)) {
         const firstError = error.body.errors[0]
-        if (firstError.code === 'invalid_customer_account_credentials') {
-          setEmailErrors(firstError.message)
+        if (firstError.code === ApiErrorCode.INVALID_CUSTOMER_ACCOUNT_CREDENTIALS) {
+          setServerErrors((previous) => ({ ...previous, email: firstError.message }))
           return
         }
       }
@@ -66,97 +81,98 @@ export const RegistrationForm = (): JSX.Element => {
     }
   }
 
-  const onEmailChange = (email: string): void => setEmailErrors(validateEmail(email))
-  const onPasswordChange = (password: string): void => setPasswordErrors(validatePassword(password))
-  const onFirstNameChange = (firstName: string): void => setFirstNameErrors(validateFirstName(firstName))
-  const onLastNameChange = (lastName: string): void => setLastNameErrors(validateLastName(lastName))
-  const onDateOfBirthdayChange = (birthDate: string): void => setDateOfBirthErrors(validateBirthDate(birthDate))
-  const onStreetChange = (street: string): void => setStreetErrors(validateStreet(street))
-  const onCityChange = (city: string): void => setCityErrors(validateCity(city))
-  const onPostalCodeChange = (postalCode: string): void => setPostalCodeErrors(validatePostCode(postalCode))
-  const onCountryChange = (country: string): void => setCountryErrors(validatePostCode(country))
-
-  useEffect(() => setFormDisabled(emailErrors !== null || passwordErrors !== null), [emailErrors, passwordErrors])
+  const handleChange = (event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>): void => {
+    const { name, value } = event.target
+    setFormData((previous) => ({ ...previous, [name]: { value, touched: true } }))
+  }
 
   return (
     <Form className={['form']} onSubmit={onSubmit}>
       <InputComponent
+        value={formData.email.value}
         name={'email'}
         label={'Email'}
         type={'email'}
         placeholder={'example@email.com'}
-        errors={emailErrors}
-        onChange={onEmailChange}
+        errors={errors.email || serverErrors.email}
+        onChange2={handleChange}
       />
       <InputComponent
+        value={formData.firstName.value}
         name={'firstName'}
         label={'First Name'}
         type={'text'}
         placeholder={'Scooby'}
-        errors={firstNameErrors}
-        onChange={onFirstNameChange}
+        errors={errors.firstName || serverErrors.firstName}
+        onChange2={handleChange}
       />
       <InputComponent
+        value={formData.lastName.value}
         name={'lastName'}
         label={'Last Name'}
         type={'text'}
         placeholder={'Doo'}
-        errors={lastNameErrors}
-        onChange={onLastNameChange}
+        errors={errors.lastName || serverErrors.lastName}
+        onChange2={handleChange}
       />
       <InputComponent
+        value={formData.dateOfBirth.value}
         name={'dateOfBirth'}
         label={'Day of birthday'}
         type={'date'}
-        errors={dateOfBirthErrors}
-        onChange={onDateOfBirthdayChange}
+        errors={errors.dateOfBirth || serverErrors.dateOfBirth}
+        onChange2={handleChange}
       />
 
       <fieldset>
         <SelectInput
-          name={'countries'}
+          value={formData.country.value}
+          name={'country'}
           label={'Country'}
-          value={'country'}
           options={['United Kingdom', 'Poland', 'Spain']}
-          errors={countryErrors}
-          checkErrors={onCountryChange}
+          errors={errors.country || serverErrors.country}
+          onChange={handleChange}
         />
         <InputComponent
+          value={formData.city.value}
           name={'city'}
           label={'City'}
           type={'text'}
           placeholder={'London'}
-          errors={cityErrors}
-          onChange={onCityChange}
+          errors={errors.city || serverErrors.city}
+          onChange2={handleChange}
         />
         <InputComponent
+          value={formData.postalCode.value}
           name={'postalCode'}
           label={'Postal Code'}
           type={'text'}
           placeholder={'221B'}
-          errors={postalCodeErrors}
-          onChange={onPostalCodeChange}
+          errors={errors.postalCode || serverErrors.postalCode}
+          onChange2={handleChange}
         />
         <InputComponent
+          value={formData.street.value}
           name={'street'}
           label={'Street'}
           type={'text'}
           placeholder={'Baker Street'}
-          errors={streetErrors}
-          onChange={onStreetChange}
+          errors={errors.street || serverErrors.street}
+          onChange2={handleChange}
         />
       </fieldset>
 
       <InputComponent
+        value={formData.password.value}
         name={'password'}
         label={'Password'}
         type={'text'}
-        errors={passwordErrors}
-        onChange={onPasswordChange}
+        errors={errors.password || serverErrors.password}
+        onChange2={handleChange}
         isPassword={true}
       />
 
-      <FormButton value={'Submit'} disabled={formDisabled} />
+      <FormButton value={'Submit'} disabled={!isValid} />
     </Form>
   )
 }

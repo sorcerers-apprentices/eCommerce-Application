@@ -11,7 +11,6 @@ export const InputComponent: FC<{
   placeholder?: string
   errors?: string | null
   value?: string
-  onChange?: (value: string) => void
   onChange2?: (event: ChangeEvent<HTMLInputElement>) => void
   required?: boolean
   isPassword?: boolean
@@ -22,15 +21,12 @@ export const InputComponent: FC<{
   placeholder,
   errors = null,
   value,
-  onChange = Function.prototype,
   onChange2 = Function.prototype,
   required = true,
   isPassword = false,
 }) => {
   const [showPassword, setShowPassword] = useState(false)
   const handleChange = (event: ChangeEvent<HTMLInputElement>): void => {
-    const value = event.target.value
-    onChange(value)
     onChange2(event)
   }
 
