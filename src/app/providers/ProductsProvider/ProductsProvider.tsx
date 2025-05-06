@@ -1,6 +1,6 @@
-import { ProductsContext } from './ProductsContext'
 import type { JSX } from 'react'
 import { type ReactNode, useState } from 'react'
+import { ProductsContext } from './ProductsContext'
 import { productsState, type ProductsStateType } from './ProductsState'
 
 type ProductsProviderProperties = {
