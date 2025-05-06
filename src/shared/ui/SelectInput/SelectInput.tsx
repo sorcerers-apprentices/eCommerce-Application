@@ -42,7 +42,7 @@ export const SelectInput: FC<SelectProperties> = ({
         disabled={disabled}
         onChange={handleChange}
       >
-        <option>Choose your {value}</option>
+        <option>Choose your {name}</option>
         {options.map((option) => (
           <option key={option} value={option}>
             {option}
