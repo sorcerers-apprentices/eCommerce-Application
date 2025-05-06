@@ -1,10 +1,10 @@
 import { Button } from '@/shared/ui/Button/Button'
-import type { JSX } from 'react'
+import type { FC } from 'react'
 
-export const FormButton = ({ disabled = true }: { disabled: boolean }): JSX.Element => {
+export const FormButton: FC<{ disabled?: boolean; value?: string }> = ({ disabled = true, value = 'Submit' }) => {
   return (
     <Button type="submit" classNames={['form__button']} disabled={disabled}>
-      Login
+      {value}
     </Button>
   )
 }

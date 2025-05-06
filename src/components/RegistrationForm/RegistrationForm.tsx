@@ -1,0 +1,162 @@
+import { Form } from '@/shared/ui/Form/Form'
+import { type FormEvent, type JSX, useEffect, useState } from 'react'
+import { api } from '@/server/api.ts'
+import {
+  validateBirthDate,
+  validateCity,
+  validateEmail,
+  validateFirstName,
+  validateLastName,
+  validatePassword,
+  validatePostCode,
+  validateStreet,
+} from '@/shared/utilities/validation.ts'
+import { FormButton } from '@/components/LoginForm/FormButton.tsx'
+import { readString, required } from '@/shared/utilities/form-utilities.ts'
+import { isCommerceToolsError } from '@/shared/utilities/type-utilities.ts'
+import { SelectInput } from '@/shared/ui/SelectInput/SelectInput.tsx'
+import { InputComponent } from '@/shared/ui/InputComponent/InputComponent.tsx'
+
+export const RegistrationForm = (): JSX.Element => {
+  const [emailErrors, setEmailErrors] = useState<string | null | undefined>(undefined)
+  const [passwordErrors, setPasswordErrors] = useState<string | null | undefined>(undefined)
+  const [firstNameErrors, setFirstNameErrors] = useState<string | null | undefined>(undefined)
+  const [lastNameErrors, setLastNameErrors] = useState<string | null | undefined>(undefined)
+  const [dateOfBirthErrors, setDateOfBirthErrors] = useState<string | null | undefined>(undefined)
+  const [streetErrors, setStreetErrors] = useState<string | null | undefined>(undefined)
+  const [cityErrors, setCityErrors] = useState<string | null | undefined>(undefined)
+  const [postalCodeErrors, setPostalCodeErrors] = useState<string | null | undefined>(undefined)
+  const [countryErrors, setCountryErrors] = useState<string | null | undefined>(undefined)
+  const [formDisabled, setFormDisabled] = useState<boolean>(true)
+
+  const onSubmit = async (event: FormEvent<HTMLFormElement>): Promise<void> => {
+    event.preventDefault()
+    const formData = new FormData(event.currentTarget)
+    const email = required(readString(formData.get('email')))
+    const firstName = required(readString(formData.get('firstName')))
+    const lastName = required(readString(formData.get('lastName')))
+    const dateOfBirth = required(readString(formData.get('dateOfBirth')))
+    const street = required(readString(formData.get('street')))
+    const city = required(readString(formData.get('city')))
+    const postalCode = required(readString(formData.get('postalCode')))
+    const country = required(readString(formData.get('country')))
+    const password = required(readString(formData.get('password')))
+
+    try {
+      await api.user.registration({
+        email,
+        firstName,
+        lastName,
+        dateOfBirth,
+        street,
+        city,
+        postalCode,
+        country,
+        password,
+      })
+    } catch (error) {
+      if (isCommerceToolsError(error)) {
+        const firstError = error.body.errors[0]
+        if (firstError.code === 'invalid_customer_account_credentials') {
+          setEmailErrors(firstError.message)
+          return
+        }
+      }
+      throw new Error(JSON.stringify(error))
+    }
+  }
+
+  const onEmailChange = (email: string): void => setEmailErrors(validateEmail(email))
+  const onPasswordChange = (password: string): void => setPasswordErrors(validatePassword(password))
+  const onFirstNameChange = (firstName: string): void => setFirstNameErrors(validateFirstName(firstName))
+  const onLastNameChange = (lastName: string): void => setLastNameErrors(validateLastName(lastName))
+  const onDateOfBirthdayChange = (birthDate: string): void => setDateOfBirthErrors(validateBirthDate(birthDate))
+  const onStreetChange = (street: string): void => setStreetErrors(validateStreet(street))
+  const onCityChange = (city: string): void => setCityErrors(validateCity(city))
+  const onPostalCodeChange = (postalCode: string): void => setPostalCodeErrors(validatePostCode(postalCode))
+  const onCountryChange = (country: string): void => setCountryErrors(validatePostCode(country))
+
+  useEffect(() => setFormDisabled(emailErrors !== null || passwordErrors !== null), [emailErrors, passwordErrors])
+
+  return (
+    <Form className={['form']} onSubmit={onSubmit}>
+      <InputComponent
+        name={'email'}
+        label={'Email'}
+        type={'email'}
+        placeholder={'example@email.com'}
+        errors={emailErrors}
+        onChange={onEmailChange}
+      />
+      <InputComponent
+        name={'firstName'}
+        label={'First Name'}
+        type={'text'}
+        placeholder={'Scooby'}
+        errors={firstNameErrors}
+        onChange={onFirstNameChange}
+      />
+      <InputComponent
+        name={'lastName'}
+        label={'Last Name'}
+        type={'text'}
+        placeholder={'Doo'}
+        errors={lastNameErrors}
+        onChange={onLastNameChange}
+      />
+      <InputComponent
+        name={'dateOfBirth'}
+        label={'Day of birthday'}
+        type={'date'}
+        errors={dateOfBirthErrors}
+        onChange={onDateOfBirthdayChange}
+      />
+
+      <fieldset>
+        <SelectInput
+          name={'countries'}
+          label={'Country'}
+          value={'country'}
+          options={['United Kingdom', 'Poland', 'Spain']}
+          errors={countryErrors}
+          checkErrors={onCountryChange}
+        />
+        <InputComponent
+          name={'city'}
+          label={'City'}
+          type={'text'}
+          placeholder={'London'}
+          errors={cityErrors}
+          onChange={onCityChange}
+        />
+        <InputComponent
+          name={'postalCode'}
+          label={'Postal Code'}
+          type={'text'}
+          placeholder={'221B'}
+          errors={postalCodeErrors}
+          onChange={onPostalCodeChange}
+        />
+        <InputComponent
+          name={'street'}
+          label={'Street'}
+          type={'text'}
+          placeholder={'Baker Street'}
+          errors={streetErrors}
+          onChange={onStreetChange}
+        />
+      </fieldset>
+
+      <InputComponent
+        name={'password'}
+        label={'Password'}
+        type={'text'}
+        errors={passwordErrors}
+        onChange={onPasswordChange}
+        isPassword={true}
+      />
+
+      <FormButton value={'Submit'} disabled={formDisabled} />
+    </Form>
+  )
+}

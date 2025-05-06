@@ -1,64 +1,34 @@
 import { Form } from '@/shared/ui/Form/Form'
 import { FormButton } from './FormButton'
-import { type FormEvent, type JSX, useEffect, useState } from 'react'
+import { type ChangeEvent, type FormEvent, type JSX, useState } from 'react'
 import './style.scss'
-import { EmailInput } from '@/components/LoginForm/Input/EmailInput.tsx'
-import { PasswordInput } from '@/components/LoginForm/Input/PasswordInput.tsx'
-import { ApiErrorCode, authenticate } from '@/server/api.ts'
-import { validateEmail, validatePassword } from '@/components/LoginForm/validation.ts'
-
-const toString = (value: FormDataEntryValue | null): string | null => {
-  if (typeof value === 'string' || value === null) {
-    return value
-  } else {
-    throw Error('Unexpected type: ' + typeof value)
-  }
-}
-
-const required = <T,>(value: T | null): T => {
-  if (value === null) {
-    throw new Error('Unexpected null value')
-  }
-  return value
-}
-
-type CommerceToolsError = {
-  body: {
-    errors: Array<{ code: string; message: string }>
-  }
-}
-
-const isObject = (value: unknown): value is object => {
-  return typeof value === 'object' && value !== null
-}
-
-const isCommerceToolsError = (error: unknown): error is CommerceToolsError => {
-  if (isObject(error) && 'body' in error) {
-    return isObject(error.body) && 'errors' in error.body
-  } else {
-    return false
-  }
-}
+import { api, ApiErrorCode } from '@/server/api.ts'
+import { isCommerceToolsError } from '@/shared/utilities/type-utilities.ts'
+import { InputComponent } from '@/shared/ui/InputComponent/InputComponent.tsx'
+import { useValidate } from '@/shared/hooks/useValidate.tsx'
+import { validateEmail, validatePassword } from '@/shared/utilities/validation.ts'
 
 export const LoginForm = (): JSX.Element => {
-  const [emailErrors, setEmailErrors] = useState<string | null | undefined>(undefined)
-  const [passwordErrors, setPasswordErrors] = useState<string | null | undefined>(undefined)
-  const [formDisabled, setFormDisabled] = useState<boolean>(true)
+  const [formData, setFormData] = useState({
+    email: { value: '', touched: false },
+    password: { value: '', touched: false },
+  })
+  const [serverErrors, setServerErrors] = useState<{ email?: string; password?: string }>({})
+  const { errors, isValid } = useValidate(formData, {
+    email: [validateEmail],
+    password: [validatePassword],
+  })
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault()
-    const formData = new FormData(event.currentTarget)
-    const email = required(toString(formData.get('email')))
-    const password = required(toString(formData.get('password')))
 
     try {
-      await authenticate(email, password)
+      await api.user.authenticate(formData.email.value, formData.password.value)
     } catch (error) {
       if (isCommerceToolsError(error)) {
         const firstError = error.body.errors[0]
         if (firstError.code === ApiErrorCode.INVALID_CUSTOMER_ACCOUNT_CREDENTIALS) {
-          setEmailErrors(firstError.message)
-          setPasswordErrors(firstError.message)
+          setServerErrors((previous) => ({ ...previous, email: firstError.message, password: firstError.message }))
           return
         }
       }
@@ -66,16 +36,32 @@ export const LoginForm = (): JSX.Element => {
     }
   }
 
-  const onEmailChange = (email: string): void => setEmailErrors(validateEmail(email))
-  const onPasswordChange = (password: string): void => setPasswordErrors(validatePassword(password))
-
-  useEffect(() => setFormDisabled(emailErrors !== null || passwordErrors !== null), [emailErrors, passwordErrors])
+  const handleChange = (event: ChangeEvent<HTMLInputElement>): void => {
+    const { name, value } = event.target
+    setFormData((previous) => ({ ...previous, [name]: { value, touched: true } }))
+  }
 
   return (
     <Form className={['form']} onSubmit={onSubmit}>
-      <EmailInput errors={emailErrors} onChange={onEmailChange} />
-      <PasswordInput errors={passwordErrors} onChange={onPasswordChange} />
-      <FormButton disabled={formDisabled} />
+      <InputComponent
+        value={formData.email.value}
+        onChange2={handleChange}
+        name={'email'}
+        label={'Email'}
+        type={'email'}
+        placeholder={'example@email.com'}
+        errors={errors.email || serverErrors.email}
+      />
+      <InputComponent
+        value={formData.password.value}
+        onChange2={handleChange}
+        name={'password'}
+        label={'Password'}
+        type={'text'}
+        errors={errors.password || serverErrors.password}
+        isPassword={true}
+      />
+      <FormButton value={'Login'} disabled={!isValid} />
     </Form>
   )
 }
