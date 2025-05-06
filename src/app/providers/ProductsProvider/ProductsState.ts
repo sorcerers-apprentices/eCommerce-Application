@@ -1,7 +1,7 @@
 export type ProductsStateType = {
-  someProducts: []
+  products: []
 }
 
 export const productsState: ProductsStateType = {
-  someProducts: [],
+  products: [],
 }

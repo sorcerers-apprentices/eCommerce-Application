@@ -1,18 +1,13 @@
+import { UserContext } from './UserContext'
 import type { JSX } from 'react'
+import { type ReactNode, useState } from 'react'
 import { userState, type UserStateType } from './UserState'
-import { createContext, type ReactNode, useState } from 'react'
 
-export type IUserContext = {
-  user: UserStateType
-  setUser: (newUser: UserStateType) => void
+type UserProviderProperties = {
+  children: ReactNode
 }
 
-export const UserContext = createContext<IUserContext>({
-  user: userState,
-  setUser: (): void => {},
-})
-
-export function UserProvider({ children }: { children: ReactNode }): JSX.Element {
+export function UserProvider({ children }: UserProviderProperties): JSX.Element {
   const [user, setUserState] = useState<UserStateType>(userState)
 
   const setUser = (newUser: UserStateType): void => {
