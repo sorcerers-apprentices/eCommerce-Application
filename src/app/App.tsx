@@ -1,5 +1,5 @@
 import { type ReactElement } from 'react'
-import AppRouter from '@/app/providers/router/AppRouter'
+import AppRouter from '@/app/providers/AppRouter/AppRouter'
 import { UserProvider } from '@/app/providers/UserProvider/UserProvider'
 import { ProductsProvider } from '@/app/providers/ProductsProvider/ProductsProvider'
 
