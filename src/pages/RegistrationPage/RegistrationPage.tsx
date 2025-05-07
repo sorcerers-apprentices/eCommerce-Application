@@ -4,7 +4,6 @@ import { RegistrationForm } from '@/components/RegistrationForm/RegistrationForm
 const RegistrationPage = (): ReactElement => {
   return (
     <div>
-      <h1>Registration Pages</h1>
       <RegistrationForm />
     </div>
   )

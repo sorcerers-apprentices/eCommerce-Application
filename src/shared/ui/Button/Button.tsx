@@ -1,4 +1,5 @@
 import type { FC, ReactNode } from 'react'
+import s from './Button.module.scss'
 
 type TButtonProperties = {
   children: ReactNode
@@ -16,7 +17,12 @@ export const Button: FC<TButtonProperties> = ({
   disabled = false,
 }) => {
   return (
-    <button type={type} className={['btn', ...classNames].join(' ')} onClick={onClick} disabled={disabled}>
+    <button
+      type={type}
+      className={[s.btn, ...classNames.map((name) => s[name])].join(' ')}
+      onClick={onClick}
+      disabled={disabled}
+    >
       {children}
     </button>
   )

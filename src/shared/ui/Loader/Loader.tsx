@@ -1,9 +1,9 @@
-import './Loader.scss'
+import s from './Loader.module.scss'
 import type { ReactElement } from 'react'
 
 const Loader = (): ReactElement => {
   return (
-    <div className="lds-default">
+    <div className={s.lds}>
       <div></div>
       <div></div>
       <div></div>

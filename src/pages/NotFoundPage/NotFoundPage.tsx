@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import type { ReactElement } from 'react'
 import { RoutePath } from '@/shared/config/routeConfig/routeConfig'
-import './NotFoundPage.scss'
+import './NotFoundPage.module.scss'
 
 const NotFoundPage = (): ReactElement => {
   return (

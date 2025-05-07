@@ -1,8 +1,9 @@
 import { type ChangeEvent, type FC, useState } from 'react'
 import { Label } from '@/shared/ui/Label/Label.tsx'
 import { Input, type InputType } from '@/shared/ui/InputComponent/Input/Input.tsx'
-import { Button } from '@/shared/ui/Button/Button.tsx'
+//import { Button } from '@/shared/ui/Button/Button.tsx'
 import { LuEye, LuEyeClosed } from 'react-icons/lu'
+import s from './InputComponent.module.scss'
 
 export const InputComponent: FC<{
   name: string
@@ -33,7 +34,7 @@ export const InputComponent: FC<{
   }
 
   return (
-    <div className="form__item">
+    <div className={s.element}>
       <Label htmlFor={name} className={['form__label']}>
         {label}
       </Label>
@@ -45,18 +46,18 @@ export const InputComponent: FC<{
         allowWhitespaces={allowWhitespaces}
         onChange={handleChange}
         required={required}
-        className={['form__input', errors ? 'input--error' : '']}
+        className={[errors ? 'input--error' : '']}
         placeholder={placeholder}
       />
       {errors && <span className="form__error">{errors}</span>}
       {isPassword && (
-        <Button
+        <button
+          className={s.visibility}
           type="button"
-          classNames={['form__button', 'visibility']}
           onClick={() => setShowPassword((previous: boolean) => !previous)}
         >
           {showPassword ? <LuEye /> : <LuEyeClosed />}
-        </Button>
+        </button>
       )}
     </div>
   )
