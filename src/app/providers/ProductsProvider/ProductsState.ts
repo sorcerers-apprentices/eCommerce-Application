@@ -1,5 +1,7 @@
+import type { Product } from '@commercetools/platform-sdk'
+
 export type ProductsStateType = {
-  products: []
+  products: Product[]
 }
 
 export const productsState: ProductsStateType = {

@@ -1,12 +1,15 @@
-import { createContext } from 'react'
+import { createContext, type Dispatch } from 'react'
+import type { ProductsActionType } from './ProductsReducer'
 import { productsState, type ProductsStateType } from './ProductsState'
 
 export type ProductsContextType = {
-  products: ProductsStateType
-  setProducts: (newProducts: ProductsStateType) => void
+  state: ProductsStateType
+  dispatch: Dispatch<ProductsActionType>
 }
 
+const defaultDispatch: Dispatch<ProductsActionType> = (): void => {}
+
 export const ProductsContext = createContext<ProductsContextType>({
-  products: productsState,
-  setProducts: (): void => {},
+  state: productsState,
+  dispatch: defaultDispatch,
 })
