@@ -7,7 +7,7 @@ const ErrorPage = (): ReactElement => {
   }
 
   return (
-    <div>
+    <div className="container section section-dog">
       <h2>There was an error in the application</h2>
       <Button onClick={refreshPage}>Refresh the page</Button>
     </div>

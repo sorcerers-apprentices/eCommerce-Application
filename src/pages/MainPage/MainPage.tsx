@@ -16,7 +16,7 @@ const MainPage = (): ReactElement => {
   const { data, error, isLoading } = useFetch<ClientResponse<ProductPagedQueryResponse>>(api.product.fetchProducts)
 
   return (
-    <>
+    <div className="section section-dog">
       <h1>eCommerce Application Login</h1>
       {authIsLoading && <Loader />}
       {authError && <div>{authError.message}</div>}
@@ -28,7 +28,7 @@ const MainPage = (): ReactElement => {
       {data && <div>Status code: {data.statusCode}</div>}
 
       <Link to={RoutePath.LOGIN}>Go Login Page</Link>
-    </>
+    </div>
   )
 }
 
