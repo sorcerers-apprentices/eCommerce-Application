@@ -10,7 +10,6 @@ import {
   validatePostCode,
   validateStreet,
 } from './validation.ts'
-import { state1, state2, state3, state4, state5 } from './stats-for-validation.ts'
 
 describe('emailValidation', () => {
   test('should return error text', () => {
@@ -164,16 +163,24 @@ describe('countryValidation', () => {
 
 describe('postCodeValidation', () => {
   test('should return error text', () => {
-    expect(validatePostCode('56432', state1)).toEqual('Choose your country')
-    expect(validatePostCode('56432', state2)).toEqual('Choose your country')
-    expect(validatePostCode('', state3)).toEqual('Post code cannot be empty')
-    expect(validatePostCode('00-001', state3)).toEqual('Post code of United Kingdom must be format "W1U 8ED"')
-    expect(validatePostCode('W1U 8ED', state4)).toEqual('Post code of Poland must be format "00-001"')
-    expect(validatePostCode('W1U 8ED', state5)).toEqual('Post code of Spain must be format "08830"')
+    expect(validatePostCode('56432', { country: { value: '', touched: false } })).toEqual('Choose your country')
+    expect(validatePostCode('56432', { country: { value: '', touched: true } })).toEqual('Choose your country')
+    expect(validatePostCode('', { country: { value: 'United Kingdom', touched: true } })).toEqual(
+      'Post code cannot be empty'
+    )
+    expect(validatePostCode('00-001', { country: { value: 'United Kingdom', touched: true } })).toEqual(
+      'Post code of United Kingdom must be format "W1U 8ED"'
+    )
+    expect(validatePostCode('W1U 8ED', { country: { value: 'Poland', touched: true } })).toEqual(
+      'Post code of Poland must be format "00-001"'
+    )
+    expect(validatePostCode('W1U 8ED', { country: { value: 'Spain', touched: true } })).toEqual(
+      'Post code of Spain must be format "08830"'
+    )
   })
   test('should return null', () => {
-    expect(validatePostCode('W1U 6AE', state3)).toEqual(null)
-    expect(validatePostCode('01-962', state4)).toEqual(null)
-    expect(validatePostCode('29700', state5)).toEqual(null)
+    expect(validatePostCode('W1U 6AE', { country: { value: 'United Kingdom', touched: true } })).toEqual(null)
+    expect(validatePostCode('01-962', { country: { value: 'Poland', touched: true } })).toEqual(null)
+    expect(validatePostCode('29700', { country: { value: 'Spain', touched: true } })).toEqual(null)
   })
 })

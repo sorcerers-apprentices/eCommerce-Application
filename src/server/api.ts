@@ -1,5 +1,9 @@
-import { createRequestBuilder } from '@/server/client'
-import type { ClientResponse, ProductPagedQueryResponse } from '@commercetools/platform-sdk'
+import {
+  createAnonymousRequestBuilder,
+  createLoggedRequestBuilder,
+  createRegisteredRequestBuilder,
+} from '@/server/client'
+import type { ClientResponse, ProductProjectionPagedSearchResponse } from '@commercetools/platform-sdk'
 import type { CustomerSignInResult } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/customer'
 import type { ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk/dist/declarations/src/generated/client/by-project-key-request-builder'
 
@@ -54,10 +58,17 @@ import type { ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk/dis
  * https://github.com/commercetools/commercetools-sdk-typescript/tree/master/packages/platform-sdk/test/integration-tests
  */
 
-let builder: ByProjectKeyRequestBuilder | undefined
+const anonBuilder: ByProjectKeyRequestBuilder = createAnonymousRequestBuilder()
+let passwordBuilder: ByProjectKeyRequestBuilder | undefined
+const builder = (): ByProjectKeyRequestBuilder => passwordBuilder || anonBuilder
 
 export enum ApiErrorCode {
   INVALID_CUSTOMER_ACCOUNT_CREDENTIALS = 'invalid_customer_account_credentials',
+  DUPLICATE_FIELD = 'DuplicateField',
+  LOCKED_FIELD = 'LockedField',
+  INVALID_FIELD = 'InvalidField',
+  REQUIRED_FIELD = 'RequiredField',
+  RESOURCE_NOT_FOUND = 'ResourceNotFound',
 }
 
 type RegistrationParameters = {
@@ -75,17 +86,17 @@ type RegistrationParameters = {
 export const api = {
   user: {
     authenticate: async (email: string, password: string): Promise<ClientResponse<CustomerSignInResult>> => {
-      builder = createRequestBuilder(email, password)
-      return builder
+      passwordBuilder = createLoggedRequestBuilder(email, password)
+      return builder()
         .login()
         .post({
           body: { email, password },
         })
         .execute()
     },
-    registration: async (parameters: RegistrationParameters): Promise<ClientResponse<CustomerSignInResult>> => {
-      builder = createRequestBuilder(parameters.email, parameters.password)
-      return builder
+    register: async (parameters: RegistrationParameters): Promise<ClientResponse<CustomerSignInResult>> => {
+      passwordBuilder = createRegisteredRequestBuilder()
+      return builder()
         .customers()
         .post({
           body: {
@@ -108,9 +119,9 @@ export const api = {
     },
   },
   product: {
-    fetchProducts: async (): Promise<ClientResponse<ProductPagedQueryResponse> | Error> => {
-      return builder!
-        .products()
+    fetchProducts: async (): Promise<ClientResponse<ProductProjectionPagedSearchResponse> | Error> => {
+      return builder()
+        .productProjections()
         .get()
         .execute()
         .catch((error: Error) => error)
