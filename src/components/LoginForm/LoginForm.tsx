@@ -27,9 +27,28 @@ export const LoginForm = (): JSX.Element => {
     } catch (error) {
       if (isCommerceToolsError(error)) {
         const firstError = error.body.errors[0]
-        if (firstError.code === ApiErrorCode.INVALID_CUSTOMER_ACCOUNT_CREDENTIALS) {
-          setServerErrors((previous) => ({ ...previous, email: firstError.message, password: firstError.message }))
-          return
+        const field: string | undefined = firstError.field
+        switch (firstError.code) {
+          case ApiErrorCode.INVALID_CUSTOMER_ACCOUNT_CREDENTIALS:
+            setServerErrors((previous) => ({ ...previous, email: firstError.message, password: firstError.message }))
+            break
+          case ApiErrorCode.LOCKED_FIELD:
+            if (field) {
+              setServerErrors((previous) => ({ ...previous, [field]: firstError.message }))
+            } else {
+              setServerErrors((previous) => ({ ...previous, email: firstError.message }))
+            }
+            break
+          case ApiErrorCode.INVALID_FIELD:
+            if (field) {
+              setServerErrors((previous) => ({ ...previous, [field]: firstError.message }))
+            } else {
+              setServerErrors((previous) => ({ ...previous, email: firstError.message }))
+            }
+            break
+          case ApiErrorCode.RESOURCE_NOT_FOUND:
+            setServerErrors((previous) => ({ ...previous, email: firstError.message, password: firstError.message }))
+            break
         }
       }
       throw new Error(JSON.stringify(error))

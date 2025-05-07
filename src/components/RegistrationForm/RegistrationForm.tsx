@@ -58,7 +58,7 @@ export const RegistrationForm = (): JSX.Element => {
     event.preventDefault()
 
     try {
-      await api.user.registration({
+      await api.user.register({
         email: formData.email.value,
         firstName: formData.firstName.value,
         lastName: formData.lastName.value,
@@ -66,15 +66,41 @@ export const RegistrationForm = (): JSX.Element => {
         street: formData.street.value,
         city: formData.city.value,
         postalCode: formData.postalCode.value,
-        country: formData.country.value,
+        country: formData.country.value === 'United Kingdom' ? 'UK' : formData.country.value === 'Poland' ? 'PL' : 'ES',
         password: formData.password.value,
       })
     } catch (error) {
       if (isCommerceToolsError(error)) {
         const firstError = error.body.errors[0]
-        if (firstError.code === ApiErrorCode.INVALID_CUSTOMER_ACCOUNT_CREDENTIALS) {
-          setServerErrors((previous) => ({ ...previous, email: firstError.message }))
-          return
+        const field: string | undefined = firstError.field
+        switch (firstError.code) {
+          case ApiErrorCode.DUPLICATE_FIELD:
+            setServerErrors((previous) => ({ ...previous, email: firstError.message }))
+            break
+          case ApiErrorCode.LOCKED_FIELD:
+            if (field) {
+              setServerErrors((previous) => ({ ...previous, [field]: firstError.message }))
+            } else {
+              setServerErrors((previous) => ({ ...previous, email: firstError.message }))
+            }
+            break
+          case ApiErrorCode.INVALID_FIELD:
+            if (field) {
+              setServerErrors((previous) => ({ ...previous, [field]: firstError.message }))
+            } else {
+              setServerErrors((previous) => ({ ...previous, email: firstError.message }))
+            }
+            break
+          case ApiErrorCode.REQUIRED_FIELD:
+            if (field) {
+              setServerErrors((previous) => ({ ...previous, [field]: firstError.message }))
+            } else {
+              setServerErrors((previous) => ({ ...previous, email: firstError.message }))
+            }
+            break
+          case ApiErrorCode.RESOURCE_NOT_FOUND:
+            setServerErrors((previous) => ({ ...previous, email: firstError.message }))
+            break
         }
       }
       throw new Error(JSON.stringify(error))
