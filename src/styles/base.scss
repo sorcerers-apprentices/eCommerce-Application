@@ -24,13 +24,36 @@ html {
   background-color: vars.$white;
 }
 
+.logo {
+  max-height: 5rem;
+}
+
 .section {
   padding: 1rem 5rem;
   background-color: vars.$white;
 
-  &-dog {
+  &-cat {
+    @include mixins.headline-1;
+    @include mixins.right;
+
     background-color: vars.$white;
-    background-image: url('/not-found.jpg');
+    background-image: url('/images/cat.png');
+    background-repeat: no-repeat;
+    background-position: bottom left;
+    background-origin: content-box;
+    background-size: contain;
+
+    &-content {
+      width: 50%;
+    }
+  }
+
+  &-dog {
+    @include mixins.headline-1;
+    @include mixins.left;
+
+    background-color: vars.$white;
+    background-image: url('/images/dog.jpg');
     background-repeat: no-repeat;
     background-position: bottom right;
     background-origin: content-box;

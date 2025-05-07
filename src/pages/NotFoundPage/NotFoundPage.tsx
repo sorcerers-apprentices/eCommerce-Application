@@ -5,7 +5,7 @@ import './NotFoundPage.scss'
 
 const NotFoundPage = (): ReactElement => {
   return (
-    <div className={'section section-dog'}>
+    <div className={'section section-dog not-found-page'}>
       <h1 className={'title'}>404</h1>
       <h2>
         Oops!

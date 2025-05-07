@@ -14,16 +14,17 @@ const MainPage = (): ReactElement => {
   const { data, error, isLoading } = useFetch<ClientResponse<ProductPagedQueryResponse>>(api.product.fetchProducts)
 
   return (
-    <div className="section section-dog">
+    <div className="section">
       <h1>eCommerce Application Login</h1>
-      {authIsLoading && <Loader />}
-      {authError && <div>{authError.message}</div>}
-      {authData && <div>Status code: {authData.statusCode}</div>}
+      <div>
+        {authIsLoading && <Loader />}
+        {authError && <div>{authError.message}</div>}
+        {authData && <div>Status code: {authData.statusCode}</div>}
 
-      <h1>eCommerce Application Products</h1>
-      {isLoading && <Loader />}
-      {error && <div>{error.message}</div>}
-      {data && <div>Status code: {data.statusCode}</div>}
+        {isLoading && <Loader />}
+        {error && <div>{error.message}</div>}
+        {data && <div>Status code: {data.statusCode}</div>}
+      </div>
     </div>
   )
 }

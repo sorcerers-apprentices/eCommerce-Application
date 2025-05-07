@@ -57,6 +57,15 @@
   text-align: left;
 }
 
+@mixin right($gap: 2rem) {
+  display: flex;
+  flex-direction: column;
+  gap: $gap;
+  align-items: flex-end;
+  justify-content: end;
+  text-align: right;
+}
+
 @mixin btn($width: auto) {
   display: inline-flex;
   flex-direction: row;

@@ -1,10 +1,7 @@
 @use '@/styles/mixins.scss' as mixins;
 
-.section-dog {
-  @include mixins.headline-1;
-  @include mixins.left;
-
-  height: 100vh;
+.not-found-page {
+  height: 90vh;
 }
 
 .title {
