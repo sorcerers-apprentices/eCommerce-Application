@@ -1,12 +1,15 @@
-import { createContext } from 'react'
+import type { UserActionType } from './UserReducer'
+import { createContext, type Dispatch } from 'react'
 import { userState, type UserStateType } from './UserState'
 
 export type UserContextType = {
-  user: UserStateType
-  setUser: (newUser: UserStateType) => void
+  state: UserStateType
+  dispatch: Dispatch<UserActionType>
 }
 
+const defaultDispatch: Dispatch<UserActionType> = (): void => {}
+
 export const UserContext = createContext<UserContextType>({
-  user: userState,
-  setUser: (): void => {},
+  state: userState,
+  dispatch: defaultDispatch,
 })

@@ -1,18 +1,15 @@
-import type { JSX } from 'react'
+import { type JSX } from 'react'
+import { userState } from './UserState'
 import { UserContext } from './UserContext'
-import { type ReactNode, useState } from 'react'
-import { userState, type UserStateType } from './UserState'
+import { UserReducer } from './UserReducer'
+import { type ReactNode, useReducer } from 'react'
 
 type UserProviderProperties = {
   children: ReactNode
 }
 
 export function UserProvider({ children }: UserProviderProperties): JSX.Element {
-  const [user, setUserState] = useState<UserStateType>(userState)
+  const [state, dispatch] = useReducer(UserReducer, userState)
 
-  const setUser = (newUser: UserStateType): void => {
-    setUserState(newUser)
-  }
-
-  return <UserContext.Provider value={{ user, setUser }}>{children}</UserContext.Provider>
+  return <UserContext.Provider value={{ state, dispatch }}>{children}</UserContext.Provider>
 }
