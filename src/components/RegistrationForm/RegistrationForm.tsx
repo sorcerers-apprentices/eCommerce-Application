@@ -117,7 +117,7 @@ export const RegistrationForm = (): JSX.Element => {
       <InputComponent
         value={formData.email.value}
         name={'email'}
-        label={'Email'}
+        title={'Email'}
         type={'email'}
         placeholder={'example@email.com'}
         errors={errors.email || serverErrors.email}
@@ -126,7 +126,7 @@ export const RegistrationForm = (): JSX.Element => {
       <InputComponent
         value={formData.firstName.value}
         name={'firstName'}
-        label={'First Name'}
+        title={'First Name'}
         type={'text'}
         placeholder={'Scooby'}
         allowWhitespaces={true}
@@ -136,7 +136,7 @@ export const RegistrationForm = (): JSX.Element => {
       <InputComponent
         value={formData.lastName.value}
         name={'lastName'}
-        label={'Last Name'}
+        title={'Last Name'}
         type={'text'}
         placeholder={'Doo'}
         allowWhitespaces={true}
@@ -146,7 +146,7 @@ export const RegistrationForm = (): JSX.Element => {
       <InputComponent
         value={formData.dateOfBirth.value}
         name={'dateOfBirth'}
-        label={'Day of birthday'}
+        title={'Day of birthday'}
         type={'date'}
         errors={errors.dateOfBirth || serverErrors.dateOfBirth}
         onChange={handleChange}
@@ -164,7 +164,7 @@ export const RegistrationForm = (): JSX.Element => {
         <InputComponent
           value={formData.city.value}
           name={'city'}
-          label={'City'}
+          title={'City'}
           type={'text'}
           placeholder={'London'}
           allowWhitespaces={true}
@@ -174,7 +174,7 @@ export const RegistrationForm = (): JSX.Element => {
         <InputComponent
           value={formData.postalCode.value}
           name={'postalCode'}
-          label={'Postal Code'}
+          title={'Postal Code'}
           type={'text'}
           placeholder={'221B'}
           allowWhitespaces={true}
@@ -184,7 +184,7 @@ export const RegistrationForm = (): JSX.Element => {
         <InputComponent
           value={formData.street.value}
           name={'street'}
-          label={'Street'}
+          title={'Street'}
           type={'text'}
           placeholder={'Baker Street'}
           allowWhitespaces={true}
@@ -196,7 +196,7 @@ export const RegistrationForm = (): JSX.Element => {
       <InputComponent
         value={formData.password.value}
         name={'password'}
-        label={'Password'}
+        title={'Password'}
         type={'text'}
         errors={errors.password || serverErrors.password}
         onChange={handleChange}

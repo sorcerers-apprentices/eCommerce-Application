@@ -65,7 +65,7 @@ export const LoginForm = (): JSX.Element => {
         value={formData.email.value}
         onChange={handleChange}
         name={'email'}
-        label={'Email'}
+        title={'Email'}
         type={'email'}
         placeholder={'example@email.com'}
         errors={errors.email || serverErrors.email}
@@ -74,7 +74,7 @@ export const LoginForm = (): JSX.Element => {
         value={formData.password.value}
         onChange={handleChange}
         name={'password'}
-        label={'Password'}
+        title={'Password'}
         type={'text'}
         errors={errors.password || serverErrors.password}
         isPassword={true}
