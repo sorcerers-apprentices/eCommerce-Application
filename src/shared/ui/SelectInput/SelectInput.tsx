@@ -29,7 +29,7 @@ export const SelectInput: FC<SelectProperties> = ({
 
   return (
     <div className="form__item">
-      <Label htmlFor={name} className={['form__label']}>
+      <Label htmlFor={name} className={'form__label'}>
         {label}
       </Label>
       <select
