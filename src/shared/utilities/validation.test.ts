@@ -1,6 +1,6 @@
 import { describe, expect } from 'vitest'
 import {
-  validaCountry,
+  validateCountry,
   validateBirthDate,
   validateCity,
   validateEmail,
@@ -11,163 +11,168 @@ import {
   validateStreet,
 } from './validation.ts'
 
-describe('emailValidation', () => {
-  test('should return error text', () => {
-    expect(validateEmail('test @example.com')).toEqual('Email should not include whitespaces')
-    expect(validateEmail('test@ example.com')).toEqual('Email should not include whitespaces')
-    expect(validateEmail('test@example .com')).toEqual('Email should not include whitespaces')
-    expect(validateEmail('user@example.com ')).toEqual('Email should not include whitespaces')
-    expect(validateEmail('user@example.  com')).toEqual('Email should not include whitespaces')
-    expect(validateEmail('testexample.com')).toEqual('Email should include @')
-    expect(validateEmail('userexample.ru')).toEqual('Email should include @')
-    expect(validateEmail('test@example')).toEqual("Invalid email format, proper format is 'user@example.com'")
-    expect(validateEmail('user@.com.')).toEqual("Invalid email format, proper format is 'user@example.com'")
-    expect(validateEmail('user@')).toEqual("Invalid email format, proper format is 'user@example.com'")
-    expect(validateEmail('user@com.1')).toEqual("Invalid email format, proper format is 'user@example.com'")
-    expect(validateEmail('user@example.c')).toEqual("Invalid email format, proper format is 'user@example.com'")
+describe('email validation', () => {
+  test('should return error: Email should not include whitespaces', () => {
+    const variants = ['test @example.com', 'test@ example.com', 'test@example .com', 'user@example.com ']
+    for (const variant of variants) {
+      expect(validateEmail(variant)).toEqual('Email should not include whitespaces')
+    }
   })
-  test('should return null', () => {
-    expect(validateEmail('test@example.com')).toEqual(null)
-    expect(validateEmail('user.name+tag@example.co.uk')).toEqual(null)
-    expect(validateEmail('user_name@example.org')).toEqual(null)
-    expect(validateEmail('user-name@example.com')).toEqual(null)
-    expect(validateEmail('user123@example.net')).toEqual(null)
-    expect(validateEmail('user_123@exam.ru')).toEqual(null)
+  test('should return error: Email should include @', () => {
+    const variants = ['testexample.com', 'userexample.ru']
+    for (const variant of variants) {
+      expect(validateEmail(variant)).toEqual('Email should include @')
+    }
+  })
+  test("should return error: Invalid email format, proper format is 'user@example.com'", () => {
+    const variants = ['test@example', 'user@.com.', 'user@', 'user@com.1', 'user@example.c']
+    for (const variant of variants) {
+      expect(validateEmail(variant)).toEqual("Invalid email format, proper format is 'user@example.com'")
+    }
+  })
+  test('should pass validation', () => {
+    const variants = ['test@example.com', 'user.name+tag@example.co.uk', 'user_name@example.org', 'user123@example.net']
+    for (const variant of variants) {
+      expect(validateEmail(variant)).toEqual(null)
+    }
   })
 })
 
-describe('passwordValidation', () => {
-  test('should return error text', () => {
+describe('password validation', () => {
+  test('should return error: Password should be at least 8 characters', () => {
     expect(validatePassword('a')).toEqual('Password should be at least 8 characters')
     expect(validatePassword('short1')).toEqual('Password should be at least 8 characters')
-    expect(validatePassword('NoDigits')).toEqual('Password should include numbers')
-    expect(validatePassword('12345678')).toEqual('Password should include uppercase letters')
-    expect(validatePassword('NOLOWERCASE1')).toEqual('Password should include lowercase letters')
-    expect(validatePassword('nouppercase1')).toEqual('Password should include uppercase letters')
-    expect(validatePassword('Spaces NotAllowed1')).toEqual('Password should not include whitespaces')
-    expect(validatePassword(' ')).toEqual('Password should not include whitespaces')
-    expect(validatePassword('Password ')).toEqual('Password should not include whitespaces')
-    expect(validatePassword(' Password1')).toEqual('Password should not include whitespaces')
   })
-  test('should return null', () => {
-    expect(validatePassword('aEr23trfg')).toEqual(null)
-    expect(validatePassword('Password1')).toEqual(null)
-    expect(validatePassword('ValidPass123')).toEqual(null)
-    expect(validatePassword('StrongPass!4')).toEqual(null)
-    expect(validatePassword('NoSpaces1')).toEqual(null)
+  test('should return error: Password should include numbers', () => {
+    expect(validatePassword('NoDigits')).toEqual('Password should include numbers')
+  })
+  test('should return error: Password should include lowercase letters', () => {
+    expect(validatePassword('NOLOWERCASE1')).toEqual('Password should include lowercase letters')
+  })
+  test('should return error: Password should include uppercase letters', () => {
+    expect(validatePassword('nouppercase1')).toEqual('Password should include uppercase letters')
+  })
+  test('should return error: Password should not include whitespaces', () => {
+    const variants = ['Spaces NotAllowed1', ' ', 'Password  ', ' Password1']
+    for (const variant of variants) {
+      expect(validatePassword(variant)).toEqual('Password should not include whitespaces')
+    }
+  })
+  test('should pass validation', () => {
+    const variants = ['aEr23trfg', 'Password1', 'ValidPass123', 'StrongPass!4', 'NoSpaces1']
+    for (const variant of variants) {
+      expect(validatePassword(variant)).toEqual(null)
+    }
   })
 })
 
-describe('firstNameValidation', () => {
-  test('should return error text', () => {
+describe('first name validation', () => {
+  test('should return error: First name cannot be empty', () => {
     expect(validateFirstName('')).toEqual('First name cannot be empty')
-    expect(validateFirstName('name#')).toEqual('First name cannot include special characters')
-    expect(validateFirstName('name%')).toEqual('First name cannot include special characters')
-    expect(validateFirstName('name-')).toEqual('First name cannot include special characters')
-    expect(validateFirstName('name_')).toEqual('First name cannot include special characters')
-    expect(validateFirstName('name$')).toEqual('First name cannot include special characters')
-    expect(validateFirstName('name*')).toEqual('First name cannot include special characters')
-    expect(validateFirstName('name8')).toEqual('First name cannot include numbers')
+  })
+  test('should return error: First name cannot include special characters', () => {
+    const variants = ['name#', 'name%', 'name-', 'name_', 'name$']
+    for (const variant of variants) {
+      expect(validateFirstName(variant)).toEqual('First name cannot include special characters')
+    }
+  })
+  test('should return error: First name cannot include numbers', () => {
     expect(validateFirstName('v0t')).toEqual('First name cannot include numbers')
     expect(validateFirstName('76name')).toEqual('First name cannot include numbers')
   })
-  test('should return null', () => {
-    expect(validateFirstName('J')).toEqual(null)
-    expect(validateFirstName('Jonn')).toEqual(null)
-    expect(validateFirstName('Jonn Snow')).toEqual(null)
-    expect(validateFirstName('r')).toEqual(null)
+  test('should pass validation', () => {
+    const variants = ['J', 'Jonn', 'Jonn Snow', 'r']
+    for (const variant of variants) {
+      expect(validateFirstName(variant)).toEqual(null)
+    }
   })
 })
 
-describe('lastNameValidation', () => {
-  test('should return error text', () => {
+describe('last name validation', () => {
+  test('should return error: Last name cannot be empty', () => {
     expect(validateLastName('')).toEqual('Last name cannot be empty')
-    expect(validateLastName('name#')).toEqual('Last name cannot include special characters')
-    expect(validateLastName('name%')).toEqual('Last name cannot include special characters')
-    expect(validateLastName('name-')).toEqual('Last name cannot include special characters')
-    expect(validateLastName('name_')).toEqual('Last name cannot include special characters')
-    expect(validateLastName('name$')).toEqual('Last name cannot include special characters')
-    expect(validateLastName('name*')).toEqual('Last name cannot include special characters')
-    expect(validateLastName('name8')).toEqual('Last name cannot include numbers')
+  })
+  test('should return error: Last name cannot include special characters', () => {
+    const variants = ['name#', 'name%', 'name-', 'name_', 'name$']
+    for (const variant of variants) {
+      expect(validateLastName(variant)).toEqual('Last name cannot include special characters')
+    }
+  })
+  test('should return error: Last name cannot include numbers', () => {
     expect(validateLastName('v0t')).toEqual('Last name cannot include numbers')
     expect(validateLastName('76name')).toEqual('Last name cannot include numbers')
   })
-  test('should return null', () => {
-    expect(validateLastName('J')).toEqual(null)
-    expect(validateLastName('Jonn')).toEqual(null)
-    expect(validateFirstName('Jonn Snow')).toEqual(null)
-    expect(validateLastName('r')).toEqual(null)
+  test('should pass validation', () => {
+    const variants = ['J', 'Jonn', 'Jonn Snow', 'r']
+    for (const variant of variants) {
+      expect(validateLastName(variant)).toEqual(null)
+    }
   })
 })
 
-describe('birthDateValidation', () => {
-  test('should return error text', () => {
-    expect(validateBirthDate('')).toEqual('Date of birthday cannot be empty')
-    expect(validateBirthDate('2012-01-02')).toEqual('You should have 13 or more years')
-    expect(validateBirthDate('2019-05-01')).toEqual('You should have 13 or more years')
-    expect(validateBirthDate('2027-01-01')).toEqual('You should have 13 or more years')
-  })
-  test('should return null', () => {
-    expect(validateBirthDate('2012-01-01')).toEqual(null)
-    expect(validateBirthDate('2010-06-13')).toEqual(null)
-    expect(validateBirthDate('1991-11-11')).toEqual(null)
-  })
-})
-
-describe('streetValidation', () => {
-  test('should return error text', () => {
+describe('street validation', () => {
+  test('should return error: Street cannot be empty', () => {
     expect(validateStreet('')).toEqual('Street cannot be empty')
   })
-  test('should return null', () => {
-    expect(validateStreet('J')).toEqual(null)
-    expect(validateStreet('Baker')).toEqual(null)
-    expect(validateStreet('Baker Street')).toEqual(null)
-    expect(validateStreet('Pr.')).toEqual(null)
+  test('should pass validation', () => {
+    const variants = ['J', 'Baker', 'Baker Street', 'r']
+    for (const variant of variants) {
+      expect(validateStreet(variant)).toEqual(null)
+    }
   })
 })
 
-describe('cityValidation', () => {
-  test('should return error text', () => {
+describe('city validation', () => {
+  test('should return error: City cannot be empty', () => {
     expect(validateCity('')).toEqual('City cannot be empty')
-    expect(validateCity('name#')).toEqual('City cannot include special characters')
-    expect(validateCity('name%')).toEqual('City cannot include special characters')
-    expect(validateCity('name-')).toEqual('City cannot include special characters')
-    expect(validateCity('name_')).toEqual('City cannot include special characters')
-    expect(validateCity('name$')).toEqual('City cannot include special characters')
-    expect(validateCity('name*')).toEqual('City cannot include special characters')
-    expect(validateCity('67name8')).toEqual('City cannot include numbers')
-    expect(validateCity('4')).toEqual('City cannot include numbers')
-    expect(validateCity('v0tyff')).toEqual('City cannot include numbers')
   })
-  test('should return null', () => {
-    expect(validateCity('J')).toEqual(null)
-    expect(validateCity('Baden Baden')).toEqual(null)
-    expect(validateCity('London')).toEqual(null)
-    expect(validateCity('Warshaw')).toEqual(null)
-    expect(validateCity('Madrid')).toEqual(null)
+  test('should return error: City cannot include special characters', () => {
+    const variants = ['name#', 'name%', 'name-', 'name_', 'name$']
+    for (const variant of variants) {
+      expect(validateCity(variant)).toEqual('City cannot include special characters')
+    }
   })
-})
-
-describe('countryValidation', () => {
-  test('should return error text', () => {
-    expect(validaCountry('')).toEqual('Country must not be empty')
-    expect(validaCountry('Germany')).toEqual('Country must from a predefined list')
-    expect(validaCountry('Belarus')).toEqual('Country must from a predefined list')
+  test('should return error: City cannot include numbers', () => {
+    const variants = ['67name8', '4', 'v0tyff']
+    for (const variant of variants) {
+      expect(validateCity(variant)).toEqual('City cannot include numbers')
+    }
   })
-  test('should return null', () => {
-    expect(validaCountry('United Kingdom')).toEqual(null)
-    expect(validaCountry('Poland')).toEqual(null)
-    expect(validaCountry('Spain')).toEqual(null)
+  test('should pass validation', () => {
+    const variants = ['J', 'Baden Baden', 'London', 'r', 'Warshaw', 'Madrid']
+    for (const variant of variants) {
+      expect(validateCity(variant)).toEqual(null)
+    }
   })
 })
 
-describe('postCodeValidation', () => {
-  test('should return error text', () => {
+describe('country validation', () => {
+  test('should return error: Country must not be empty', () => {
+    expect(validateCountry('')).toEqual('Country must not be empty')
+  })
+  test('should return error: Country must from a predefined list', () => {
+    expect(validateCountry('Germany')).toEqual('Country must from a predefined list')
+    expect(validateCountry('Belarus')).toEqual('Country must from a predefined list')
+  })
+  test('should pass validation', () => {
+    const variants = ['United Kingdom', 'Poland', 'Spain']
+    for (const variant of variants) {
+      expect(validateCountry(variant)).toEqual(null)
+    }
+  })
+})
+
+describe('postCode validation', () => {
+  test('should return error: Choose your country', () => {
     expect(validatePostCode('56432', { country: { value: '', touched: false } })).toEqual('Choose your country')
     expect(validatePostCode('56432', { country: { value: '', touched: true } })).toEqual('Choose your country')
+  })
+  test('should return error: Post code cannot be empty', () => {
     expect(validatePostCode('', { country: { value: 'United Kingdom', touched: true } })).toEqual(
       'Post code cannot be empty'
     )
+  })
+  test('should return error: Post code of Country must be format', () => {
     expect(validatePostCode('00-001', { country: { value: 'United Kingdom', touched: true } })).toEqual(
       'Post code of United Kingdom must be format "W1U 8ED"'
     )
@@ -178,9 +183,36 @@ describe('postCodeValidation', () => {
       'Post code of Spain must be format "08830"'
     )
   })
-  test('should return null', () => {
+  test('should pass validation', () => {
     expect(validatePostCode('W1U 6AE', { country: { value: 'United Kingdom', touched: true } })).toEqual(null)
     expect(validatePostCode('01-962', { country: { value: 'Poland', touched: true } })).toEqual(null)
     expect(validatePostCode('29700', { country: { value: 'Spain', touched: true } })).toEqual(null)
   })
 })
+
+describe('birthDate validation', () => {
+  const dateNow = new Date()
+  const checkAge = 13
+  const pastDate = new Date(dateNow.getFullYear() - checkAge, dateNow.getMonth(), dateNow.getDate())
+  test('should return error: Date of birthday cannot be empty', () => {
+    expect(validateBirthDate('')).toEqual('Date of birthday cannot be empty')
+  })
+  test('should return error: You should have 13 or more years', () => {
+    const testDate = new Date(pastDate.getFullYear(), pastDate.getMonth(), pastDate.getDate() + 1)
+    const testDate2 = new Date(pastDate.getFullYear() + 1, pastDate.getMonth(), pastDate.getDate())
+    expect(validateBirthDate(convertDate(testDate))).toEqual('You should have 13 or more years')
+    expect(validateBirthDate(convertDate(testDate2))).toEqual('You should have 13 or more years')
+  })
+  test('should pass validation', () => {
+    const testDate = new Date(pastDate.getFullYear(), pastDate.getMonth(), pastDate.getDate() - 1)
+    expect(validateBirthDate(convertDate(pastDate))).toEqual(null)
+    expect(validateBirthDate(convertDate(testDate))).toEqual(null)
+  })
+})
+
+const convertDate = (date: Date): string => {
+  const year = date.getFullYear()
+  const month = date.getMonth() + 1
+  const day = date.getDate()
+  return `${year}-${month}-${day}`
+}

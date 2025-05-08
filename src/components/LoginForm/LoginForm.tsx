@@ -2,11 +2,12 @@ import { Form } from '@/shared/ui/Form/Form'
 import { FormButton } from './FormButton'
 import { type ChangeEvent, type FormEvent, type JSX, useState } from 'react'
 import './style.scss'
-import { api, ApiErrorCode } from '@/server/api.ts'
+import { ApiErrorCode } from '@/server/api.ts'
 import { isCommerceToolsError } from '@/shared/utilities/type-utilities.ts'
 import { InputComponent } from '@/shared/ui/InputComponent/InputComponent.tsx'
 import { useValidate } from '@/shared/hooks/useValidate.tsx'
 import { validateEmail, validatePassword } from '@/shared/utilities/validation.ts'
+import { authApi } from '@/server/auth-api.ts'
 
 export const LoginForm = (): JSX.Element => {
   const [formData, setFormData] = useState({
@@ -21,9 +22,8 @@ export const LoginForm = (): JSX.Element => {
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault()
-
     try {
-      await api.user.authenticate(formData.email.value, formData.password.value)
+      await authApi.authenticate(formData.email.value, formData.password.value)
     } catch (error) {
       if (isCommerceToolsError(error)) {
         const firstError = error.body.errors[0]
