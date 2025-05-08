@@ -1,28 +1,13 @@
-import type { FC, ReactNode } from 'react'
+import type { ButtonHTMLAttributes, FC } from 'react'
 import s from './Button.module.scss'
 
-type TButtonProperties = {
-  children: ReactNode
-  onClick?: () => void
+type TButtonProperties = ButtonHTMLAttributes<HTMLButtonElement> & {
   classNames?: string[]
-  type?: 'button' | 'submit' | 'reset'
-  disabled?: boolean
 }
 
-export const Button: FC<TButtonProperties> = ({
-  children,
-  onClick,
-  classNames = [],
-  type = 'button',
-  disabled = false,
-}) => {
+export const Button: FC<TButtonProperties> = ({ classNames = [], children, ...rest }) => {
   return (
-    <button
-      type={type}
-      className={[s.btn, ...classNames.map((name) => s[name])].join(' ')}
-      onClick={onClick}
-      disabled={disabled}
-    >
+    <button {...rest} className={[s.btn, ...classNames.map((name) => s[name])].join(' ')}>
       {children}
     </button>
   )

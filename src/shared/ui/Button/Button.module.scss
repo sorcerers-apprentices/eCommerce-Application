@@ -1,5 +1,17 @@
 @use '@/styles/mixins' as mixins;
+@use '@/styles/variables' as vars;
 
 .btn {
   @include mixins.btn;
+}
+
+@media (hover: hover) {
+  .btn {
+    cursor: pointer;
+    transition: all 0.5s ease;
+
+    &:hover {
+      box-shadow: 0 0 5px vars.$primary;
+    }
+  }
 }
