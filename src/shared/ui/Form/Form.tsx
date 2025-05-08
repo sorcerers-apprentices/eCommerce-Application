@@ -1,3 +1,4 @@
+import s from './Form.module.scss'
 type TFormProperties = {
   children: React.ReactNode
   onSubmit?: (event: React.FormEvent<HTMLFormElement>) => void
@@ -6,7 +7,7 @@ type TFormProperties = {
 
 export const Form: React.FC<TFormProperties> = ({ children, onSubmit, className = '' }) => {
   return (
-    <form className={['form', ...className].join(' ')} onSubmit={onSubmit}>
+    <form className={[s.form, ...className].join(' ')} onSubmit={onSubmit}>
       {children}
     </form>
   )

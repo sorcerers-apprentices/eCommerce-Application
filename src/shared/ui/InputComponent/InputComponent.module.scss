@@ -1,0 +1,16 @@
+@use '@/styles/variables.scss' as vars;
+
+.element {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+  height: 2rem;
+}
+
+.visibility {
+  border: none;
+  color: vars.$dark-primary;
+  background-color: transparent;
+}

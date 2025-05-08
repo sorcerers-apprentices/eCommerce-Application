@@ -1,0 +1,9 @@
+@use '@/styles/mixins.scss' as mixins;
+
+.not-found-page {
+  height: 90vh;
+}
+
+.title {
+  font-size: 3rem;
+}

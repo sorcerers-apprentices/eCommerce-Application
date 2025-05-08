@@ -1,7 +1,6 @@
 import { Form } from '@/shared/ui/Form/Form'
 import { FormButton } from './FormButton'
 import { type ChangeEvent, type FormEvent, type JSX, useState } from 'react'
-import './style.scss'
 import { api, ApiErrorCode } from '@/server/api.ts'
 import { isCommerceToolsError } from '@/shared/utilities/type-utilities.ts'
 import { InputComponent } from '@/shared/ui/InputComponent/InputComponent.tsx'
@@ -61,7 +60,7 @@ export const LoginForm = (): JSX.Element => {
   }
 
   return (
-    <Form className={['form']} onSubmit={onSubmit}>
+    <Form className={['section']} onSubmit={onSubmit}>
       <InputComponent
         value={formData.email.value}
         onChange={handleChange}

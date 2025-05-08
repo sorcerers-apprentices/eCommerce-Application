@@ -113,7 +113,7 @@ export const RegistrationForm = (): JSX.Element => {
   }
 
   return (
-    <Form className={['form']} onSubmit={onSubmit}>
+    <Form className={['form', 'section']} onSubmit={onSubmit}>
       <InputComponent
         value={formData.email.value}
         name={'email'}
