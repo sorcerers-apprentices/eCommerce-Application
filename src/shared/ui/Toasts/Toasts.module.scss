@@ -1,0 +1,41 @@
+@use '@/styles/variables.scss' as vars;
+
+.toast {
+  position: fixed;
+  top: 3rem;
+  right: 3rem;
+  display: flex;
+  justify-content: space-between;
+  padding: 2rem 5rem;
+  border-left: 1rem solid var(--secondary-font-color);
+  border-radius: 1rem;
+  animation: ascent 0.3s ease;
+}
+
+@keyframes ascent {
+  from {
+    transform: translateX(30%);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.error {
+  background: vars.$color-error;
+}
+
+.info {
+  background: vars.$color-info;
+}
+
+.warning {
+  background: vars.$color-warning;
+}
+
+.success {
+  background: vars.$color-success;
+}
