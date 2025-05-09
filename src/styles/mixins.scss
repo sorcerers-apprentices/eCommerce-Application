@@ -31,6 +31,14 @@
   }
 }
 
+@mixin flex-row($gap: 2rem) {
+  display: flex;
+  flex-direction: row;
+  gap: $gap;
+  align-items: center;
+  justify-content: space-between;
+}
+
 @mixin center($gap: 2rem) {
   display: flex;
   flex-direction: column;
@@ -47,6 +55,15 @@
   align-items: flex-start;
   justify-content: start;
   text-align: left;
+}
+
+@mixin right($gap: 2rem) {
+  display: flex;
+  flex-direction: column;
+  gap: $gap;
+  align-items: flex-end;
+  justify-content: end;
+  text-align: right;
 }
 
 @mixin btn($width: auto) {

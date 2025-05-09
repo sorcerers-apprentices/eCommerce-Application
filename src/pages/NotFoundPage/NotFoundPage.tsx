@@ -1,11 +1,11 @@
 import { Link } from 'react-router-dom'
 import type { ReactElement } from 'react'
 import { RoutePath } from '@/shared/config/routeConfig/routeConfig'
-import './NotFoundPage.scss'
+import './NotFoundPage.module.scss'
 
 const NotFoundPage = (): ReactElement => {
   return (
-    <div className={'section section-dog'}>
+    <div className={'section section-dog not-found-page'}>
       <h1 className={'title'}>404</h1>
       <h2>
         Oops!
