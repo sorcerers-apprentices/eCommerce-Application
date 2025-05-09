@@ -1,8 +1,9 @@
+import { Link } from 'react-router-dom'
 import type { ReactElement } from 'react'
 import Loader from '@/shared/ui/Loader/Loader'
 import { useFetch } from '@/shared/hooks/useFetch'
 import { api } from '@/server/api'
-
+import { RoutePath } from '@/shared/config/routeConfig/routeConfig'
 import type { ClientResponse, ProductProjectionPagedSearchResponse } from '@commercetools/platform-sdk'
 
 const MainPage = (): ReactElement => {
