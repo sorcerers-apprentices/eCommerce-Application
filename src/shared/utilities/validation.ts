@@ -55,11 +55,13 @@ export const validateLastName = (lastName: string): string | null => {
 }
 
 export const validateBirthDate = (birthDate: string): string | null => {
-  const date = new Date(birthDate)
-  const minDate = new Date('2012-01-01')
+  const checkDate = new Date(birthDate)
+  const dateNow = new Date()
+  const checkAge = 13
+  const pastDate = new Date(dateNow.setFullYear(dateNow.getFullYear() - checkAge))
   if (!birthDate.length) {
     return 'Date of birthday cannot be empty'
-  } else if (date > minDate) {
+  } else if (checkDate > pastDate) {
     return 'You should have 13 or more years'
   } else {
     return null
@@ -86,7 +88,7 @@ export const validateCity = (city: string): string | null => {
   }
 }
 
-export const validaCountry = (country: string): string | null => {
+export const validateCountry = (country: string): string | null => {
   if (!country.length) {
     return 'Country must not be empty'
   } else if (country !== 'United Kingdom' && country !== 'Poland' && country !== 'Spain') {

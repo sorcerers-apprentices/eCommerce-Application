@@ -1,8 +1,8 @@
 import { Form } from '@/shared/ui/Form/Form'
 import { type ChangeEvent, type FormEvent, type JSX, useState } from 'react'
-import { api, ApiErrorCode } from '@/server/api.ts'
+import { ApiErrorCode } from '@/server/api.ts'
 import {
-  validaCountry,
+  validateCountry,
   validateBirthDate,
   validateCity,
   validateEmail,
@@ -17,6 +17,7 @@ import { isCommerceToolsError } from '@/shared/utilities/type-utilities.ts'
 import { SelectInput } from '@/shared/ui/SelectInput/SelectInput.tsx'
 import { InputComponent } from '@/shared/ui/InputComponent/InputComponent.tsx'
 import { useValidate } from '@/shared/hooks/useValidate.tsx'
+import { authApi } from '@/server/auth-api.ts'
 
 export const RegistrationForm = (): JSX.Element => {
   const [formData, setFormData] = useState({
@@ -47,7 +48,7 @@ export const RegistrationForm = (): JSX.Element => {
     firstName: [validateFirstName],
     lastName: [validateLastName],
     dateOfBirth: [validateBirthDate],
-    country: [validaCountry],
+    country: [validateCountry],
     city: [validateCity],
     postalCode: [validatePostCode],
     street: [validateStreet],
@@ -58,7 +59,7 @@ export const RegistrationForm = (): JSX.Element => {
     event.preventDefault()
 
     try {
-      await api.user.register({
+      await authApi.register({
         email: formData.email.value,
         firstName: formData.firstName.value,
         lastName: formData.lastName.value,
