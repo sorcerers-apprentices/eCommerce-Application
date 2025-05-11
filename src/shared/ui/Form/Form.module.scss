@@ -1,6 +1,7 @@
 .form {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  align-items: start;
+  gap: 0.5rem;
+  align-items: flex-start;
+  justify-content: flex-start;
 }

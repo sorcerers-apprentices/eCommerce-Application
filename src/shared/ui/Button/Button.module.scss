@@ -2,7 +2,19 @@
 @use '@/styles/variables' as vars;
 
 .btn {
-  @include mixins.btn;
+  display: flex;
+  display: inline-flex;
+  flex-direction: row;
+  gap: 0.25rem;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  height: 2.5rem;
+  padding: 1rem 2rem;
+  border: none;
+  background: vars.$color-primary;
+
+  @include mixins.body-m(vars.$color-white);
 }
 
 @media (hover: hover) {
@@ -11,7 +23,7 @@
     transition: all 0.5s ease;
 
     &:hover {
-      box-shadow: 0 0 5px vars.$primary;
+      background-color: vars.$color-primary200;
     }
   }
 }

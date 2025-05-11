@@ -23,29 +23,31 @@ export const InputComponent: FC<InputComponentProperties> = ({
   const [showPassword, setShowPassword] = useState(false)
 
   return (
-    <div className="form__item">
-      <Label htmlFor={name} className="form__label">
+    <div className={s.element}>
+      <Label htmlFor={name} className={s.label}>
         {title}
       </Label>
-      <Input
-        {...rest}
-        id={name}
-        type={!isPassword ? type : showPassword ? 'text' : 'password'}
-        name={name}
-        className={`form__input ${errors ? 'input--error' : ''}`}
-      />
-      {errors && <span className="form__error">{errors}</span>}
+      <div className={s.row}>
+        <Input
+          {...rest}
+          id={name}
+          type={!isPassword ? type : showPassword ? 'text' : 'password'}
+          name={name}
+          className={`${s.input} ${errors ? `${s.input__error}` : ''}`}
+        />
 
-      {isPassword && (
-        <Button
-          noDefaultStyle
-          className={s.visibility}
-          type="button"
-          onClick={() => setShowPassword((previous: boolean) => !previous)}
-        >
-          {showPassword ? <LuEye /> : <LuEyeClosed />}
-        </Button>
-      )}
+        {isPassword && (
+          <Button
+            noDefaultStyle
+            className={s.visibility}
+            type="button"
+            onClick={() => setShowPassword((previous: boolean) => !previous)}
+          >
+            {showPassword ? <LuEye /> : <LuEyeClosed />}
+          </Button>
+        )}
+      </div>
+      <div>{errors && <span className={s.error}>{errors}</span>}</div>
     </div>
   )
 }

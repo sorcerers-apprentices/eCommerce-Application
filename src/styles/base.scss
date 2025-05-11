@@ -8,8 +8,6 @@ html {
 }
 
 * {
-  @include mixins.text-m;
-
   scroll-behavior: smooth;
   box-sizing: border-box;
   font-family: fonts.$font-family;
