@@ -8,10 +8,6 @@
   justify-content: center;
 }
 
-.row {
-  position: relative;
-}
-
 .label {
   @include mixins.body-m;
 }
@@ -41,19 +37,4 @@
   color: vars.$state-color-error;
 
   @include mixins.text-m(0.75rem);
-}
-
-.visibility {
-  cursor: pointer;
-  position: absolute;
-  top: 50%;
-  right: 10px;
-  transform: translateY(-50%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  border: none;
-  color: vars.$neutral-gray606060;
-  background: transparent;
 }

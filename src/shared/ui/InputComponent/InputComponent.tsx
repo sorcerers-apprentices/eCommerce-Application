@@ -21,6 +21,7 @@ export const InputComponent: FC<InputComponentProperties> = ({
   ...rest
 }) => {
   const [showPassword, setShowPassword] = useState(false)
+  const errorInnerText = errors ? errors : '\u00A0'
 
   return (
     <div className={s.element}>
@@ -47,7 +48,7 @@ export const InputComponent: FC<InputComponentProperties> = ({
           </Button>
         )}
       </div>
-      <div>{errors && <span className={s.error}>{errors}</span>}</div>
+      <span className={s.error}>{errorInnerText}</span>
     </div>
   )
 }

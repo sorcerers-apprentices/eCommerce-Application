@@ -18,6 +18,7 @@ import { SelectInput } from '@/shared/ui/SelectInput/SelectInput.tsx'
 import { InputComponent } from '@/shared/ui/InputComponent/InputComponent.tsx'
 import { useValidate } from '@/shared/hooks/useValidate.tsx'
 import { authApi } from '@/server/auth-api.ts'
+import s from './RegistrationForm.module.scss'
 
 export const RegistrationForm = (): JSX.Element => {
   const [formData, setFormData] = useState({
@@ -153,11 +154,11 @@ export const RegistrationForm = (): JSX.Element => {
         onChange={handleChange}
       />
 
-      <fieldset>
+      <fieldset className={s.form_fieldset}>
         <SelectInput
           value={formData.country.value}
           name={'country'}
-          label={'Country'}
+          title={'Country'}
           options={['United Kingdom', 'Poland', 'Spain']}
           errors={errors.country || serverErrors.country}
           onChange={handleChange}
