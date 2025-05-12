@@ -4,3 +4,11 @@
     border: none;
   }
 }
+
+.addresses {
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+  align-items: start;
+  justify-content: center;
+}

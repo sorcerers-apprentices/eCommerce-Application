@@ -4,7 +4,7 @@
 
 html {
   font-size: 16px;
-  background-color: vars.$dark-primary;
+  background-color: vars.$color-white;
 }
 
 * {
@@ -19,7 +19,6 @@ html {
   max-width: 1440px;
   min-height: 100vh;
   margin: 0 auto;
-  background-color: vars.$white;
 }
 
 .logo {
@@ -28,13 +27,13 @@ html {
 
 .section {
   padding: 1rem 5rem;
-  background-color: vars.$white;
+  background-color: vars.$color-white;
 
   &-cat {
     @include mixins.headline-1;
     @include mixins.right;
 
-    background-color: vars.$white;
+    background-color: vars.$color-white;
     background-image: url('/images/cat.png');
     background-repeat: no-repeat;
     background-position: bottom left;
@@ -50,7 +49,7 @@ html {
     @include mixins.headline-1;
     @include mixins.left;
 
-    background-color: vars.$white;
+    background-color: vars.$color-white;
     background-image: url('/images/dog.jpg');
     background-repeat: no-repeat;
     background-position: bottom right;
@@ -58,7 +57,3 @@ html {
     background-size: contain;
   }
 }
-
-// .btn {
-//   @include mixins.btn;
-// }
