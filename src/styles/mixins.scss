@@ -45,6 +45,7 @@
   gap: $gap;
   align-items: center;
   justify-content: center;
+  margin: 0 auto;
   text-align: center;
 }
 
@@ -66,81 +67,99 @@
   text-align: right;
 }
 
-@mixin btn($width: auto) {
-  display: inline-flex;
-  flex-direction: row;
-  gap: 0.62rem;
-  align-items: flex-start;
-  justify-content: flex-start;
-  width: $width;
-  padding: 1rem 2rem;
-  font-family: fonts.$font-family;
-  font-size: 1rem;
-  font-weight: 400;
-  line-height: 1.5;
-  color: vars.$white;
-  background: vars.$dark-primary;
-}
-
-@mixin headline-1 {
-  font-family: fonts.$second-family;
-  font-size: 2.25rem;
-  font-weight: 400;
-  line-height: 1.4;
-}
-
-@mixin headline-2 {
-  font-family: fonts.$second-family;
-  font-size: 2rem;
-  font-weight: 400;
-  line-height: 1.4;
-}
-
-@mixin headline-3 {
-  font-family: fonts.$second-family;
-  font-size: 1.5rem;
-  font-weight: 400;
-  line-height: 1.4;
-}
-
-@mixin headline-4 {
-  font-family: fonts.$second-family;
-  font-size: 1.25rem;
-  font-weight: 400;
-  line-height: 1.4;
-}
-
-@mixin headline-5 {
-  font-family: fonts.$second-family;
-  font-size: 1rem;
-  font-weight: 400;
-  line-height: 1.4;
-}
-
-@mixin headline-6 {
-  font-family: fonts.$second-family;
-  font-size: 0.88rem;
-  font-weight: 400;
-  line-height: 1.4;
-}
-
-@mixin text-s {
-  font-family: fonts.$font-family;
-  font-size: 0.88rem;
-  font-weight: 400;
-  line-height: 1.5;
-}
-
 @mixin text-m($fs: 1rem) {
-  font-family: fonts.$font-family;
+  font-family: fonts.$second-family;
   font-size: $fs;
   font-weight: 400;
   line-height: 1.5;
 }
 
-@mixin text-l {
+@mixin headline-1($color: vars.$color-black) {
   font-family: fonts.$font-family;
-  font-size: 1.12rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.4;
+  color: $color;
+  text-transform: capitalize;
+}
+
+@mixin headline-2($color: vars.$color-black) {
+  font-family: fonts.$font-family;
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.4;
+  color: $color;
+  text-transform: capitalize;
+}
+
+@mixin headline-3($color: vars.$color-black) {
+  font-family: fonts.$font-family;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.4;
+  color: $color;
+  text-transform: capitalize;
+}
+
+@mixin headline-4($color: vars.$color-black) {
+  font-family: fonts.$font-family;
+  font-size: 0.88rem;
+  font-weight: 700;
+  line-height: 1.4;
+  color: $color;
+  text-transform: capitalize;
+}
+
+@mixin headline-5($color: vars.$color-black) {
+  font-family: fonts.$font-family;
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1.4;
+  color: $color;
+  text-transform: capitalize;
+}
+
+@mixin body-l($color: vars.$color-black) {
+  font-family: fonts.$font-family;
+  font-size: 0.88rem;
   font-weight: 400;
-  line-height: 1.5;
+  line-height: 1.8;
+  color: $color;
+  text-transform: capitalize;
+}
+
+@mixin body-m($color: vars.$color-black) {
+  font-family: fonts.$font-family;
+  font-size: 0.88rem;
+  font-weight: 400;
+  line-height: 1.4;
+  color: $color;
+  text-transform: capitalize;
+}
+
+@mixin body-s($color: vars.$color-black) {
+  font-family: fonts.$font-family;
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-height: 1.8;
+  color: $color;
+  text-transform: capitalize;
+}
+
+@mixin body-xs($color: vars.$color-black) {
+  font-family: fonts.$font-family;
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-height: 1.4;
+  color: $color;
+  text-transform: capitalize;
+}
+
+@mixin caption($color: vars.$color-black) {
+  font-family: fonts.$font-family;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.4;
+  color: $color;
+  text-transform: capitalize;
 }

@@ -1,6 +1,5 @@
+@use '@/styles/mixins' as mixins;
+
 .form {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  align-items: start;
+  @include mixins.center(0);
 }

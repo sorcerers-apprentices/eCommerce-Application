@@ -1,13 +1,7 @@
-type TLabelProperties = {
-  htmlFor?: string
-  children?: React.ReactNode
-  className?: string[]
-}
+import type { LabelHTMLAttributes } from 'react'
 
-export const Label: React.FC<TLabelProperties> = ({ htmlFor, children, className = '' }) => {
-  return (
-    <label htmlFor={htmlFor} className={['label', ...className].join(' ')}>
-      {children}
-    </label>
-  )
+type TLabelProperties = LabelHTMLAttributes<HTMLLabelElement>
+
+export const Label: React.FC<TLabelProperties> = ({ children, ...rest }) => {
+  return <label {...rest}>{children}</label>
 }

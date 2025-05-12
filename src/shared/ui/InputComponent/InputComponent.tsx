@@ -1,64 +1,54 @@
-import { type ChangeEvent, type FC, useState } from 'react'
+import { type InputHTMLAttributes, type FC, useState } from 'react'
 import { Label } from '@/shared/ui/Label/Label.tsx'
-import { Input, type InputType } from '@/shared/ui/InputComponent/Input/Input.tsx'
-//import { Button } from '@/shared/ui/Button/Button.tsx'
+import { Input } from '@/shared/ui/Input/Input'
+import { Button } from '@/shared/ui/Button/Button.tsx'
 import { LuEye, LuEyeClosed } from 'react-icons/lu'
 import s from './InputComponent.module.scss'
 
-export const InputComponent: FC<{
-  name: string
-  label: string
-  type: InputType
-  placeholder?: string
-  errors?: string | null
-  value?: string
-  onChange?: (event: ChangeEvent<HTMLInputElement>) => void
-  required?: boolean
-  isPassword?: boolean
+type InputComponentProperties = InputHTMLAttributes<HTMLInputElement> & {
   allowWhitespaces?: boolean
-}> = ({
+  title: string
+  errors?: string | null
+  isPassword?: boolean
+}
+
+export const InputComponent: FC<InputComponentProperties> = ({
   name,
-  label,
+  title,
   type,
-  placeholder,
   errors = null,
-  value,
-  onChange = Function.prototype,
-  required = true,
   isPassword = false,
-  allowWhitespaces = false,
+  ...rest
 }) => {
   const [showPassword, setShowPassword] = useState(false)
-  const handleChange = (event: ChangeEvent<HTMLInputElement>): void => {
-    onChange(event)
-  }
+  const errorInnerText = errors ? errors : '\u00A0'
 
   return (
     <div className={s.element}>
-      <Label htmlFor={name} className={['form__label']}>
-        {label}
+      <Label htmlFor={name} className={s.label}>
+        {title}
       </Label>
-      <Input
-        value={value}
-        id={name}
-        type={!isPassword ? type : showPassword ? 'text' : 'password'}
-        name={name}
-        allowWhitespaces={allowWhitespaces}
-        onChange={handleChange}
-        required={required}
-        className={[errors ? 'input--error' : '']}
-        placeholder={placeholder}
-      />
-      {errors && <span className="form__error">{errors}</span>}
-      {isPassword && (
-        <button
-          className={s.visibility}
-          type="button"
-          onClick={() => setShowPassword((previous: boolean) => !previous)}
-        >
-          {showPassword ? <LuEye /> : <LuEyeClosed />}
-        </button>
-      )}
+      <div className={s.row}>
+        <Input
+          {...rest}
+          id={name}
+          type={!isPassword ? type : showPassword ? 'text' : 'password'}
+          name={name}
+          className={`${s.input} ${errors ? `${s.input__error}` : ''}`}
+        />
+
+        {isPassword && (
+          <Button
+            noDefaultStyle
+            className={s.visibility}
+            type="button"
+            onClick={() => setShowPassword((previous: boolean) => !previous)}
+          >
+            {showPassword ? <LuEye /> : <LuEyeClosed />}
+          </Button>
+        )}
+      </div>
+      <span className={s.error}>{errorInnerText}</span>
     </div>
   )
 }

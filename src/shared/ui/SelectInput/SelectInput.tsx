@@ -1,54 +1,40 @@
-import { type FC, type ChangeEvent } from 'react'
+import type { SelectHTMLAttributes } from 'react'
+import { type FC } from 'react'
 import { Label } from '@/shared/ui/Label/Label.tsx'
+import s from './SelectInput.module.scss'
 
-type SelectProperties = {
-  name: string
-  label: string
+type TSelectProperties = SelectHTMLAttributes<HTMLSelectElement> & {
   options: string[]
-  value?: string
-  className?: string
-  required?: boolean
-  disabled?: boolean
-  onChange?: (event: ChangeEvent<HTMLSelectElement>) => void
+  title: string
   errors?: string | null
 }
 
-export const SelectInput: FC<SelectProperties> = ({
+export const SelectInput: FC<TSelectProperties> = ({
   name,
-  label,
+  title,
   options = [],
   value,
   required = true,
-  disabled = false,
   errors,
-  onChange = Function.prototype,
+  ...rest
 }) => {
-  const handleChange = (event: ChangeEvent<HTMLSelectElement>): void => {
-    onChange(event)
-  }
-
+  const errorInnerText = errors ? errors : '\u00A0'
   return (
-    <div className="form__item">
-      <Label htmlFor={name} className={['form__label']}>
-        {label}
+    <div className={s.element}>
+      <Label htmlFor={name} className={s.label}>
+        {title}
       </Label>
-      <select
-        id={name}
-        name={name}
-        value={value}
-        className={['input', 'form__input', errors ? 'input--error' : ''].join(' ')}
-        required={required}
-        disabled={disabled}
-        onChange={handleChange}
-      >
-        <option value="">Choose your {name}</option>
+      <select {...rest} id={name} name={name} value={value} className={s.input} required={required}>
+        <option className={s.input} value="">
+          Choose your {name}
+        </option>
         {options.map((option) => (
           <option key={option} value={option}>
             {option}
           </option>
         ))}
       </select>
-      {errors && <span className="form__error">{errors}</span>}
+      <span className={s.error}>{errorInnerText}</span>
     </div>
   )
 }
