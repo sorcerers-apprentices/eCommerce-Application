@@ -16,6 +16,7 @@ import { FormButton } from '@/components/LoginForm/FormButton.tsx'
 import { isCommerceToolsError } from '@/shared/utilities/type-utilities.ts'
 import { SelectInput } from '@/shared/ui/SelectInput/SelectInput.tsx'
 import { InputComponent } from '@/shared/ui/InputComponent/InputComponent.tsx'
+import { Checkbox } from '@/shared/ui/Checkbox/Checkbox.tsx'
 import { useValidate } from '@/shared/hooks/useValidate.tsx'
 import { authApi } from '@/server/auth-api.ts'
 import s from './RegistrationForm.module.scss'
@@ -114,6 +115,8 @@ export const RegistrationForm = (): JSX.Element => {
     setFormData((previous) => ({ ...previous, [name]: { value, touched: true } }))
   }
 
+  const [useSameAddress, setUseSameAddress] = useState(true)
+
   return (
     <Form className={['form', 'section']} onSubmit={onSubmit}>
       <InputComponent
@@ -124,6 +127,15 @@ export const RegistrationForm = (): JSX.Element => {
         placeholder={'example@email.com'}
         errors={errors.email || serverErrors.email}
         onChange={handleChange}
+      />
+      <InputComponent
+        value={formData.password.value}
+        name={'password'}
+        title={'Password'}
+        type={'text'}
+        errors={errors.password || serverErrors.password}
+        onChange={handleChange}
+        isPassword={true}
       />
       <InputComponent
         value={formData.firstName.value}
@@ -153,57 +165,104 @@ export const RegistrationForm = (): JSX.Element => {
         errors={errors.dateOfBirth || serverErrors.dateOfBirth}
         onChange={handleChange}
       />
-
-      <fieldset className={s.form_fieldset}>
-        <SelectInput
-          value={formData.country.value}
-          name={'country'}
-          title={'Country'}
-          options={['United Kingdom', 'Poland', 'Spain']}
-          errors={errors.country || serverErrors.country}
-          onChange={handleChange}
-        />
-        <InputComponent
-          value={formData.city.value}
-          name={'city'}
-          title={'City'}
-          type={'text'}
-          placeholder={'London'}
-          allowWhitespaces={true}
-          errors={errors.city || serverErrors.city}
-          onChange={handleChange}
-        />
-        <InputComponent
-          value={formData.postalCode.value}
-          name={'postalCode'}
-          title={'Postal Code'}
-          type={'text'}
-          placeholder={'221B'}
-          allowWhitespaces={true}
-          errors={errors.postalCode || serverErrors.postalCode}
-          onChange={handleChange}
-        />
-        <InputComponent
-          value={formData.street.value}
-          name={'street'}
-          title={'Street'}
-          type={'text'}
-          placeholder={'Baker Street'}
-          allowWhitespaces={true}
-          errors={errors.street || serverErrors.street}
-          onChange={handleChange}
-        />
-      </fieldset>
-
-      <InputComponent
-        value={formData.password.value}
-        name={'password'}
-        title={'Password'}
-        type={'text'}
-        errors={errors.password || serverErrors.password}
-        onChange={handleChange}
-        isPassword={true}
+      <Checkbox
+        checked={useSameAddress}
+        id={'sameAddress'}
+        title={'Use shipping address as billing'}
+        onChange={(event) => setUseSameAddress(event.target.checked)}
       />
+      <div className={s.addresses}>
+        <fieldset className={s.form_fieldset}>
+          <legend>Shipping Address</legend>
+          <SelectInput
+            value={formData.country.value}
+            name={'country'}
+            title={'Country'}
+            options={['United Kingdom', 'Poland', 'Spain']}
+            errors={errors.country || serverErrors.country}
+            onChange={handleChange}
+          />
+          <InputComponent
+            value={formData.city.value}
+            name={'city'}
+            title={'City'}
+            type={'text'}
+            placeholder={'London'}
+            allowWhitespaces={true}
+            errors={errors.city || serverErrors.city}
+            onChange={handleChange}
+          />
+          <InputComponent
+            value={formData.postalCode.value}
+            name={'postalCode'}
+            title={'Postal Code'}
+            type={'text'}
+            placeholder={'221B'}
+            allowWhitespaces={true}
+            errors={errors.postalCode || serverErrors.postalCode}
+            onChange={handleChange}
+          />
+          <InputComponent
+            value={formData.street.value}
+            name={'street'}
+            title={'Street'}
+            type={'text'}
+            placeholder={'Baker Street'}
+            allowWhitespaces={true}
+            errors={errors.street || serverErrors.street}
+            onChange={handleChange}
+          />
+          {/* <Checkbox
+            checked={defaultShippingAddress}
+            id={'sameAddress'}
+            title={'Use shipping address as billing'}
+            onChange={(event) => setDefaultShippingAddress(event.target.checked)}
+          /> */}
+        </fieldset>
+        {!useSameAddress && (
+          <fieldset className={s.form_fieldset}>
+            <legend>Billing Address</legend>
+            <SelectInput
+              value={formData.country.value}
+              name={'country'}
+              title={'Country'}
+              options={['United Kingdom', 'Poland', 'Spain']}
+              errors={errors.country || serverErrors.country}
+              onChange={handleChange}
+            />
+            <InputComponent
+              value={formData.city.value}
+              name={'city'}
+              title={'City'}
+              type={'text'}
+              placeholder={'London'}
+              allowWhitespaces={true}
+              errors={errors.city || serverErrors.city}
+              onChange={handleChange}
+            />
+            <InputComponent
+              value={formData.postalCode.value}
+              name={'postalCode'}
+              title={'Postal Code'}
+              type={'text'}
+              placeholder={'221B'}
+              allowWhitespaces={true}
+              errors={errors.postalCode || serverErrors.postalCode}
+              onChange={handleChange}
+            />
+            <InputComponent
+              value={formData.street.value}
+              name={'street'}
+              title={'Street'}
+              type={'text'}
+              placeholder={'Baker Street'}
+              allowWhitespaces={true}
+              errors={errors.street || serverErrors.street}
+              onChange={handleChange}
+            />
+          </fieldset>
+        )}
+      </div>
 
       <FormButton value={'Submit'} disabled={!isValid} />
     </Form>
