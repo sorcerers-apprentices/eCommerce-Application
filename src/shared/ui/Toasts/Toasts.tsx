@@ -8,7 +8,7 @@ type ToastProperties = {
   message: string
 }
 
-const toastDisplayTime = 100000
+const toastDisplayTime = 3000
 
 const Toast = (parameter: ToastProperties): ReactElement | null => {
   const [isVisible, setIsVisible] = useState(true)
