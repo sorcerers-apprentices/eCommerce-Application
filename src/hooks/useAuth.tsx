@@ -1,5 +1,6 @@
 import { useUser } from '@/hooks/useUser'
 import { useNavigate } from 'react-router-dom'
+import { anonymousTokenCacheKey } from '@/server/client'
 import { RoutePath } from '@/shared/config/routeConfig/routeConfig'
 import { UserAction } from '@/app/providers/UserProvider/UserReducer'
 
@@ -19,6 +20,7 @@ export const useAuth = (): UseAuthType => {
 
   const logout = (): void => {
     dispatch({ type: UserAction.LOGOUT })
+    localStorage.removeItem(anonymousTokenCacheKey)
   }
 
   return { login, logout }

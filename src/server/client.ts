@@ -120,7 +120,7 @@ const httpMiddlewareOptions: HttpMiddlewareOptions = {
   fetch,
 }
 
-const anonymousTokenCacheKey = 'COMMERCE_TOOLS_ANONYMOUS_TOKEN_CACHE_KEY'
+export const anonymousTokenCacheKey = 'COMMERCE_TOOLS_ANONYMOUS_TOKEN_CACHE_KEY'
 const anonymousTokenCache: TokenCache = {
   get(): TokenStore {
     const tokenStoreJson = localStorage.getItem(anonymousTokenCacheKey)!
