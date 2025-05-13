@@ -10,8 +10,6 @@ const NotFoundPage = (): ReactElement => {
       <h2 className={s.description}>
         Oops!
         <br />I may have chewed up the power code
-        <br />
-        Go back to main page to continue your visit
       </h2>
       <Link to={RoutePath.MAIN} className={s.btn}>
         Back to main page

@@ -1,6 +1,5 @@
 import { type ReactElement } from 'react'
 import AppRouter from '@/app/providers/AppRouter/AppRouter'
-import { Header } from '@/components/Header/Header'
 import { UserProvider } from '@/app/providers/UserProvider/UserProvider'
 import { ProductsProvider } from '@/app/providers/ProductsProvider/ProductsProvider'
 
@@ -9,7 +8,6 @@ function App(): ReactElement {
     <div className="container">
       <UserProvider>
         <ProductsProvider>
-          <Header />
           <AppRouter />
         </ProductsProvider>
       </UserProvider>

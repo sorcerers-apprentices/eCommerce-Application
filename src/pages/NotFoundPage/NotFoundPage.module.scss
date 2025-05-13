@@ -1,8 +1,9 @@
 @use '@/styles/mixins.scss' as mixins;
+@use '@/styles/variables.scss' as vars;
 
 .page {
-  height: 90vh;
-  padding: 5rem;
+  height: 100vh;
+  padding: 5rem 3rem 0.5rem 4rem;
 }
 
 .title {
