@@ -177,7 +177,11 @@
   border: none;
   background: vars.$color-primary;
 
-  @include body-m(vars.$color-white);
+  &:disabled {
+    cursor: default;
+    opacity: 0.5;
+    background-color: vars.$color-primary;
+  }
 
   @media (hover: hover) {
     cursor: pointer;
@@ -187,4 +191,6 @@
       background-color: vars.$color-primary600;
     }
   }
+
+  @include body-m(vars.$color-white);
 }
