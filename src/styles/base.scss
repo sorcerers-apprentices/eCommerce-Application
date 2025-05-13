@@ -29,22 +29,6 @@ html {
   padding: 1rem 5rem;
   background-color: vars.$color-white;
 
-  &-cat {
-    @include mixins.headline-1;
-    @include mixins.right;
-
-    background-color: vars.$color-white;
-    background-image: url('/images/cat.png');
-    background-repeat: no-repeat;
-    background-position: bottom left;
-    background-origin: content-box;
-    background-size: contain;
-
-    &-content {
-      width: 50%;
-    }
-  }
-
   &-dog {
     @include mixins.headline-1;
     @include mixins.left;

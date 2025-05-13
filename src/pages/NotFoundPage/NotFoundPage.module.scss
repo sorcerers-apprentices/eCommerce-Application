@@ -1,9 +1,21 @@
 @use '@/styles/mixins.scss' as mixins;
+@use '@/styles/variables.scss' as vars;
 
-.not-found-page {
-  height: 90vh;
+.page {
+  height: 100vh;
+  padding: 5rem 3rem 0.5rem 4rem;
 }
 
 .title {
-  font-size: 3rem;
+  @include mixins.headline-1;
+}
+
+.description {
+  @include mixins.body-l;
+
+  font-size: 1rem;
+}
+
+.btn {
+  @include mixins.btn;
 }

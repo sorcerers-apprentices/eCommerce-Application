@@ -163,3 +163,34 @@
   color: $color;
   text-transform: capitalize;
 }
+
+@mixin btn {
+  display: flex;
+  display: inline-flex;
+  flex-direction: row;
+  gap: 0.25rem;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  height: 2.5rem;
+  padding: 1rem 2rem;
+  border: none;
+  background: vars.$color-primary;
+
+  &:disabled {
+    cursor: default;
+    opacity: 0.5;
+    background-color: vars.$color-primary;
+  }
+
+  @media (hover: hover) {
+    cursor: pointer;
+    transition: all 0.5s ease;
+
+    &:hover {
+      background-color: vars.$color-primary600;
+    }
+  }
+
+  @include body-m(vars.$color-white);
+}

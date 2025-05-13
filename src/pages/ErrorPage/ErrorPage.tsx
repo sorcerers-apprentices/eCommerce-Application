@@ -8,8 +8,9 @@ const ErrorPage = (): ReactElement => {
   }
 
   return (
-    <div className={`${s.errorPage} container section section-dog`}>
-      <h2>There was an error in the application</h2>
+    <div className={['section-dog', s.page].join(' ')}>
+      <h1 className={s.title}>Error</h1>
+      <h2 className={s.description}>There was an error in the application</h2>
       <Button onClick={refreshPage}>Refresh the page</Button>
     </div>
   )

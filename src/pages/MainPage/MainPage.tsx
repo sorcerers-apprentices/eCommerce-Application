@@ -5,6 +5,7 @@ import { useFetch } from '@/shared/hooks/useFetch'
 import { api } from '@/server/api'
 import { RoutePath } from '@/shared/config/routeConfig/routeConfig'
 import type { ClientResponse, ProductProjectionPagedSearchResponse } from '@commercetools/platform-sdk'
+import { Header } from '@/components/Header/Header'
 import { HeroSection } from '@/components/HeroSection/HeroSection'
 
 const MainPage = (): ReactElement => {
@@ -14,6 +15,7 @@ const MainPage = (): ReactElement => {
 
   return (
     <>
+      <Header />
       <HeroSection />
       <h1>eCommerce Application Products</h1>
       {isLoading && <Loader />}

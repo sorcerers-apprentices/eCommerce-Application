@@ -1,13 +1,12 @@
-import { Link } from 'react-router-dom'
+import { Header } from '@/components/Header/Header'
 import type { ReactElement } from 'react'
-import { RoutePath } from '@/shared/config/routeConfig/routeConfig'
 
 const ProfilePage = (): ReactElement => {
   return (
-    <div>
+    <>
+      <Header />
       <h1>Profile Page</h1>
-      <Link to={RoutePath.MAIN}>Go Home Page</Link>
-    </div>
+    </>
   )
 }
 
