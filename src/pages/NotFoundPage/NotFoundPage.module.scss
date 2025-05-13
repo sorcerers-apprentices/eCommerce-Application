@@ -1,9 +1,20 @@
 @use '@/styles/mixins.scss' as mixins;
 
-.not-found-page {
+.page {
   height: 90vh;
+  padding: 5rem;
 }
 
 .title {
-  font-size: 3rem;
+  @include mixins.headline-1;
+}
+
+.description {
+  @include mixins.body-l;
+
+  font-size: 1rem;
+}
+
+.btn {
+  @include mixins.btn;
 }
