@@ -64,7 +64,6 @@ const createRegistrationClient = (): Client => {
       clientId: environment.CLIENT_ID,
       clientSecret: environment.CLIENT_SECRET,
     },
-    tokenCache: tokenCache,
     scopes: environment.SCOPES,
     fetch,
   }
@@ -105,12 +104,13 @@ const createRefreshClient = (): Client => {
       clientSecret: environment.CLIENT_SECRET,
     },
     refreshToken: tokenCache.get().refreshToken!,
+    tokenCache: tokenCache,
     fetch,
   }
   return new ClientBuilder()
     .withProjectKey(environment.PROJECT_KEY)
     .withHttpMiddleware(httpMiddlewareOptions)
-    .withClientCredentialsFlow(options)
+    .withRefreshTokenFlow(options)
     .build()
 }
 
@@ -120,7 +120,7 @@ const httpMiddlewareOptions: HttpMiddlewareOptions = {
   fetch,
 }
 
-export const anonymousTokenCacheKey = 'COMMERCE_TOOLS_ANONYMOUS_TOKEN_CACHE_KEY'
+const anonymousTokenCacheKey = 'COMMERCE_TOOLS_ANONYMOUS_TOKEN_CACHE_KEY'
 const anonymousTokenCache: TokenCache = {
   get(): TokenStore {
     const tokenStoreJson = localStorage.getItem(anonymousTokenCacheKey)!
@@ -131,8 +131,8 @@ const anonymousTokenCache: TokenCache = {
   },
 }
 
-const tokenCacheKey = 'COMMERCE_TOOLS_TOKEN_CACHE_KEY'
-const tokenCache: TokenCache = {
+export const tokenCacheKey = 'COMMERCE_TOOLS_TOKEN_CACHE_KEY'
+export const tokenCache: TokenCache = {
   get(): TokenStore {
     const tokenStoreJson = localStorage.getItem(tokenCacheKey)!
     return JSON.parse(tokenStoreJson)

@@ -6,9 +6,10 @@ import { isCommerceToolsError } from '@/shared/utilities/type-utilities.ts'
 import { InputComponent } from '@/shared/ui/InputComponent/InputComponent.tsx'
 import { useValidate } from '@/shared/hooks/useValidate.tsx'
 import { validateEmail, validatePassword } from '@/shared/utilities/validation.ts'
-import { authApi } from '@/server/auth-api.ts'
+import { useAuth } from '@/hooks/useAuth.tsx'
 
 export const LoginForm = (): JSX.Element => {
+  const { login } = useAuth()
   const [formData, setFormData] = useState({
     email: { value: '', touched: false },
     password: { value: '', touched: false },
@@ -22,7 +23,7 @@ export const LoginForm = (): JSX.Element => {
   const onSubmit = async (event: FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault()
     try {
-      await authApi.authenticate(formData.email.value, formData.password.value)
+      await login(formData.email.value, formData.password.value)
     } catch (error) {
       if (isCommerceToolsError(error)) {
         const firstError = error.body.errors[0]
