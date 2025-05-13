@@ -4,9 +4,3 @@
 .header {
   @include mixins.flex-row;
 }
-
-.title {
-  @include mixins.headline-1;
-
-  color: vars.$dark-primary;
-}
