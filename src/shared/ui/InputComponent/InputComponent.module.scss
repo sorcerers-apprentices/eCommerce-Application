@@ -31,16 +31,26 @@
   }
 
   &:focus {
-    border-color: vars.$color-primary;
+    border-color: vars.$color-primary200;
     outline: none;
     box-shadow: 0 0 0 1px vars.$color-primary200;
   }
 }
 
-.error {
+.msg {
   color: vars.$state-color-error;
 
   @include mixins.text-m(0.75rem);
+}
+
+.error {
+  border-color: vars.$state-color-error;
+  box-shadow: none;
+
+  &:focus {
+    border-color: vars.$state-color-error;
+    box-shadow: none;
+  }
 }
 
 .visibility {

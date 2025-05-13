@@ -22,6 +22,7 @@ export const InputComponent: FC<InputComponentProperties> = ({
 }) => {
   const [showPassword, setShowPassword] = useState(false)
   const errorInnerText = errors ? errors : '\u00A0'
+  const classes = `${s.input} ${errors ? s.error : ''}`
 
   return (
     <div className={s.element}>
@@ -34,7 +35,7 @@ export const InputComponent: FC<InputComponentProperties> = ({
           id={name}
           type={!isPassword ? type : showPassword ? 'text' : 'password'}
           name={name}
-          className={`${s.input} ${errors ? `${s.input__error}` : ''}`}
+          className={classes}
         />
 
         {isPassword && (
@@ -48,7 +49,7 @@ export const InputComponent: FC<InputComponentProperties> = ({
           </Button>
         )}
       </div>
-      <span className={s.error}>{errorInnerText}</span>
+      <span className={s.msg}>{errorInnerText}</span>
     </div>
   )
 }
