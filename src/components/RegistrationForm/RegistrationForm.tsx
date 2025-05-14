@@ -23,9 +23,9 @@ import s from './RegistrationForm.module.scss'
 import { Toggler } from '@/shared/ui/Toggler/Toggler.tsx'
 
 export const RegistrationForm = (): JSX.Element => {
-  const [useSameAddress, setUseSameAddress] = useState(false)
-  const [useDefaultShippingValue, setDefaultShippingValue] = useState(false)
-  const [useDefaultBillingValue, setDefaultBillingValue] = useState(false)
+  const [sameAddress, setSameAddress] = useState(false)
+  const [defaultShippingValue, setDefaultShippingValue] = useState(false)
+  const [defaultBillingValue, setDefaultBillingValue] = useState(false)
 
   const [formData, setFormData] = useState({
     email: { value: '', touched: false },
@@ -104,8 +104,8 @@ export const RegistrationForm = (): JSX.Element => {
             : formData.shippingCountry.value === 'Poland'
               ? 'PL'
               : 'ES',
-        defaultShippingAddress: useDefaultShippingValue ? 0 : undefined,
-        defaultBillingAddress: useDefaultBillingValue ? 1 : undefined,
+        defaultShippingAddress: defaultShippingValue ? 0 : undefined,
+        defaultBillingAddress: defaultBillingValue ? 1 : undefined,
       })
     } catch (error) {
       if (isCommerceToolsError(error)) {
@@ -148,7 +148,7 @@ export const RegistrationForm = (): JSX.Element => {
   const handleChange = (event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>): void => {
     const { name, value } = event.target
     setFormData((previous) => ({ ...previous, [name]: { value, touched: true } }))
-    if (useSameAddress) {
+    if (sameAddress) {
       switch (name) {
         case 'shippingCity':
           setFormData((previous) => ({ ...previous, ['billingCity']: { value, touched: true } }))
@@ -167,6 +167,7 @@ export const RegistrationForm = (): JSX.Element => {
   }
 
   const handleSameAddress = (sameAddressEnabled: boolean): void => {
+    setSameAddress(sameAddressEnabled)
     if (sameAddressEnabled) {
       formData.billingCountry.value = formData.shippingCountry.value
       formData.billingCity.value = formData.shippingCity.value
@@ -224,12 +225,11 @@ export const RegistrationForm = (): JSX.Element => {
         onChange={handleChange}
       />
       <Checkbox
-        checked={useSameAddress}
+        checked={sameAddress}
         id={'sameAddress'}
         title={'Use shipping address as billing'}
         onChange={(event) => {
           const isChecked = event.target.checked
-          setUseSameAddress(isChecked)
           handleSameAddress(isChecked)
         }}
       />
@@ -276,7 +276,7 @@ export const RegistrationForm = (): JSX.Element => {
           />
           <Toggler
             label={'Set as default shipping address'}
-            onToggle={(event: ChangeEvent<HTMLInputElement>) => {
+            onInput={(event: ChangeEvent<HTMLInputElement>) => {
               const isChecked = event.target.checked
               setDefaultShippingValue(isChecked)
             }}
@@ -297,7 +297,7 @@ export const RegistrationForm = (): JSX.Element => {
             name={'billingCity'}
             title={'City'}
             type={'text'}
-            disabled={useSameAddress}
+            disabled={sameAddress}
             placeholder={'London'}
             allowWhitespaces={true}
             errors={errors.billingCity || serverErrors.billingCity}
@@ -325,7 +325,7 @@ export const RegistrationForm = (): JSX.Element => {
           />
           <Toggler
             label={'Set as default billing address'}
-            onToggle={(event: ChangeEvent<HTMLInputElement>) => {
+            onInput={(event: ChangeEvent<HTMLInputElement>) => {
               const isChecked = event.target.checked
               setDefaultBillingValue(isChecked)
             }}

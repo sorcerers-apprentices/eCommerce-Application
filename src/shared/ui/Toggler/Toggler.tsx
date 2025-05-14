@@ -3,16 +3,15 @@ import './Toggler.scss'
 
 type TogglerProperties = {
   label: string
-  onToggle: (event: ChangeEvent<HTMLInputElement>) => void
-} & Omit<InputHTMLAttributes<HTMLInputElement>, 'onToggle'>
+} & InputHTMLAttributes<HTMLInputElement>
 
-export const Toggler: FC<TogglerProperties> = ({ label, onToggle }: TogglerProperties) => {
+export const Toggler: FC<TogglerProperties> = ({ label, onInput }: TogglerProperties) => {
   const [isChecked, setIsChecked] = useState(false)
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>): void => {
     setIsChecked(!isChecked)
-    if (onToggle) {
-      onToggle(event)
+    if (onInput) {
+      onInput(event)
     }
   }
 
