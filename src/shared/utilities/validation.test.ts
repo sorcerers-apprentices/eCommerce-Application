@@ -7,8 +7,8 @@ import {
   validateFirstName,
   validateLastName,
   validatePassword,
-  validatePostCode,
   validateStreet,
+  createPostalCodeValidator,
 } from './validation.ts'
 
 describe('email validation', () => {
@@ -163,30 +163,29 @@ describe('country validation', () => {
 })
 
 describe('postCode validation', () => {
+  const validator = createPostalCodeValidator('country')
   test('should return error: Choose your country', () => {
-    expect(validatePostCode('56432', { country: { value: '', touched: false } })).toEqual('Choose your country')
-    expect(validatePostCode('56432', { country: { value: '', touched: true } })).toEqual('Choose your country')
+    expect(validator('56432', { country: { value: '', touched: false } })).toEqual('Choose your country')
+    expect(validator('56432', { country: { value: '', touched: true } })).toEqual('Choose your country')
   })
   test('should return error: Post code cannot be empty', () => {
-    expect(validatePostCode('', { country: { value: 'United Kingdom', touched: true } })).toEqual(
-      'Post code cannot be empty'
-    )
+    expect(validator('', { country: { value: 'United Kingdom', touched: true } })).toEqual('Post code cannot be empty')
   })
   test('should return error: Post code of Country must be format', () => {
-    expect(validatePostCode('00-001', { country: { value: 'United Kingdom', touched: true } })).toEqual(
+    expect(validator('00-001', { country: { value: 'United Kingdom', touched: true } })).toEqual(
       'Post code of United Kingdom must be format "W1U 8ED"'
     )
-    expect(validatePostCode('W1U 8ED', { country: { value: 'Poland', touched: true } })).toEqual(
+    expect(validator('W1U 8ED', { country: { value: 'Poland', touched: true } })).toEqual(
       'Post code of Poland must be format "00-001"'
     )
-    expect(validatePostCode('W1U 8ED', { country: { value: 'Spain', touched: true } })).toEqual(
+    expect(validator('W1U 8ED', { country: { value: 'Spain', touched: true } })).toEqual(
       'Post code of Spain must be format "08830"'
     )
   })
   test('should pass validation', () => {
-    expect(validatePostCode('W1U 6AE', { country: { value: 'United Kingdom', touched: true } })).toEqual(null)
-    expect(validatePostCode('01-962', { country: { value: 'Poland', touched: true } })).toEqual(null)
-    expect(validatePostCode('29700', { country: { value: 'Spain', touched: true } })).toEqual(null)
+    expect(validator('W1U 6AE', { country: { value: 'United Kingdom', touched: true } })).toEqual(null)
+    expect(validator('01-962', { country: { value: 'Poland', touched: true } })).toEqual(null)
+    expect(validator('29700', { country: { value: 'Spain', touched: true } })).toEqual(null)
   })
 })
 

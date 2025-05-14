@@ -21,11 +21,20 @@ export type RegistrationParameters = {
   firstName: string
   lastName: string
   dateOfBirth: string
-  street: string
-  city: string
-  postalCode: string
-  country: string
   password: string
+
+  shippingStreet: string
+  shippingCity: string
+  shippingCountry: string
+  shippingPostalCode: string
+
+  billingStreet: string
+  billingCity: string
+  billingCountry: string
+  billingPostalCode: string
+
+  defaultShippingAddress?: number
+  defaultBillingAddress?: number
 }
 
 export const authApi = {
@@ -42,12 +51,20 @@ export const authApi = {
           dateOfBirth: parameters.dateOfBirth,
           addresses: [
             {
-              streetName: parameters.street,
-              city: parameters.city,
-              postalCode: parameters.postalCode,
-              country: parameters.country,
+              streetName: parameters.shippingStreet,
+              city: parameters.shippingCity,
+              postalCode: parameters.shippingPostalCode,
+              country: parameters.shippingCountry,
+            },
+            {
+              streetName: parameters.billingStreet,
+              city: parameters.billingCity,
+              postalCode: parameters.billingPostalCode,
+              country: parameters.billingCountry,
             },
           ],
+          defaultShippingAddress: parameters.defaultShippingAddress,
+          defaultBillingAddress: parameters.defaultBillingAddress,
           password: parameters.password,
         },
       })

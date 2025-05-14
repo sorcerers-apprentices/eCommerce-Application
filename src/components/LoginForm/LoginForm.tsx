@@ -4,7 +4,7 @@ import { type ChangeEvent, type FormEvent, type JSX, useState } from 'react'
 import { ApiErrorCode } from '@/server/api.ts'
 import { isCommerceToolsError } from '@/shared/utilities/type-utilities.ts'
 import { InputComponent } from '@/shared/ui/InputComponent/InputComponent.tsx'
-import { useValidate } from '@/shared/hooks/useValidate.tsx'
+import { useValidate } from '@/hooks/useValidate.tsx'
 import { validateEmail, validatePassword } from '@/shared/utilities/validation.ts'
 import { useAuth } from '@/hooks/useAuth.tsx'
 
