@@ -3,4 +3,10 @@
 
 .header {
   @include mixins.flex-row;
+
+  position: relative;
+}
+
+.logo {
+  max-height: 3rem;
 }
