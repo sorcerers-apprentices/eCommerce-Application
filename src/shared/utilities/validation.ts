@@ -1,4 +1,4 @@
-import type { ValidationData } from '@/shared/hooks/useValidate.tsx'
+import type { ValidationData } from '@/hooks/useValidate.tsx'
 
 export const validateEmail = (email: string): string | null => {
   const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
@@ -98,28 +98,37 @@ export const validateCountry = (country: string): string | null => {
   }
 }
 
-export const validatePostCode = (postCode: string, state: ValidationData): string | null => {
-  if (!state.country.touched || !state.country.value) {
+export const createPostalCodeValidator = (countryFormControlName: string) => {
+  return (postalCode: string, state: ValidationData): string | null =>
+    validatePostalCode(postalCode, state, countryFormControlName)
+}
+
+const validatePostalCode = (
+  postalCode: string,
+  state: ValidationData,
+  countryFormControlName: string
+): string | null => {
+  if (!state[countryFormControlName].touched || !state[countryFormControlName].value) {
     return 'Choose your country'
-  } else if (!postCode.length) {
+  } else if (!postalCode.length) {
     return 'Post code cannot be empty'
-  } else if (state.country.value === 'United Kingdom') {
+  } else if (state[countryFormControlName].value === 'United Kingdom') {
     const regex = /^(GIR\s?0AA|[A-Z]{1,2}\d{1,2}[A-Z]?\s?\d[A-Z]{2})$/
-    if (!regex.test(postCode)) {
+    if (!regex.test(postalCode)) {
       return 'Post code of United Kingdom must be format "W1U 8ED"'
     } else {
       return null
     }
-  } else if (state.country.value === 'Poland') {
+  } else if (state[countryFormControlName].value === 'Poland') {
     const regex = /^\d{2}-\d{3}$/
-    if (!regex.test(postCode)) {
+    if (!regex.test(postalCode)) {
       return 'Post code of Poland must be format "00-001"'
     } else {
       return null
     }
-  } else if (state.country.value === 'Spain') {
+  } else if (state[countryFormControlName].value === 'Spain') {
     const regex = /^(?:0[1-9]|[1-4]\d|5[0-2])\d{3}$/
-    if (!regex.test(postCode)) {
+    if (!regex.test(postalCode)) {
       return 'Post code of Spain must be format "08830"'
     } else {
       return null

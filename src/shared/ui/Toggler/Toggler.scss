@@ -1,0 +1,69 @@
+@use '@/styles/mixins' as mixins;
+@use '@/styles/variables' as vars;
+
+.toggler {
+  position: relative;
+  display: block;
+}
+
+.toggler-input {
+  position: absolute;
+  left: -100vw;
+  opacity: 0;
+}
+
+.toggler-state {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.toggler-control {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 52px;
+  height: 28px;
+  padding: 1px;
+  border: 1px solid vars.$neutral-gray868686;
+  border-radius: 16px;
+}
+
+.toggler-switch {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: vars.$neutral-gray868686;
+  transition: background-color 0.3s ease-out;
+}
+
+.toggler-title {
+  font-family: Inter, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  font-style: normal;
+  line-height: 24px;
+  color: vars.$neutral-gray0c0c0c;
+}
+
+.toggler-input:checked ~ .toggler-state .toggler-control {
+  justify-content: flex-end;
+  border-color: vars.$color-primary;
+  background-color: vars.$color-primary;
+}
+
+.toggler-input:checked ~ .toggler-state .toggler-control .toggler-switch {
+  background-color: vars.$neutral-graydfdfdf;
+}
+
+.toggler-input:focus ~ .toggler-state .toggler-title {
+  text-decoration: underline;
+}
+
+.toggler-input:disabled ~ .toggler-state .toggler-control {
+  background-color: vars.$neutral-gray868686;
+}
+
+.toggler-input:disabled ~ .toggler-state .toggler-control .toggler-switch {
+  background-color: vars.$neutral-gray606060;
+}

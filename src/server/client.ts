@@ -1,9 +1,9 @@
 import {
-  ClientBuilder,
+  type AuthMiddlewareOptions,
   type Client,
+  ClientBuilder,
   type HttpMiddlewareOptions,
   type PasswordAuthMiddlewareOptions,
-  type AuthMiddlewareOptions,
   type RefreshAuthMiddlewareOptions,
   type TokenStore,
 } from '@commercetools/sdk-client-v2'
@@ -15,24 +15,32 @@ import type {
   TokenCache,
 } from '@commercetools/sdk-client-v2/dist/declarations/src/types/sdk'
 
-export const createAnonymousRequestBuilder = (): ByProjectKeyRequestBuilder => {
-  const client = createAnonymousClient()
-  return createApiBuilderFromCtpClient(client).withProjectKey({ projectKey: environment.PROJECT_KEY })
+const anonymousTokenCacheKey = 'COMMERCE_TOOLS_ANONYMOUS_TOKEN_CACHE_KEY'
+const anonymousTokenCache: TokenCache = {
+  get(): TokenStore {
+    const tokenStoreJson = localStorage.getItem(anonymousTokenCacheKey)!
+    return JSON.parse(tokenStoreJson)
+  },
+  set(cache: TokenStore): void {
+    localStorage.setItem(anonymousTokenCacheKey, JSON.stringify(cache))
+  },
 }
 
-export const createRegistrationRequestBuilder = (): ByProjectKeyRequestBuilder => {
-  const client = createRegistrationClient()
-  return createApiBuilderFromCtpClient(client).withProjectKey({ projectKey: environment.PROJECT_KEY })
+const tokenCacheKey = 'COMMERCE_TOOLS_TOKEN_CACHE_KEY'
+const tokenCache: TokenCache = {
+  get(): TokenStore {
+    const tokenStoreJson = localStorage.getItem(tokenCacheKey)!
+    return JSON.parse(tokenStoreJson)
+  },
+  set(cache: TokenStore): void {
+    localStorage.setItem(tokenCacheKey, JSON.stringify(cache))
+  },
 }
 
-export const createPasswordRequestBuilder = (username: string, password: string): ByProjectKeyRequestBuilder => {
-  const client = createPasswordClient(username, password)
-  return createApiBuilderFromCtpClient(client).withProjectKey({ projectKey: environment.PROJECT_KEY })
-}
-
-export const createRefreshBuilder = (): ByProjectKeyRequestBuilder => {
-  const client = createRefreshClient()
-  return createApiBuilderFromCtpClient(client).withProjectKey({ projectKey: environment.PROJECT_KEY })
+// Configure httpMiddlewareOptions
+const httpMiddlewareOptions: HttpMiddlewareOptions = {
+  host: environment.API_URL,
+  fetch,
 }
 
 const createAnonymousClient = (): Client => {
@@ -54,6 +62,51 @@ const createAnonymousClient = (): Client => {
     .withHttpMiddleware(httpMiddlewareOptions)
     .withClientCredentialsFlow(authMiddlewareOptions)
     .build()
+}
+
+const createAnonymousRequestBuilder = (): ByProjectKeyRequestBuilder => {
+  const client = createAnonymousClient()
+  return createApiBuilderFromCtpClient(client).withProjectKey({ projectKey: environment.PROJECT_KEY })
+}
+
+let anonymousBuilder: ByProjectKeyRequestBuilder = createAnonymousRequestBuilder()
+let refreshBuilder: ByProjectKeyRequestBuilder | undefined
+
+export const builder = (): ByProjectKeyRequestBuilder => {
+  if (refreshBuilder) {
+    return refreshBuilder
+  }
+  if (getRefreshToken()) {
+    refreshBuilder = createRefreshBuilder()
+    return refreshBuilder
+  }
+  return anonymousBuilder
+}
+
+export const resetClients = (): void => {
+  localStorage.removeItem(tokenCacheKey)
+  refreshBuilder = undefined
+  localStorage.removeItem(anonymousTokenCacheKey)
+  anonymousBuilder = createAnonymousRequestBuilder()
+}
+
+export const getRefreshToken = (): string | undefined => {
+  return tokenCache.get()?.refreshToken
+}
+
+export const createRegistrationRequestBuilder = (): ByProjectKeyRequestBuilder => {
+  const client = createRegistrationClient()
+  return createApiBuilderFromCtpClient(client).withProjectKey({ projectKey: environment.PROJECT_KEY })
+}
+
+export const createPasswordRequestBuilder = (username: string, password: string): ByProjectKeyRequestBuilder => {
+  const client = createPasswordClient(username, password)
+  return createApiBuilderFromCtpClient(client).withProjectKey({ projectKey: environment.PROJECT_KEY })
+}
+
+export const createRefreshBuilder = (): ByProjectKeyRequestBuilder => {
+  const client = createRefreshClient()
+  return createApiBuilderFromCtpClient(client).withProjectKey({ projectKey: environment.PROJECT_KEY })
 }
 
 const createRegistrationClient = (): Client => {
@@ -112,32 +165,4 @@ const createRefreshClient = (): Client => {
     .withHttpMiddleware(httpMiddlewareOptions)
     .withRefreshTokenFlow(options)
     .build()
-}
-
-// Configure httpMiddlewareOptions
-const httpMiddlewareOptions: HttpMiddlewareOptions = {
-  host: environment.API_URL,
-  fetch,
-}
-
-const anonymousTokenCacheKey = 'COMMERCE_TOOLS_ANONYMOUS_TOKEN_CACHE_KEY'
-const anonymousTokenCache: TokenCache = {
-  get(): TokenStore {
-    const tokenStoreJson = localStorage.getItem(anonymousTokenCacheKey)!
-    return JSON.parse(tokenStoreJson)
-  },
-  set(cache: TokenStore): void {
-    localStorage.setItem(anonymousTokenCacheKey, JSON.stringify(cache))
-  },
-}
-
-export const tokenCacheKey = 'COMMERCE_TOOLS_TOKEN_CACHE_KEY'
-export const tokenCache: TokenCache = {
-  get(): TokenStore {
-    const tokenStoreJson = localStorage.getItem(tokenCacheKey)!
-    return JSON.parse(tokenStoreJson)
-  },
-  set(cache: TokenStore): void {
-    localStorage.setItem(tokenCacheKey, JSON.stringify(cache))
-  },
 }
