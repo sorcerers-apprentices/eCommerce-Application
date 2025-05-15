@@ -10,6 +10,7 @@ type RoutePropertiesType = {
   path: RoutePath
   element: ReactElement
   onlyAuth?: boolean
+  onlyGuest?: boolean
 }
 
 export enum RoutePath {
@@ -29,6 +30,7 @@ export const routeConfig: RoutePropertiesType[] = [
   {
     path: RoutePath.LOGIN,
     element: <LoginPageAsync />,
+    onlyGuest: true,
   },
   {
     path: RoutePath.REGISTRATION,

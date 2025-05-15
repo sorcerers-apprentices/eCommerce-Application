@@ -10,8 +10,14 @@ const AppRouter = (): ReactElement => {
   return (
     <Suspense fallback={<Loader />}>
       <Routes>
-        {routeConfig.map(({ path, element, onlyAuth }) => {
-          const page = onlyAuth && !state.isAuth ? <Navigate to={RoutePath.LOGIN} replace /> : element
+        {routeConfig.map(({ path, element, onlyAuth, onlyGuest }) => {
+          let page = element
+
+          if (onlyAuth && !state.isAuth) {
+            page = <Navigate to={RoutePath.LOGIN} replace />
+          } else if (onlyGuest && state.isAuth) {
+            page = <Navigate to={RoutePath.MAIN} replace />
+          }
 
           return <Route path={path} element={page} />
         })}
