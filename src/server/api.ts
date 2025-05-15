@@ -1,5 +1,5 @@
 import type { ClientResponse, ProductProjectionPagedSearchResponse } from '@commercetools/platform-sdk'
-import { builder } from '@/server/auth-api.ts'
+import { builder } from '@/server/client.ts'
 
 export enum ApiErrorCode {
   INVALID_CUSTOMER_ACCOUNT_CREDENTIALS = 'invalid_customer_account_credentials',
