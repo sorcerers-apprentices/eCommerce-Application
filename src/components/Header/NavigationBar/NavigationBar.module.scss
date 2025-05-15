@@ -1,7 +1,15 @@
 .navbar {
   display: flex;
   flex-direction: row;
-  gap: 2.75rem;
+  gap: 1.5rem;
   align-items: flex-start;
   justify-content: flex-start;
+}
+
+.link {
+  border-bottom: 2px solid transparent;
+
+  &:hover {
+    border-bottom: 2px solid red;
+  }
 }

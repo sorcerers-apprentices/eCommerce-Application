@@ -2,11 +2,12 @@
 @use '@/styles/mixins.scss' as mixins;
 
 .header {
+  position: relative;
+  height: 5rem;
+
   @include mixins.flex-row;
 }
 
-.title {
-  @include mixins.headline-1;
-
-  color: vars.$dark-primary;
+.logo {
+  max-height: 4rem;
 }
