@@ -288,6 +288,7 @@ export const RegistrationForm = (): JSX.Element => {
             value={formData.billingCountry.value}
             name={'billingCountry'}
             title={'Country'}
+            disabled={sameAddress}
             options={['United Kingdom', 'Poland', 'Spain']}
             errors={errors.billingCountry || serverErrors.billingCountry}
             onChange={handleChange}
@@ -308,6 +309,7 @@ export const RegistrationForm = (): JSX.Element => {
             name={'billingPostalCode'}
             title={'Postal Code'}
             type={'text'}
+            disabled={sameAddress}
             placeholder={'221B'}
             allowWhitespaces={true}
             errors={errors.billingPostalCode || serverErrors.billingPostalCode}
@@ -318,6 +320,7 @@ export const RegistrationForm = (): JSX.Element => {
             name={'billingStreet'}
             title={'Street'}
             type={'text'}
+            disabled={sameAddress}
             placeholder={'Baker Street'}
             allowWhitespaces={true}
             errors={errors.billingStreet || serverErrors.billingStreet}
