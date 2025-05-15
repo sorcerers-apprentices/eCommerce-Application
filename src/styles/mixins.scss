@@ -31,37 +31,37 @@
   }
 }
 
-@mixin flex-row($gap: 2rem) {
+@mixin flex-row($g: 2rem) {
   display: flex;
   flex-direction: row;
-  gap: $gap;
+  gap: $g;
   align-items: center;
   justify-content: space-between;
 }
 
-@mixin center($gap: 2rem) {
+@mixin center($g: 2rem) {
   display: flex;
   flex-direction: column;
-  gap: $gap;
+  gap: $g;
   align-items: center;
   justify-content: center;
   margin: 0 auto;
   text-align: center;
 }
 
-@mixin left($gap: 2rem) {
+@mixin left($g: 2rem) {
   display: flex;
   flex-direction: column;
-  gap: $gap;
+  gap: $g;
   align-items: flex-start;
   justify-content: start;
   text-align: left;
 }
 
-@mixin right($gap: 2rem) {
+@mixin right($g: 2rem) {
   display: flex;
   flex-direction: column;
-  gap: $gap;
+  gap: $g;
   align-items: flex-end;
   justify-content: end;
   text-align: right;
@@ -74,98 +74,96 @@
   line-height: 1.5;
 }
 
-@mixin headline-1($color: vars.$color-black) {
+@mixin headline-1($c: vars.$color-black) {
   font-family: fonts.$font-family;
   font-size: 1.5rem;
   font-weight: 700;
   line-height: 1.4;
-  color: $color;
+  color: $c;
   text-transform: capitalize;
 }
 
-@mixin headline-2($color: vars.$color-black) {
+@mixin headline-2($c: vars.$color-black) {
   font-family: fonts.$font-family;
   font-size: 1.25rem;
   font-weight: 700;
   line-height: 1.4;
-  color: $color;
+  color: $c;
   text-transform: capitalize;
 }
 
-@mixin headline-3($color: vars.$color-black) {
+@mixin headline-3($c: vars.$color-black) {
   font-family: fonts.$font-family;
   font-size: 1rem;
   font-weight: 700;
   line-height: 1.4;
-  color: $color;
+  color: $c;
   text-transform: capitalize;
 }
 
-@mixin headline-4($color: vars.$color-black) {
+@mixin headline-4($c: vars.$color-black) {
   font-family: fonts.$font-family;
   font-size: 0.88rem;
   font-weight: 700;
   line-height: 1.4;
-  color: $color;
+  color: $c;
   text-transform: capitalize;
 }
 
-@mixin headline-5($color: vars.$color-black) {
+@mixin headline-5($c: vars.$color-black) {
   font-family: fonts.$font-family;
   font-size: 0.75rem;
   font-weight: 700;
   line-height: 1.4;
-  color: $color;
+  color: $c;
   text-transform: capitalize;
 }
 
-@mixin body-l($color: vars.$color-black) {
+@mixin body-l($c: vars.$color-black) {
   font-family: fonts.$font-family;
   font-size: 0.88rem;
   font-weight: 400;
   line-height: 1.8;
-  color: $color;
+  color: $c;
   text-transform: capitalize;
 }
 
-@mixin body-m($color: vars.$color-black) {
+@mixin body-m($c: vars.$color-black) {
   font-family: fonts.$font-family;
   font-size: 0.88rem;
   font-weight: 400;
   line-height: 1.4;
-  color: $color;
+  color: $c;
   text-transform: capitalize;
 }
 
-@mixin body-s($color: vars.$color-black) {
+@mixin body-s($c: vars.$color-black) {
   font-family: fonts.$font-family;
   font-size: 0.75rem;
   font-weight: 400;
   line-height: 1.8;
-  color: $color;
+  color: $c;
   text-transform: capitalize;
 }
 
-@mixin body-xs($color: vars.$color-black) {
+@mixin body-xs($c: vars.$color-black) {
   font-family: fonts.$font-family;
   font-size: 0.75rem;
   font-weight: 400;
-  line-height: 1.4;
-  color: $color;
+  color: $c;
   text-transform: capitalize;
 }
 
-@mixin caption($color: vars.$color-black) {
+@mixin caption($c: vars.$color-black) {
   font-family: fonts.$font-family;
   font-size: 0.75rem;
   font-weight: 600;
   line-height: 1.4;
-  color: $color;
+  color: $c;
   text-transform: capitalize;
 }
 
 @mixin btn {
-  display: flex;
   display: inline-flex;
   flex-direction: row;
   gap: 0.25rem;
@@ -176,6 +174,8 @@
   padding: 1rem 2rem;
   border: none;
   background: vars.$color-primary;
+
+  @include body-m(vars.$color-white);
 
   &:disabled {
     cursor: default;
@@ -188,9 +188,7 @@
     transition: all 0.5s ease;
 
     &:hover {
-      background-color: vars.$color-primary600;
+      background-color: vars.$color-primary;
     }
   }
-
-  @include body-m(vars.$color-white);
 }
