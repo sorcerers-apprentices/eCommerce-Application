@@ -91,7 +91,7 @@ export const resetClients = (): void => {
 }
 
 export const getRefreshToken = (): string | undefined => {
-  return tokenCache.get().refreshToken
+  return tokenCache.get()?.refreshToken
 }
 
 export const createRegistrationRequestBuilder = (): ByProjectKeyRequestBuilder => {
