@@ -2,6 +2,7 @@ import type { RouteProps } from 'react-router-dom'
 import NotFoundPage from '@/pages/NotFoundPage/NotFoundPage'
 import { MainPageAsync } from '@/pages/MainPage/MainPage.async'
 import { LoginPageAsync } from '@/pages/LoginPage/LoginPage.async'
+import { AboutPageAsync } from '@/pages/AboutPage/AboutPage.async'
 import { ProfilePageAsync } from '@/pages/ProfilePage/ProfilePage.async'
 import { RegistrationPageAsync } from '@/pages/RegistrationPage/RegistrationPage.async'
 
@@ -10,6 +11,7 @@ export enum RoutePath {
   LOGIN = '/login',
   REGISTRATION = '/registration',
   PROFILE = '/profile',
+  ABOUT = '/about',
   NOT_FOUND = '*',
 }
 
@@ -29,6 +31,10 @@ export const routeConfig: RouteProps[] = [
   {
     path: RoutePath.PROFILE,
     element: <ProfilePageAsync />,
+  },
+  {
+    path: RoutePath.ABOUT,
+    element: <AboutPageAsync />,
   },
   {
     path: RoutePath.NOT_FOUND,

@@ -5,10 +5,12 @@ import s from './NavigationBar.module.scss'
 export const NavigationBar = (): ReactElement => {
   return (
     <nav className={s.navbar}>
-      <NavLink to={RoutePath.MAIN}>Main</NavLink>
-      <NavLink to={RoutePath.LOGIN}>Login</NavLink>
-      <NavLink to={RoutePath.REGISTRATION}>Registration</NavLink>
-      <NavLink to={RoutePath.PROFILE}>Profile</NavLink>
+      <NavLink to={RoutePath.MAIN} className={s.link}>
+        Main
+      </NavLink>
+      <NavLink to={RoutePath.ABOUT} className={s.link}>
+        About
+      </NavLink>
     </nav>
   )
 }

@@ -10,10 +10,14 @@
   gap: 1rem;
   align-items: center;
   justify-content: start;
-  width: 25rem;
-  height: 40rem;
-  padding: 0.5rem;
+  padding: 5rem 2rem;
   border: 1px solid #ddd;
   background-color: white;
   box-shadow: 0 4px 6px rgb(0 0 0 / 10%);
+}
+
+.button {
+  width: 10rem;
+
+  @include mixins.btn;
 }

@@ -5,3 +5,11 @@
   align-items: flex-start;
   justify-content: flex-start;
 }
+
+.link {
+  border-bottom: 2px solid transparent;
+
+  &:hover {
+    border-bottom: 2px solid red;
+  }
+}
