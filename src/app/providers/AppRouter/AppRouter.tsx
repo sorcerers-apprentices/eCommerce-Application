@@ -1,15 +1,20 @@
+import { useUser } from '@/hooks/useUser'
 import Loader from '@/shared/ui/Loader/Loader'
-import { Route, Routes } from 'react-router-dom'
 import { type ReactElement, Suspense } from 'react'
-import { routeConfig } from '@/shared/config/routeConfig/routeConfig'
+import { Navigate, Route, Routes } from 'react-router-dom'
+import { routeConfig, RoutePath } from '@/shared/config/routeConfig/routeConfig'
 
 const AppRouter = (): ReactElement => {
+  const { state } = useUser()
+
   return (
     <Suspense fallback={<Loader />}>
       <Routes>
-        {routeConfig.map(({ element, path }) => (
-          <Route element={element} path={path} />
-        ))}
+        {routeConfig.map(({ path, element, onlyAuth }) => {
+          const page = onlyAuth && !state.isAuth ? <Navigate to={RoutePath.LOGIN} replace /> : element
+
+          return <Route path={path} element={page} />
+        })}
       </Routes>
     </Suspense>
   )

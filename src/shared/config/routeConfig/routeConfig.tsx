@@ -1,10 +1,16 @@
-import type { RouteProps } from 'react-router-dom'
+import type { ReactElement } from 'react'
 import NotFoundPage from '@/pages/NotFoundPage/NotFoundPage'
 import { MainPageAsync } from '@/pages/MainPage/MainPage.async'
 import { LoginPageAsync } from '@/pages/LoginPage/LoginPage.async'
 import { AboutPageAsync } from '@/pages/AboutPage/AboutPage.async'
 import { ProfilePageAsync } from '@/pages/ProfilePage/ProfilePage.async'
 import { RegistrationPageAsync } from '@/pages/RegistrationPage/RegistrationPage.async'
+
+type RoutePropertiesType = {
+  path: RoutePath
+  element: ReactElement
+  onlyAuth?: boolean
+}
 
 export enum RoutePath {
   MAIN = '/',
@@ -15,7 +21,7 @@ export enum RoutePath {
   NOT_FOUND = '*',
 }
 
-export const routeConfig: RouteProps[] = [
+export const routeConfig: RoutePropertiesType[] = [
   {
     path: RoutePath.MAIN,
     element: <MainPageAsync />,
@@ -31,6 +37,7 @@ export const routeConfig: RouteProps[] = [
   {
     path: RoutePath.PROFILE,
     element: <ProfilePageAsync />,
+    onlyAuth: true,
   },
   {
     path: RoutePath.ABOUT,
