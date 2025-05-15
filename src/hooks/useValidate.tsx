@@ -28,7 +28,7 @@ export const useValidate = (
 
   const validate = (key: string): void => {
     const value = state[key].value
-    for (const validator of validators[key]) {
+    for (const validator of validators[key] || []) {
       const error = validator(value, state)
       if (error) {
         setErrors((previous) => ({ ...previous, [key]: error }))

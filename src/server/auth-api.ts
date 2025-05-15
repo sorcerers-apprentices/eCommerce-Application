@@ -1,35 +1,37 @@
 import {
-  createAnonymousRequestBuilder,
   createPasswordRequestBuilder,
-  createRefreshBuilder,
   createRegistrationRequestBuilder,
-  tokenCache,
-  tokenCacheKey,
+  getRefreshToken,
+  resetClients,
 } from '@/server/client'
 import type { ClientResponse } from '@commercetools/platform-sdk'
 import type { CustomerSignInResult } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/customer'
-import type { ByProjectKeyRequestBuilder } from '@commercetools/platform-sdk/dist/declarations/src/generated/client/by-project-key-request-builder'
 import { environment } from '@/app/types/environment.ts'
-
-let anonymousBuilder: ByProjectKeyRequestBuilder = createAnonymousRequestBuilder()
-let refreshBuilder: ByProjectKeyRequestBuilder | undefined
-
-export const builder = (): ByProjectKeyRequestBuilder => refreshBuilder || anonymousBuilder
 
 export type RegistrationParameters = {
   email: string
   firstName: string
   lastName: string
   dateOfBirth: string
-  street: string
-  city: string
-  postalCode: string
-  country: string
   password: string
+
+  shippingStreet: string
+  shippingCity: string
+  shippingCountry: string
+  shippingPostalCode: string
+
+  billingStreet: string
+  billingCity: string
+  billingCountry: string
+  billingPostalCode: string
+
+  defaultShippingAddress?: number
+  defaultBillingAddress?: number
 }
 
 export const authApi = {
   register: async (parameters: RegistrationParameters): Promise<ClientResponse<CustomerSignInResult>> => {
+    resetClients()
     const registrationBuilder = createRegistrationRequestBuilder()
     await registrationBuilder
       .me()
@@ -42,12 +44,20 @@ export const authApi = {
           dateOfBirth: parameters.dateOfBirth,
           addresses: [
             {
-              streetName: parameters.street,
-              city: parameters.city,
-              postalCode: parameters.postalCode,
-              country: parameters.country,
+              streetName: parameters.shippingStreet,
+              city: parameters.shippingCity,
+              postalCode: parameters.shippingPostalCode,
+              country: parameters.shippingCountry,
+            },
+            {
+              streetName: parameters.billingStreet,
+              city: parameters.billingCity,
+              postalCode: parameters.billingPostalCode,
+              country: parameters.billingCountry,
             },
           ],
+          defaultShippingAddress: parameters.defaultShippingAddress,
+          defaultBillingAddress: parameters.defaultBillingAddress,
           password: parameters.password,
         },
       })
@@ -55,19 +65,18 @@ export const authApi = {
     return authApi.authenticate(parameters.email, parameters.password)
   },
   authenticate: async (email: string, password: string): Promise<ClientResponse<CustomerSignInResult>> => {
+    resetClients()
     const passwordBuilder = createPasswordRequestBuilder(email, password)
-    const authenticationResult = await passwordBuilder
+    return await passwordBuilder
       .me()
       .login()
       .post({
         body: { email, password },
       })
       .execute()
-    refreshBuilder = createRefreshBuilder()
-    return authenticationResult
   },
   logout: async (): Promise<void> => {
-    const refreshToken = tokenCache.get().refreshToken
+    const refreshToken = getRefreshToken()
     if (refreshToken) {
       await fetch(`${environment.AUTH_URL}/oauth/token/revoke`, {
         method: 'POST',
@@ -80,8 +89,6 @@ export const authApi = {
         }),
       })
     }
-    refreshBuilder = undefined
-    localStorage.removeItem(tokenCacheKey)
-    anonymousBuilder = createAnonymousRequestBuilder()
+    resetClients()
   },
 }

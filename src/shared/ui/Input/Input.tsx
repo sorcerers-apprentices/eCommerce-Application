@@ -1,7 +1,5 @@
 import type { FC, KeyboardEvent, InputHTMLAttributes } from 'react'
 
-export type InputType = 'text' | 'email' | 'password' | 'number' | 'search' | 'tel' | 'url' | 'date'
-
 type TInputProperties = InputHTMLAttributes<HTMLInputElement> & {
   allowWhitespaces?: boolean
 }

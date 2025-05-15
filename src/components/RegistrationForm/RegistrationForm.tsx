@@ -9,40 +9,55 @@ import {
   validateFirstName,
   validateLastName,
   validatePassword,
-  validatePostCode,
   validateStreet,
+  createPostalCodeValidator,
 } from '@/shared/utilities/validation.ts'
 import { FormButton } from '@/components/LoginForm/FormButton.tsx'
 import { isCommerceToolsError } from '@/shared/utilities/type-utilities.ts'
 import { SelectInput } from '@/shared/ui/SelectInput/SelectInput.tsx'
 import { InputComponent } from '@/shared/ui/InputComponent/InputComponent.tsx'
 import { Checkbox } from '@/shared/ui/Checkbox/Checkbox.tsx'
-import { useValidate } from '@/shared/hooks/useValidate.tsx'
+import { useValidate } from '@/hooks/useValidate.tsx'
 import { authApi } from '@/server/auth-api.ts'
 import s from './RegistrationForm.module.scss'
+import { Toggler } from '@/shared/ui/Toggler/Toggler.tsx'
 
 export const RegistrationForm = (): JSX.Element => {
+  const [sameAddress, setSameAddress] = useState(false)
+  const [defaultShippingValue, setDefaultShippingValue] = useState(false)
+  const [defaultBillingValue, setDefaultBillingValue] = useState(false)
+
   const [formData, setFormData] = useState({
     email: { value: '', touched: false },
     firstName: { value: '', touched: false },
     lastName: { value: '', touched: false },
     dateOfBirth: { value: '', touched: false },
-    country: { value: '', touched: false },
-    city: { value: '', touched: false },
-    postalCode: { value: '', touched: false },
-    street: { value: '', touched: false },
     password: { value: '', touched: false },
+
+    shippingCountry: { value: '', touched: false },
+    shippingCity: { value: '', touched: false },
+    shippingPostalCode: { value: '', touched: false },
+    shippingStreet: { value: '', touched: false },
+
+    billingCountry: { value: '', touched: false },
+    billingCity: { value: '', touched: false },
+    billingPostalCode: { value: '', touched: false },
+    billingStreet: { value: '', touched: false },
   })
   const [serverErrors, setServerErrors] = useState<{
     email?: string
     firstName?: string
     lastName?: string
     dateOfBirth?: string
-    country?: string
-    city?: string
-    postalCode?: string
-    street?: string
     password?: string
+    shippingCountry?: string
+    shippingCity?: string
+    shippingPostalCode?: string
+    shippingStreet?: string
+    billingCountry?: string
+    billingCity?: string
+    billingPostalCode?: string
+    billingStreet?: string
   }>({})
 
   const { errors, isValid } = useValidate(formData, {
@@ -50,11 +65,15 @@ export const RegistrationForm = (): JSX.Element => {
     firstName: [validateFirstName],
     lastName: [validateLastName],
     dateOfBirth: [validateBirthDate],
-    country: [validateCountry],
-    city: [validateCity],
-    postalCode: [validatePostCode],
-    street: [validateStreet],
     password: [validatePassword],
+    shippingCountry: [validateCountry],
+    shippingCity: [validateCity],
+    shippingPostalCode: [createPostalCodeValidator('shippingCountry')],
+    shippingStreet: [validateStreet],
+    billingCountry: [validateCountry],
+    billingCity: [validateCity],
+    billingPostalCode: [createPostalCodeValidator('billingCountry')],
+    billingStreet: [validateStreet],
   })
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>): Promise<void> => {
@@ -66,11 +85,27 @@ export const RegistrationForm = (): JSX.Element => {
         firstName: formData.firstName.value,
         lastName: formData.lastName.value,
         dateOfBirth: formData.dateOfBirth.value,
-        street: formData.street.value,
-        city: formData.city.value,
-        postalCode: formData.postalCode.value,
-        country: formData.country.value === 'United Kingdom' ? 'UK' : formData.country.value === 'Poland' ? 'PL' : 'ES',
         password: formData.password.value,
+        shippingStreet: formData.shippingStreet.value,
+        shippingCity: formData.shippingCity.value,
+        shippingPostalCode: formData.shippingPostalCode.value,
+        shippingCountry:
+          formData.shippingCountry.value === 'United Kingdom'
+            ? 'UK'
+            : formData.shippingCountry.value === 'Poland'
+              ? 'PL'
+              : 'ES',
+        billingStreet: formData.shippingStreet.value,
+        billingCity: formData.shippingCity.value,
+        billingPostalCode: formData.shippingPostalCode.value,
+        billingCountry:
+          formData.shippingCountry.value === 'United Kingdom'
+            ? 'UK'
+            : formData.shippingCountry.value === 'Poland'
+              ? 'PL'
+              : 'ES',
+        defaultShippingAddress: defaultShippingValue ? 0 : undefined,
+        defaultBillingAddress: defaultBillingValue ? 1 : undefined,
       })
     } catch (error) {
       if (isCommerceToolsError(error)) {
@@ -113,9 +148,33 @@ export const RegistrationForm = (): JSX.Element => {
   const handleChange = (event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>): void => {
     const { name, value } = event.target
     setFormData((previous) => ({ ...previous, [name]: { value, touched: true } }))
+    if (sameAddress) {
+      switch (name) {
+        case 'shippingCity':
+          setFormData((previous) => ({ ...previous, ['billingCity']: { value, touched: true } }))
+          break
+        case 'shippingCountry':
+          setFormData((previous) => ({ ...previous, ['billingCountry']: { value, touched: true } }))
+          break
+        case 'shippingPostalCode':
+          setFormData((previous) => ({ ...previous, ['billingPostalCode']: { value, touched: true } }))
+          break
+        case 'shippingStreet':
+          setFormData((previous) => ({ ...previous, ['billingStreet']: { value, touched: true } }))
+          break
+      }
+    }
   }
 
-  const [useSameAddress, setUseSameAddress] = useState(true)
+  const handleSameAddress = (sameAddressEnabled: boolean): void => {
+    setSameAddress(sameAddressEnabled)
+    if (sameAddressEnabled) {
+      formData.billingCountry.value = formData.shippingCountry.value
+      formData.billingCity.value = formData.shippingCity.value
+      formData.billingPostalCode.value = formData.shippingPostalCode.value
+      formData.billingStreet.value = formData.shippingStreet.value
+    }
+  }
 
   return (
     <Form className={['form', 'section']} onSubmit={onSubmit}>
@@ -166,102 +225,112 @@ export const RegistrationForm = (): JSX.Element => {
         onChange={handleChange}
       />
       <Checkbox
-        checked={useSameAddress}
+        checked={sameAddress}
         id={'sameAddress'}
         title={'Use shipping address as billing'}
-        onChange={(event) => setUseSameAddress(event.target.checked)}
+        onChange={(event) => {
+          const isChecked = event.target.checked
+          handleSameAddress(isChecked)
+        }}
       />
       <div className={s.addresses}>
         <fieldset className={s.form_fieldset}>
           <legend>Shipping Address</legend>
           <SelectInput
-            value={formData.country.value}
-            name={'country'}
+            value={formData.shippingCountry.value}
+            name={'shippingCountry'}
             title={'Country'}
             options={['United Kingdom', 'Poland', 'Spain']}
-            errors={errors.country || serverErrors.country}
+            errors={errors.shippingCountry || serverErrors.shippingCountry}
             onChange={handleChange}
           />
           <InputComponent
-            value={formData.city.value}
-            name={'city'}
+            value={formData.shippingCity.value}
+            name={'shippingCity'}
             title={'City'}
             type={'text'}
             placeholder={'London'}
             allowWhitespaces={true}
-            errors={errors.city || serverErrors.city}
+            errors={errors.shippingCity || serverErrors.shippingCity}
             onChange={handleChange}
           />
           <InputComponent
-            value={formData.postalCode.value}
-            name={'postalCode'}
+            value={formData.shippingPostalCode.value}
+            name={'shippingPostalCode'}
             title={'Postal Code'}
             type={'text'}
             placeholder={'221B'}
             allowWhitespaces={true}
-            errors={errors.postalCode || serverErrors.postalCode}
+            errors={errors.shippingPostalCode || serverErrors.shippingPostalCode}
             onChange={handleChange}
           />
           <InputComponent
-            value={formData.street.value}
-            name={'street'}
+            value={formData.shippingStreet.value}
+            name={'shippingStreet'}
             title={'Street'}
             type={'text'}
             placeholder={'Baker Street'}
             allowWhitespaces={true}
-            errors={errors.street || serverErrors.street}
+            errors={errors.shippingStreet || serverErrors.shippingStreet}
             onChange={handleChange}
           />
-          {/* <Checkbox
-            checked={defaultShippingAddress}
-            id={'sameAddress'}
-            title={'Use shipping address as billing'}
-            onChange={(event) => setDefaultShippingAddress(event.target.checked)}
-          /> */}
+          <Toggler
+            label={'Set as default shipping address'}
+            onInput={(event: ChangeEvent<HTMLInputElement>) => {
+              const isChecked = event.target.checked
+              setDefaultShippingValue(isChecked)
+            }}
+          />
         </fieldset>
-        {!useSameAddress && (
-          <fieldset className={s.form_fieldset}>
-            <legend>Billing Address</legend>
-            <SelectInput
-              value={formData.country.value}
-              name={'country'}
-              title={'Country'}
-              options={['United Kingdom', 'Poland', 'Spain']}
-              errors={errors.country || serverErrors.country}
-              onChange={handleChange}
-            />
-            <InputComponent
-              value={formData.city.value}
-              name={'city'}
-              title={'City'}
-              type={'text'}
-              placeholder={'London'}
-              allowWhitespaces={true}
-              errors={errors.city || serverErrors.city}
-              onChange={handleChange}
-            />
-            <InputComponent
-              value={formData.postalCode.value}
-              name={'postalCode'}
-              title={'Postal Code'}
-              type={'text'}
-              placeholder={'221B'}
-              allowWhitespaces={true}
-              errors={errors.postalCode || serverErrors.postalCode}
-              onChange={handleChange}
-            />
-            <InputComponent
-              value={formData.street.value}
-              name={'street'}
-              title={'Street'}
-              type={'text'}
-              placeholder={'Baker Street'}
-              allowWhitespaces={true}
-              errors={errors.street || serverErrors.street}
-              onChange={handleChange}
-            />
-          </fieldset>
-        )}
+        <fieldset className={s.form_fieldset}>
+          <legend>Billing Address</legend>
+          <SelectInput
+            value={formData.billingCountry.value}
+            name={'billingCountry'}
+            title={'Country'}
+            options={['United Kingdom', 'Poland', 'Spain']}
+            errors={errors.billingCountry || serverErrors.billingCountry}
+            onChange={handleChange}
+          />
+          <InputComponent
+            value={formData.billingCity.value}
+            name={'billingCity'}
+            title={'City'}
+            type={'text'}
+            disabled={sameAddress}
+            placeholder={'London'}
+            allowWhitespaces={true}
+            errors={errors.billingCity || serverErrors.billingCity}
+            onChange={handleChange}
+          />
+          <InputComponent
+            value={formData.billingPostalCode.value}
+            name={'billingPostalCode'}
+            title={'Postal Code'}
+            type={'text'}
+            placeholder={'221B'}
+            allowWhitespaces={true}
+            errors={errors.billingPostalCode || serverErrors.billingPostalCode}
+            onChange={handleChange}
+          />
+          <InputComponent
+            value={formData.billingStreet.value}
+            name={'billingStreet'}
+            title={'Street'}
+            type={'text'}
+            placeholder={'Baker Street'}
+            allowWhitespaces={true}
+            errors={errors.billingStreet || serverErrors.billingStreet}
+            onChange={handleChange}
+          />
+          <Toggler
+            label={'Set as default billing address'}
+            onInput={(event: ChangeEvent<HTMLInputElement>) => {
+              const isChecked = event.target.checked
+              setDefaultBillingValue(isChecked)
+            }}
+          />
+        </fieldset>
       </div>
 
       <FormButton value={'Submit'} disabled={!isValid} />
