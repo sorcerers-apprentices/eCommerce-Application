@@ -9,15 +9,22 @@ import { RoutePath } from '@/shared/config/routeConfig/routeConfig'
 // import { UserBar } from './UserBar/UserBar'
 import s from './UserMenu.module.scss'
 
-export const UserMenu = (): ReactElement => {
+type IUserMenuProperties = {
+  onClose: () => void
+}
+export const UserMenu = ({ onClose }: IUserMenuProperties): ReactElement => {
   const { state } = useUser()
   const { logout } = useAuth()
+  const handleLogout = (): void => {
+    logout()
+    onClose()
+  }
 
   return (
     <div className={s.menu}>
       {state.isAuth ? (
         <>
-          <Button onClick={logout} className={s.button}>
+          <Button onClick={handleLogout} className={s.button}>
             Logout
           </Button>
           <Link to={RoutePath.REGISTRATION} className={s.button}>

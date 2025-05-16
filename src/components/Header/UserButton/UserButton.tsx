@@ -28,7 +28,7 @@ export const UserButton = (): JSX.Element => {
       <button className={s.button} onClick={handleClick}>
         {open ? <IoClose /> : <FaRegUser />}
       </button>
-      {open && <UserMenu />}
+      {open && <UserMenu onClose={() => setOpen(false)} />}
       {open && <div className={s.overlay} onClick={() => setOpen(false)} />}
     </div>
   )

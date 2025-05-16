@@ -4,7 +4,6 @@ import { type ReactElement, useEffect } from 'react'
 import { Header } from '@/components/Header/Header'
 import { RoutePath } from '@/shared/config/routeConfig/routeConfig'
 import { LoginSection } from '@/components/LoginSection/LoginSection'
-import s from './LoginPage.module.scss'
 
 const LoginPage = (): ReactElement => {
   const { state } = useUser()
@@ -17,7 +16,7 @@ const LoginPage = (): ReactElement => {
   }, [state.isAuth, navigation])
 
   return (
-    <div className={s.page}>
+    <div>
       <Header />
       <LoginSection />
     </div>
