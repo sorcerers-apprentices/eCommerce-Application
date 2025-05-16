@@ -15,22 +15,14 @@ export enum RoutePath {
   NOT_FOUND = '*',
 }
 
-export const routeConfig: RouteProps[] = [
+export const publicRoutes: RouteProps[] = [
   {
     path: RoutePath.MAIN,
     element: <MainPageAsync />,
   },
   {
-    path: RoutePath.LOGIN,
-    element: <LoginPageAsync />,
-  },
-  {
     path: RoutePath.REGISTRATION,
     element: <RegistrationPageAsync />,
-  },
-  {
-    path: RoutePath.PROFILE,
-    element: <ProfilePageAsync />,
   },
   {
     path: RoutePath.ABOUT,
@@ -39,5 +31,19 @@ export const routeConfig: RouteProps[] = [
   {
     path: RoutePath.NOT_FOUND,
     element: <NotFoundPage />,
+  },
+]
+
+export const guestRoutes: RouteProps[] = [
+  {
+    path: RoutePath.LOGIN,
+    element: <LoginPageAsync />,
+  },
+]
+
+export const privateRoutes: RouteProps[] = [
+  {
+    path: RoutePath.PROFILE,
+    element: <ProfilePageAsync />,
   },
 ]
