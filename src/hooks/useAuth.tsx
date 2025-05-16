@@ -1,3 +1,4 @@
+import { toast } from 'react-hot-toast'
 import { useUser } from '@/hooks/useUser'
 import { useNavigate } from 'react-router-dom'
 import { RoutePath } from '@/shared/config/routeConfig/routeConfig'
@@ -17,11 +18,13 @@ export const useAuth = (): AuthContextOperations => {
     await authApi.authenticate(username, password)
     dispatch({ type: UserAction.LOGIN, payload: { username } })
     navigate(RoutePath.MAIN)
+    toast.success('Successfully logged in')
   }
 
   const logout = async (): Promise<void> => {
     await authApi.logout()
     dispatch({ type: UserAction.LOGOUT })
+    toast.success('You have been logged out')
   }
 
   return { login, logout }
