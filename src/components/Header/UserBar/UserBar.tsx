@@ -9,10 +9,10 @@ import s from './UserBar.module.scss'
 export const UserBar = (): ReactElement => {
   return (
     <nav className={s.navbar}>
-      <NavLink to={RoutePath.MAIN}>
+      <NavLink to={RoutePath.MAIN} className={s.icon}>
         <MdFavoriteBorder />
       </NavLink>
-      <NavLink to={RoutePath.MAIN}>
+      <NavLink to={RoutePath.MAIN} className={s.icon}>
         <HiOutlineShoppingCart />
       </NavLink>
       <UserButton />

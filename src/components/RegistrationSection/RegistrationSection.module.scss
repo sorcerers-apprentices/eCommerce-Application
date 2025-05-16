@@ -1,0 +1,26 @@
+@use '@/styles/variables' as vars;
+@use '@/styles/mixins' as mixins;
+
+.section {
+  padding: 2rem;
+  background-color: vars.$color-primary25;
+}
+
+.links {
+  cursor: default;
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+}
+
+.or {
+  width: 2px;
+  height: 1rem;
+  background-color: black;
+}
+
+.link {
+  @include mixins.link;
+}

@@ -17,7 +17,5 @@
 }
 
 .button {
-  width: 10rem;
-
-  @include mixins.btn;
+  @include mixins.btn(10rem);
 }

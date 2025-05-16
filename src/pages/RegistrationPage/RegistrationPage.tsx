@@ -1,12 +1,12 @@
 import type { ReactElement } from 'react'
 import { Header } from '@/components/Header/Header.tsx'
-import { RegistrationForm } from '@/components/RegistrationForm/RegistrationForm.tsx'
+import { RegistrationSection } from '@/components/RegistrationSection/RegistrationSection.tsx'
 
 const RegistrationPage = (): ReactElement => {
   return (
     <>
       <Header />
-      <RegistrationForm />
+      <RegistrationSection />
     </>
   )
 }
