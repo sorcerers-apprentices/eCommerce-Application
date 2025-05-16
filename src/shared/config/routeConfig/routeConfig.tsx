@@ -1,17 +1,10 @@
-import type { ReactElement } from 'react'
+import type { RouteProps } from 'react-router-dom'
 import NotFoundPage from '@/pages/NotFoundPage/NotFoundPage'
 import { MainPageAsync } from '@/pages/MainPage/MainPage.async'
 import { LoginPageAsync } from '@/pages/LoginPage/LoginPage.async'
 import { AboutPageAsync } from '@/pages/AboutPage/AboutPage.async'
 import { ProfilePageAsync } from '@/pages/ProfilePage/ProfilePage.async'
 import { RegistrationPageAsync } from '@/pages/RegistrationPage/RegistrationPage.async'
-
-type RoutePropertiesType = {
-  path: RoutePath
-  element: ReactElement
-  onlyAuth?: boolean
-  onlyGuest?: boolean
-}
 
 export enum RoutePath {
   MAIN = '/',
@@ -22,24 +15,14 @@ export enum RoutePath {
   NOT_FOUND = '*',
 }
 
-export const routeConfig: RoutePropertiesType[] = [
+export const publicRoutes: RouteProps[] = [
   {
     path: RoutePath.MAIN,
     element: <MainPageAsync />,
   },
   {
-    path: RoutePath.LOGIN,
-    element: <LoginPageAsync />,
-    onlyGuest: true,
-  },
-  {
     path: RoutePath.REGISTRATION,
     element: <RegistrationPageAsync />,
-  },
-  {
-    path: RoutePath.PROFILE,
-    element: <ProfilePageAsync />,
-    onlyAuth: true,
   },
   {
     path: RoutePath.ABOUT,
@@ -48,5 +31,19 @@ export const routeConfig: RoutePropertiesType[] = [
   {
     path: RoutePath.NOT_FOUND,
     element: <NotFoundPage />,
+  },
+]
+
+export const guestRoutes: RouteProps[] = [
+  {
+    path: RoutePath.LOGIN,
+    element: <LoginPageAsync />,
+  },
+]
+
+export const privateRoutes: RouteProps[] = [
+  {
+    path: RoutePath.PROFILE,
+    element: <ProfilePageAsync />,
   },
 ]

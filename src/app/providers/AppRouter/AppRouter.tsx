@@ -1,26 +1,29 @@
-import { useUser } from '@/hooks/useUser'
+import GuestGuard from './GuestGuard'
+import PrivateGuard from './PrivateGuard'
 import Loader from '@/shared/ui/Loader/Loader'
+import { Route, Routes } from 'react-router-dom'
 import { type ReactElement, Suspense } from 'react'
-import { Navigate, Route, Routes } from 'react-router-dom'
-import { routeConfig, RoutePath } from '@/shared/config/routeConfig/routeConfig'
+import { guestRoutes, privateRoutes, publicRoutes } from '@/shared/config/routeConfig/routeConfig'
 
 const AppRouter = (): ReactElement => {
-  const { state } = useUser()
-
   return (
     <Suspense fallback={<Loader />}>
       <Routes>
-        {routeConfig.map(({ path, element, onlyAuth, onlyGuest }) => {
-          let page = element
+        {publicRoutes.map(({ path, element }) => (
+          <Route path={path} element={element} />
+        ))}
 
-          if (onlyAuth && !state.isAuth) {
-            page = <Navigate to={RoutePath.LOGIN} replace />
-          } else if (onlyGuest && state.isAuth) {
-            page = <Navigate to={RoutePath.MAIN} replace />
-          }
+        <Route element={<GuestGuard />}>
+          {guestRoutes.map(({ path, element }) => (
+            <Route path={path} element={element} />
+          ))}
+        </Route>
 
-          return <Route path={path} element={page} />
-        })}
+        <Route element={<PrivateGuard />}>
+          {privateRoutes.map(({ path, element }) => (
+            <Route path={path} element={element} />
+          ))}
+        </Route>
       </Routes>
     </Suspense>
   )
