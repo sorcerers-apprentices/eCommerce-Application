@@ -15,8 +15,12 @@
   justify-content: center;
 }
 
+.disabled {
+  font-weight: 600;
+}
+
 .or {
-  width: 2px;
+  width: 0.1rem;
   height: 1rem;
   background-color: black;
 }

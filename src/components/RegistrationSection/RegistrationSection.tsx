@@ -12,7 +12,7 @@ export const RegistrationSection = (): JSX.Element => {
           Login
         </Link>
         <div className={s.or}></div>
-        <div>Registration</div>
+        <div className={s.disabled}>Registration</div>
       </div>
       <h1 className="title">Create Account</h1>
       <RegistrationForm />

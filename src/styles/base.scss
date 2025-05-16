@@ -43,3 +43,7 @@ html {
   @include mixins.caption(2rem);
   @include mixins.center;
 }
+
+.icon {
+  @include mixins.icon;
+}

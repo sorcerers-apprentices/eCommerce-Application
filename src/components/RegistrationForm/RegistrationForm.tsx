@@ -17,7 +17,6 @@ import { useNavigate } from 'react-router-dom'
 import s from './RegistrationForm.module.scss'
 import { useValidate } from '@/hooks/useValidate'
 import { Toggler } from '@/shared/ui/Toggler/Toggler'
-import { Checkbox } from '@/shared/ui/Checkbox/Checkbox'
 import { FormButton } from '@/components/LoginForm/FormButton'
 import { SelectInput } from '@/shared/ui/SelectInput/SelectInput'
 import { RoutePath } from '@/shared/config/routeConfig/routeConfig'
@@ -231,11 +230,9 @@ export const RegistrationForm = (): JSX.Element => {
         errors={errors.dateOfBirth || serverErrors.dateOfBirth}
         onChange={handleChange}
       />
-      <Checkbox
-        checked={sameAddress}
-        id={'sameAddress'}
-        title={'Use shipping address as billing'}
-        onChange={(event) => {
+      <Toggler
+        label={'Use shipping address as billing'}
+        onInput={(event: ChangeEvent<HTMLInputElement>) => {
           const isChecked = event.target.checked
           handleSameAddress(isChecked)
         }}

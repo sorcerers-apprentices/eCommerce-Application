@@ -10,10 +10,10 @@ export const UserBar = (): ReactElement => {
   return (
     <nav className={s.navbar}>
       <NavLink to={RoutePath.MAIN} className={s.icon}>
-        <MdFavoriteBorder />
+        <MdFavoriteBorder className="icon" />
       </NavLink>
       <NavLink to={RoutePath.MAIN} className={s.icon}>
-        <HiOutlineShoppingCart />
+        <HiOutlineShoppingCart className="icon" />
       </NavLink>
       <UserButton />
     </nav>

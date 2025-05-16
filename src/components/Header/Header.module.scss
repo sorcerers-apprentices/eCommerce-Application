@@ -8,6 +8,32 @@
   @include mixins.flex-row;
 }
 
+.wrapper {
+  position: relative;
+
+  @media (hover: hover) {
+    &:hover .magic {
+      rotate: -10deg;
+      opacity: 1;
+      transition: all 0.5s ease-in-out;
+    }
+  }
+}
+
+.magic {
+  position: absolute;
+  top: 2rem;
+  left: 3rem;
+  rotate: 350deg;
+  display: block;
+  max-width: 6rem;
+  max-height: 4rem;
+  font-weight: 600;
+  color: vars.$state-color-error;
+  opacity: 0;
+}
+
 .logo {
+  max-width: 6rem;
   max-height: 4rem;
 }
