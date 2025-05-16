@@ -11,4 +11,8 @@
   gap: 2rem;
   align-items: start;
   justify-content: center;
+
+  @media (width <= 768px) {
+    flex-direction: column;
+  }
 }

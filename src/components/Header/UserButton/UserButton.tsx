@@ -26,7 +26,7 @@ export const UserButton = (): JSX.Element => {
   return (
     <div ref={menuReference} className={s.wrapper}>
       <button className={s.button} onClick={handleClick}>
-        {open ? <IoClose /> : <FaRegUser />}
+        {open ? <IoClose className="icon" /> : <FaRegUser className="icon" />}
       </button>
       {open && <UserMenu onClose={() => setOpen(false)} />}
       {open && <div className={s.overlay} onClick={() => setOpen(false)} />}

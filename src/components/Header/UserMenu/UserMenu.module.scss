@@ -14,6 +14,10 @@
   border: 1px solid #ddd;
   background-color: white;
   box-shadow: 0 4px 6px rgb(0 0 0 / 10%);
+
+  @media (width <= 400px) {
+    width: 100vw;
+  }
 }
 
 .button {

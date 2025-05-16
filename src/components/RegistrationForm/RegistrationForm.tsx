@@ -16,7 +16,6 @@ import { FormButton } from '@/components/LoginForm/FormButton.tsx'
 import { isCommerceToolsError } from '@/shared/utilities/type-utilities.ts'
 import { SelectInput } from '@/shared/ui/SelectInput/SelectInput.tsx'
 import { InputComponent } from '@/shared/ui/InputComponent/InputComponent.tsx'
-import { Checkbox } from '@/shared/ui/Checkbox/Checkbox.tsx'
 import { useValidate } from '@/hooks/useValidate.tsx'
 import { authApi } from '@/server/auth-api.ts'
 import s from './RegistrationForm.module.scss'
@@ -227,11 +226,9 @@ export const RegistrationForm = (): JSX.Element => {
         errors={errors.dateOfBirth || serverErrors.dateOfBirth}
         onChange={handleChange}
       />
-      <Checkbox
-        checked={sameAddress}
-        id={'sameAddress'}
-        title={'Use shipping address as billing'}
-        onChange={(event) => {
+      <Toggler
+        label={'Use shipping address as billing'}
+        onInput={(event: ChangeEvent<HTMLInputElement>) => {
           const isChecked = event.target.checked
           handleSameAddress(isChecked)
         }}

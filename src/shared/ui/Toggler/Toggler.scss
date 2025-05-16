@@ -4,17 +4,16 @@
 .toggler {
   position: relative;
   display: block;
+  padding: 1rem 0 2rem;
 }
 
 .toggler-input {
-  position: absolute;
-  left: -100vw;
-  opacity: 0;
+  display: none;
 }
 
 .toggler-state {
   display: flex;
-  gap: 12px;
+  gap: 1rem;
   align-items: center;
 }
 
@@ -22,28 +21,23 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  width: 52px;
-  height: 28px;
+  width: 2.5rem;
+  height: 1.3rem;
   padding: 1px;
   border: 1px solid vars.$neutral-gray868686;
-  border-radius: 16px;
+  border-radius: 1rem;
 }
 
 .toggler-switch {
-  width: 24px;
-  height: 24px;
+  width: 1rem;
+  height: 1rem;
   border-radius: 50%;
   background-color: vars.$neutral-gray868686;
   transition: background-color 0.3s ease-out;
 }
 
 .toggler-title {
-  font-family: Inter, sans-serif;
-  font-size: 16px;
-  font-weight: 400;
-  font-style: normal;
-  line-height: 24px;
-  color: vars.$neutral-gray0c0c0c;
+  @include mixins.body-m;
 }
 
 .toggler-input:checked ~ .toggler-state .toggler-control {
