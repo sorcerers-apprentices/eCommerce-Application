@@ -1,6 +1,3 @@
-import { Form } from '@/shared/ui/Form/Form'
-import { type ChangeEvent, type FormEvent, type JSX, useState } from 'react'
-import { ApiErrorCode } from '@/server/api.ts'
 import {
   validateCountry,
   validateBirthDate,
@@ -12,20 +9,26 @@ import {
   validateStreet,
   createPostalCodeValidator,
 } from '@/shared/utilities/validation.ts'
-import { FormButton } from '@/components/LoginForm/FormButton.tsx'
-import { isCommerceToolsError } from '@/shared/utilities/type-utilities.ts'
-import { SelectInput } from '@/shared/ui/SelectInput/SelectInput.tsx'
-import { InputComponent } from '@/shared/ui/InputComponent/InputComponent.tsx'
-import { useValidate } from '@/hooks/useValidate.tsx'
+import { toast } from 'react-hot-toast'
+import { ApiErrorCode } from '@/server/api'
 import { authApi } from '@/server/auth-api.ts'
 import s from './RegistrationForm.module.scss'
-import { Toggler } from '@/shared/ui/Toggler/Toggler.tsx'
-import { toast } from 'react-hot-toast'
+import { Form } from '@/shared/ui/Form/Form'
+import { useNavigate } from 'react-router-dom'
+import { useValidate } from '@/hooks/useValidate'
+import { Toggler } from '@/shared/ui/Toggler/Toggler'
+import { FormButton } from '@/components/LoginForm/FormButton'
+import { SelectInput } from '@/shared/ui/SelectInput/SelectInput'
+import { RoutePath } from '@/shared/config/routeConfig/routeConfig'
+import { isCommerceToolsError } from '@/shared/utilities/type-utilities'
+import { InputComponent } from '@/shared/ui/InputComponent/InputComponent'
+import { type ChangeEvent, type FormEvent, type JSX, useState } from 'react'
 
 export const RegistrationForm = (): JSX.Element => {
   const [sameAddress, setSameAddress] = useState(false)
   const [defaultShippingValue, setDefaultShippingValue] = useState(false)
   const [defaultBillingValue, setDefaultBillingValue] = useState(false)
+  const navigation = useNavigate()
 
   const [formData, setFormData] = useState({
     email: { value: '', touched: false },
@@ -107,6 +110,7 @@ export const RegistrationForm = (): JSX.Element => {
         defaultShippingAddress: defaultShippingValue ? 0 : undefined,
         defaultBillingAddress: defaultBillingValue ? 1 : undefined,
       })
+      navigation(RoutePath.MAIN)
       toast.success('Account created successfully')
     } catch (error) {
       if (isCommerceToolsError(error)) {

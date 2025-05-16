@@ -1,9 +1,9 @@
 import { toast } from 'react-hot-toast'
 import { useUser } from '@/hooks/useUser'
+import { authApi } from '@/server/auth-api'
 import { useNavigate } from 'react-router-dom'
 import { RoutePath } from '@/shared/config/routeConfig/routeConfig'
 import { UserAction } from '@/app/providers/UserProvider/UserReducer'
-import { authApi } from '@/server/auth-api.ts'
 
 type AuthContextOperations = {
   login: (username: string, password: string) => Promise<void>
