@@ -23,10 +23,9 @@ html {
 
 .section {
   padding: 1rem 5rem;
-  background-color: vars.$color-white;
 
   &-dog {
-    @include mixins.headline-1;
+    @include mixins.caption(2.5rem);
     @include mixins.left;
 
     background-color: vars.$color-white;
@@ -36,4 +35,11 @@ html {
     background-origin: content-box;
     background-size: contain;
   }
+}
+
+.title {
+  padding: 1rem;
+
+  @include mixins.caption(2rem);
+  @include mixins.center;
 }
