@@ -2,8 +2,8 @@ import { useUser } from '@/hooks/useUser'
 import { useNavigate } from 'react-router-dom'
 import { type ReactElement, useEffect } from 'react'
 import { Header } from '@/components/Header/Header'
-import { LoginForm } from '@/components/LoginForm/LoginForm'
 import { RoutePath } from '@/shared/config/routeConfig/routeConfig'
+import { LoginSection } from '@/components/LoginSection/LoginSection'
 
 const LoginPage = (): ReactElement => {
   const { state } = useUser()
@@ -16,10 +16,10 @@ const LoginPage = (): ReactElement => {
   }, [state.isAuth, navigation])
 
   return (
-    <>
+    <div>
       <Header />
-      <LoginForm />
-    </>
+      <LoginSection />
+    </div>
   )
 }
 

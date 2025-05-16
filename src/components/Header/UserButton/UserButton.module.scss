@@ -18,6 +18,13 @@
 }
 
 .button {
+  padding: 0;
   border: none;
   background-color: transparent;
+}
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
