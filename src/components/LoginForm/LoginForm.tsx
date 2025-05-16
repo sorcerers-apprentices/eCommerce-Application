@@ -1,12 +1,13 @@
-import { Form } from '@/shared/ui/Form/Form'
+import { toast } from 'react-hot-toast'
+import { useAuth } from '@/hooks/useAuth'
 import { FormButton } from './FormButton'
+import { ApiErrorCode } from '@/server/api'
+import { Form } from '@/shared/ui/Form/Form'
+import { useValidate } from '@/hooks/useValidate'
+import { isCommerceToolsError } from '@/shared/utilities/type-utilities'
+import { InputComponent } from '@/shared/ui/InputComponent/InputComponent'
 import { type ChangeEvent, type FormEvent, type JSX, useState } from 'react'
-import { ApiErrorCode } from '@/server/api.ts'
-import { isCommerceToolsError } from '@/shared/utilities/type-utilities.ts'
-import { InputComponent } from '@/shared/ui/InputComponent/InputComponent.tsx'
-import { useValidate } from '@/hooks/useValidate.tsx'
-import { validateEmail, validatePassword } from '@/shared/utilities/validation.ts'
-import { useAuth } from '@/hooks/useAuth.tsx'
+import { validateEmail, validatePassword } from '@/shared/utilities/validation'
 
 export const LoginForm = (): JSX.Element => {
   const { login } = useAuth()
@@ -27,6 +28,7 @@ export const LoginForm = (): JSX.Element => {
     } catch (error) {
       if (isCommerceToolsError(error)) {
         const firstError = error.body.errors[0]
+        toast.error('Login failed')
         const field: string | undefined = firstError.field
         switch (firstError.code) {
           case ApiErrorCode.INVALID_CUSTOMER_ACCOUNT_CREDENTIALS:

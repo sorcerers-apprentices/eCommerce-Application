@@ -21,6 +21,7 @@ import { useValidate } from '@/hooks/useValidate.tsx'
 import { authApi } from '@/server/auth-api.ts'
 import s from './RegistrationForm.module.scss'
 import { Toggler } from '@/shared/ui/Toggler/Toggler.tsx'
+import { toast } from 'react-hot-toast'
 
 export const RegistrationForm = (): JSX.Element => {
   const [sameAddress, setSameAddress] = useState(false)
@@ -107,9 +108,11 @@ export const RegistrationForm = (): JSX.Element => {
         defaultShippingAddress: defaultShippingValue ? 0 : undefined,
         defaultBillingAddress: defaultBillingValue ? 1 : undefined,
       })
+      toast.success('Account created successfully')
     } catch (error) {
       if (isCommerceToolsError(error)) {
         const firstError = error.body.errors[0]
+        toast.error('Registration error')
         const field: string | undefined = firstError.field
         switch (firstError.code) {
           case ApiErrorCode.DUPLICATE_FIELD:

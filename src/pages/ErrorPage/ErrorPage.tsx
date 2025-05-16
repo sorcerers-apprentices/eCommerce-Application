@@ -1,11 +1,16 @@
-import type { ReactElement } from 'react'
-import { Button } from '@/shared/ui/Button/Button'
 import s from './ErrorPage.module.scss'
+import { toast } from 'react-hot-toast'
+import { Button } from '@/shared/ui/Button/Button'
+import { type ReactElement, useEffect } from 'react'
 
 const ErrorPage = (): ReactElement => {
   const refreshPage = (): void => {
     location.reload()
   }
+
+  useEffect((): void => {
+    toast.error('Application error. Please try again')
+  }, [])
 
   return (
     <div className={['section-dog', s.page].join(' ')}>
