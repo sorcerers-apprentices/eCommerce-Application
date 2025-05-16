@@ -8,13 +8,13 @@ import {
   validatePassword,
   validateStreet,
   createPostalCodeValidator,
-} from '@/shared/utilities/validation.ts'
+} from '@/shared/utilities/validation'
 import { toast } from 'react-hot-toast'
 import { ApiErrorCode } from '@/server/api'
-import { authApi } from '@/server/auth-api.ts'
-import s from './RegistrationForm.module.scss'
+import { authApi } from '@/server/auth-api'
 import { Form } from '@/shared/ui/Form/Form'
 import { useNavigate } from 'react-router-dom'
+import s from './RegistrationForm.module.scss'
 import { useValidate } from '@/hooks/useValidate'
 import { Toggler } from '@/shared/ui/Toggler/Toggler'
 import { FormButton } from '@/components/LoginForm/FormButton'
