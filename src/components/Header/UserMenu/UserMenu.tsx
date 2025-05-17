@@ -1,6 +1,6 @@
 import type { ReactElement } from 'react'
 
-import { useUser } from '@/hooks/useUser'
+import { useUserContext } from '@/hooks/useUserContext.tsx'
 import { useAuth } from '@/hooks/useAuth'
 import { Button } from '@/shared/ui/Button/Button'
 import { Link } from 'react-router-dom'
@@ -13,7 +13,7 @@ type IUserMenuProperties = {
   onClose: () => void
 }
 export const UserMenu = ({ onClose }: IUserMenuProperties): ReactElement => {
-  const { state } = useUser()
+  const { state } = useUserContext()
   const { logout } = useAuth()
   const handleLogout = (): void => {
     logout()
@@ -22,7 +22,7 @@ export const UserMenu = ({ onClose }: IUserMenuProperties): ReactElement => {
 
   return (
     <div className={s.menu}>
-      {state.isAuth ? (
+      {state.email ? (
         <>
           <Button onClick={handleLogout} className={s.button}>
             Logout

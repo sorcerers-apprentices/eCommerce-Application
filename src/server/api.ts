@@ -1,4 +1,4 @@
-import type { ClientResponse, ProductProjectionPagedSearchResponse } from '@commercetools/platform-sdk'
+import type { ClientResponse, Customer, ProductProjectionPagedSearchResponse } from '@commercetools/platform-sdk'
 import { builder } from '@/server/client.ts'
 
 export enum ApiErrorCode {
@@ -11,6 +11,9 @@ export enum ApiErrorCode {
 }
 
 export const api = {
+  user: {
+    fetchMe: async (): Promise<ClientResponse<Customer> | Error> => builder().me().get().execute(),
+  },
   product: {
     fetchProducts: async (): Promise<ClientResponse<ProductProjectionPagedSearchResponse> | Error> => {
       return builder()

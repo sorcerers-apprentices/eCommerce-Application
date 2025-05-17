@@ -1,15 +1,43 @@
-import type { UserActionType } from './UserReducer'
 import { createContext, type Dispatch } from 'react'
-import { userState, type UserStateType } from './UserState'
 
-export type UserContextType = {
-  state: UserStateType
-  dispatch: Dispatch<UserActionType>
+export type UserContext = {
+  state: UserState
+  dispatch: Dispatch<UserAction>
 }
 
-const defaultDispatch: Dispatch<UserActionType> = (): void => {}
+export type UserState = {
+  email?: string
+}
 
-export const UserContext = createContext<UserContextType>({
-  state: userState,
-  dispatch: defaultDispatch,
+export type UserAction = SetUser | UpdateUser | LoginUser | LogoutUser
+
+export enum UserActionType {
+  SET_ALL = 'SET_ALL',
+  UPDATE = 'UPDATE',
+  LOGIN = 'LOGIN',
+  LOGOUT = 'LOGOUT',
+}
+
+type SetUser = {
+  type: UserActionType.SET_ALL
+  payload: UserState
+}
+
+type UpdateUser = {
+  type: UserActionType.UPDATE
+  payload: { [K in keyof UserState]: UserState[K] }
+}
+
+type LoginUser = {
+  type: UserActionType.LOGIN
+  payload: { email: string }
+}
+
+type LogoutUser = {
+  type: UserActionType.LOGOUT
+}
+
+export const userContext = createContext<UserContext>({
+  state: {},
+  dispatch: (): void => {},
 })

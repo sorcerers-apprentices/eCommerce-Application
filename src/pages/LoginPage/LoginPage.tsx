@@ -1,4 +1,4 @@
-import { useUser } from '@/hooks/useUser'
+import { useUserContext } from '@/hooks/useUserContext.tsx'
 import { useNavigate } from 'react-router-dom'
 import { type ReactElement, useEffect } from 'react'
 import { Header } from '@/components/Header/Header'
@@ -6,14 +6,14 @@ import { RoutePath } from '@/shared/config/routeConfig/routeConfig'
 import { LoginSection } from '@/components/LoginSection/LoginSection'
 
 const LoginPage = (): ReactElement => {
-  const { state } = useUser()
+  const { state } = useUserContext()
   const navigation = useNavigate()
 
   useEffect((): void => {
-    if (state.isAuth) {
+    if (state.email) {
       navigation(RoutePath.MAIN)
     }
-  }, [state.isAuth, navigation])
+  }, [state.email, navigation])
 
   return (
     <div>
