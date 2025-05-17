@@ -23,12 +23,15 @@ import { RoutePath } from '@/shared/config/routeConfig/routeConfig'
 import { isCommerceToolsError } from '@/shared/utilities/type-utilities'
 import { InputComponent } from '@/shared/ui/InputComponent/InputComponent'
 import { type ChangeEvent, type FormEvent, type JSX, useState } from 'react'
+import { useUserContext } from '@/hooks/useUserContext.tsx'
+import { UserActionType } from '@/app/providers/UserProvider/UserContext.ts'
 
 export const RegistrationForm = (): JSX.Element => {
   const [sameAddress, setSameAddress] = useState(false)
   const [defaultShippingValue, setDefaultShippingValue] = useState(false)
   const [defaultBillingValue, setDefaultBillingValue] = useState(false)
   const navigation = useNavigate()
+  const { dispatch } = useUserContext()
 
   const [formData, setFormData] = useState({
     email: { value: '', touched: false },
@@ -83,7 +86,7 @@ export const RegistrationForm = (): JSX.Element => {
     event.preventDefault()
 
     try {
-      await authApi.register({
+      const result = await authApi.register({
         email: formData.email.value,
         firstName: formData.firstName.value,
         lastName: formData.lastName.value,
@@ -110,6 +113,7 @@ export const RegistrationForm = (): JSX.Element => {
         defaultShippingAddress: defaultShippingValue ? 0 : undefined,
         defaultBillingAddress: defaultBillingValue ? 1 : undefined,
       })
+      dispatch({ type: UserActionType.LOGIN, payload: { email: result.body.customer.email } })
       navigation(RoutePath.MAIN)
       toast.success('Account created successfully')
     } catch (error) {

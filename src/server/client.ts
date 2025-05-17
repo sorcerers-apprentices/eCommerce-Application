@@ -72,6 +72,8 @@ const createAnonymousRequestBuilder = (): ByProjectKeyRequestBuilder => {
 let anonymousBuilder: ByProjectKeyRequestBuilder = createAnonymousRequestBuilder()
 let refreshBuilder: ByProjectKeyRequestBuilder | undefined
 
+export const isAnonymous = (): boolean => !getRefreshToken()
+
 export const builder = (): ByProjectKeyRequestBuilder => {
   if (refreshBuilder) {
     return refreshBuilder

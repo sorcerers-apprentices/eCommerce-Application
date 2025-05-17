@@ -1,26 +1,31 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
-type FetchParameters = {
-  enable: boolean
+type FetchParameters<T> = {
+  enabled?: boolean
+  defaultValue?: T
 }
 
 export const useFetch = <T,>(
   fetcher: () => Promise<T | Error>,
-  parameters?: FetchParameters
+  parameters?: FetchParameters<T>
 ): {
   data: T | null
   error: Error | null
-  isLoading: boolean
+  loading: boolean
 } => {
-  const [data, setData] = useState<null | T>(null)
+  const { enabled = true, defaultValue = null } = parameters || {}
+
+  const [data, setData] = useState<null | T>(defaultValue)
+  const [loading, setLoading] = useState(enabled)
   const [error, setError] = useState<null | Error>(null)
-  const [isLoading, setIsLoading] = useState(true)
-  const [called, setCalled] = useState(false)
+  const [called, setCalled] = useState<boolean>(false)
 
-  const enable = parameters?.enable === undefined ? true : parameters?.enable
-
-  if (!called && enable) {
+  useEffect(() => {
+    if (!enabled || called) {
+      return
+    }
     setCalled(true)
+
     fetcher()
       .then((response) => {
         if (response instanceof Error) {
@@ -30,12 +35,12 @@ export const useFetch = <T,>(
         }
       })
       .catch((error) => setError(error))
-      .finally(() => setIsLoading(false))
-  }
+      .finally(() => setLoading(false))
+  }, [fetcher, enabled])
 
   return {
     data,
     error,
-    isLoading,
+    loading,
   }
 }

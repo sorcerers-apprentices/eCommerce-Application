@@ -1,29 +1,16 @@
-import type { UserStateType } from './UserState'
+import { type UserAction, UserActionType, type UserState } from '@/app/providers/UserProvider/UserContext.ts'
 
-export enum UserAction {
-  SET_ALL = 'SET_ALL',
-  UPDATE = 'UPDATE',
-  LOGIN = 'LOGIN',
-  LOGOUT = 'LOGOUT',
-}
-
-export type UserActionType =
-  | { type: UserAction.SET_ALL; payload: UserStateType }
-  | { type: UserAction.UPDATE; payload: { key: keyof UserStateType; value: string | boolean } }
-  | { type: UserAction.LOGIN; payload: { username: string } }
-  | { type: UserAction.LOGOUT }
-
-export const UserReducer = (state: UserStateType, action: UserActionType): UserStateType => {
+export const userReducer = (state: UserState, action: UserAction): UserState => {
   switch (action.type) {
-    case UserAction.SET_ALL:
+    case UserActionType.SET_ALL:
       return { ...action.payload }
-    case UserAction.UPDATE:
-      return { ...state, [action.payload.key]: action.payload.value }
-    case UserAction.LOGIN:
-      return { ...state, isAuth: true, username: action.payload.username }
-    case UserAction.LOGOUT:
-      return { ...state, isAuth: false, username: '' }
+    case UserActionType.UPDATE:
+      return { ...state, ...action.payload }
+    case UserActionType.LOGIN:
+      return { ...state, ...action.payload }
+    case UserActionType.LOGOUT:
+      return { ...state, email: undefined }
     default:
-      return state
+      return { ...state }
   }
 }

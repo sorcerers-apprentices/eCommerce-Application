@@ -7,7 +7,7 @@ import { Header } from '@/components/Header/Header'
 import { HeroSection } from '@/components/HeroSection/HeroSection'
 
 const MainPage = (): ReactElement => {
-  const { data, error, isLoading } = useFetch<ClientResponse<ProductProjectionPagedSearchResponse>>(
+  const { data, error, loading } = useFetch<ClientResponse<ProductProjectionPagedSearchResponse>>(
     api.product.fetchProducts
   )
 
@@ -16,7 +16,7 @@ const MainPage = (): ReactElement => {
       <Header />
       <HeroSection />
       <h1>eCommerce Application Products</h1>
-      {isLoading && <Loader />}
+      {loading && <Loader />}
       {error && <div>{error.message}</div>}
       {data && <div>Status code: {data.statusCode}</div>}
     </>
