@@ -72,13 +72,20 @@ const createAnonymousRequestBuilder = (): ByProjectKeyRequestBuilder => {
 let anonymousBuilder: ByProjectKeyRequestBuilder = createAnonymousRequestBuilder()
 let refreshBuilder: ByProjectKeyRequestBuilder | undefined
 
-export const isAnonymous = (): boolean => !getRefreshToken()
+export const isAnonymous = (): boolean => {
+  const refreshToken = tokenCache.get()?.refreshToken
+  if (!refreshToken) {
+    return true
+  }
+  const expirationDate = tokenCache.get()?.expirationTime || 0
+  return Date.now() > expirationDate
+}
 
 export const builder = (): ByProjectKeyRequestBuilder => {
   if (refreshBuilder) {
     return refreshBuilder
   }
-  if (getRefreshToken()) {
+  if (!isAnonymous()) {
     refreshBuilder = createRefreshBuilder()
     return refreshBuilder
   }

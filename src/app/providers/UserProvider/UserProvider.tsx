@@ -14,7 +14,7 @@ export const UserProvider = ({ value, children }: Partial<ProviderProps<UserStat
     enabled: !isAnonymous(),
     onSuccess: (data) => {
       const email = data?.body.email
-      if (data?.body.email) {
+      if (email) {
         dispatch({ type: UserActionType.UPDATE, payload: { email } })
       }
     },

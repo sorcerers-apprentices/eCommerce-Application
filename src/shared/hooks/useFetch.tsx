@@ -3,8 +3,8 @@ import { useEffect, useState } from 'react'
 type FetchParameters<T> = {
   enabled?: boolean
   defaultValue?: T
-  onSuccess?: (data: T | null) => void
-  onFailure?: (error: Error | null) => void
+  onSuccess?: (data: T) => void
+  onFailure?: (error: Error) => void
 }
 
 export const useFetch = <T,>(
@@ -40,10 +40,10 @@ export const useFetch = <T,>(
       })
       .catch((error) => {
         setError(error)
-        if (onFailure) onFailure(error)
+        onFailure?.(error)
       })
       .finally(() => setLoading(false))
-  }, [fetcher, enabled])
+  }, [fetcher, parameters])
 
   return {
     data,

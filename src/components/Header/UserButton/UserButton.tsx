@@ -4,6 +4,7 @@ import { FaRegUser } from 'react-icons/fa'
 import { IoClose } from 'react-icons/io5'
 import { UserMenu } from '.././UserMenu/UserMenu'
 import s from './UserButton.module.scss'
+
 export const UserButton = (): JSX.Element => {
   const [open, setOpen]: [boolean, React.Dispatch<React.SetStateAction<boolean>>] = useState(false)
   const menuReference = useRef<HTMLDivElement | null>(null)

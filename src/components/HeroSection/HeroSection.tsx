@@ -1,6 +1,7 @@
 import type { ReactElement } from 'react'
 import { Button } from '@/shared/ui/Button/Button'
 import s from './HeroSection.module.scss'
+
 export const HeroSection = (): ReactElement => {
   return (
     <section className={`${s.hero}`}>
