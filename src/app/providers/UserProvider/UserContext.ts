@@ -25,7 +25,7 @@ type SetUser = {
 
 type UpdateUser = {
   type: UserActionType.UPDATE
-  payload: { [K in keyof UserState]: UserState[K] }
+  payload: Partial<UserState>
 }
 
 type LoginUser = {

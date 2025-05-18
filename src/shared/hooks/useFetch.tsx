@@ -3,6 +3,8 @@ import { useEffect, useState } from 'react'
 type FetchParameters<T> = {
   enabled?: boolean
   defaultValue?: T
+  onSuccess?: (data: T) => void
+  onFailure?: (error: Error) => void
 }
 
 export const useFetch = <T,>(
@@ -13,7 +15,7 @@ export const useFetch = <T,>(
   error: Error | null
   loading: boolean
 } => {
-  const { enabled = true, defaultValue = null } = parameters || {}
+  const { enabled = true, defaultValue = null, onSuccess, onFailure } = parameters || {}
 
   const [data, setData] = useState<null | T>(defaultValue)
   const [loading, setLoading] = useState(enabled)
@@ -30,13 +32,18 @@ export const useFetch = <T,>(
       .then((response) => {
         if (response instanceof Error) {
           setError(response)
+          onFailure?.(response)
         } else {
           setData(response)
+          onSuccess?.(response)
         }
       })
-      .catch((error) => setError(error))
+      .catch((error) => {
+        setError(error)
+        onFailure?.(error)
+      })
       .finally(() => setLoading(false))
-  }, [fetcher, enabled])
+  }, [fetcher, parameters])
 
   return {
     data,

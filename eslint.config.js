@@ -49,6 +49,13 @@ export default tseslint.config(
       'unicorn/number-literal-case': 'off',
       'unicorn/numeric-separators-style': 'off',
       'unicorn/prevent-abbreviations': ['error'],
+      'padding-line-between-statements': [
+        'error',
+        { blankLine: 'always', prev: 'import', next: 'function' },
+        { blankLine: 'always', prev: 'import', next: 'class' },
+        { blankLine: 'always', prev: 'import', next: 'export' },
+        { blankLine: 'always', prev: 'import', next: 'const' },
+      ],
     },
   }
 )

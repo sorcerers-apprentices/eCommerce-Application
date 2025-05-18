@@ -6,6 +6,7 @@ import { UserButton } from '../UserButton/UserButton'
 import { MdFavoriteBorder } from 'react-icons/md'
 import { HiOutlineShoppingCart } from 'react-icons/hi'
 import s from './UserBar.module.scss'
+
 export const UserBar = (): ReactElement => {
   return (
     <nav className={s.navbar}>
