@@ -1,4 +1,3 @@
-import { toast } from 'react-hot-toast'
 import { useAuth } from '@/hooks/useAuth'
 import { FormButton } from './FormButton'
 import { ApiErrorCode } from '@/server/api'
@@ -28,7 +27,6 @@ export const LoginForm = (): JSX.Element => {
     } catch (error) {
       if (isCommerceToolsError(error)) {
         const firstError = error.body.errors[0]
-        toast.error('Login failed')
         const field: string | undefined = firstError.field
         switch (firstError.code) {
           case ApiErrorCode.INVALID_CUSTOMER_ACCOUNT_CREDENTIALS:
