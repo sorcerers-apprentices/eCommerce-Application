@@ -1,0 +1,20 @@
+@use '@/styles/mixins.scss' as mixins;
+
+.page {
+  height: 100vh;
+  padding: 5rem 3rem 0.5rem 4rem;
+}
+
+.title {
+  @include mixins.headline-1;
+}
+
+.description {
+  @include mixins.body-l;
+
+  font-size: 1rem;
+}
+
+.btn {
+  @include mixins.btn;
+}

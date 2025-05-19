@@ -1,0 +1,218 @@
+@use './fonts.scss' as fonts;
+@use './variables.scss' as vars;
+
+@mixin text($ff: false, $fst: false, $color: false, $fs: false, $lh: false, $fw: false, $ls: false) {
+  @if ($ff) {
+    font-family: $ff;
+  }
+
+  @if ($fst) {
+    font-style: $fst;
+  }
+
+  @if ($color) {
+    color: $color;
+  }
+
+  @if ($fs) {
+    font-size: $fs;
+  }
+
+  @if ($lh) {
+    line-height: $lh;
+  }
+
+  @if ($fw) {
+    font-weight: $fw;
+  }
+
+  @if ($ls) {
+    letter-spacing: $ls;
+  }
+}
+
+@mixin flex-row($g: 2rem) {
+  display: flex;
+  flex-direction: row;
+  gap: $g;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@mixin center($g: 2rem) {
+  display: flex;
+  flex-direction: column;
+  gap: $g;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  text-align: center;
+}
+
+@mixin left($g: 2rem) {
+  display: flex;
+  flex-direction: column;
+  gap: $g;
+  align-items: flex-start;
+  justify-content: start;
+  text-align: left;
+}
+
+@mixin right($g: 2rem) {
+  display: flex;
+  flex-direction: column;
+  gap: $g;
+  align-items: flex-end;
+  justify-content: end;
+  text-align: right;
+}
+
+@mixin text-m($fs: 1rem) {
+  font-family: fonts.$second-family;
+  font-size: $fs;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+@mixin headline-1($c: vars.$color-black, $fs: 1.5rem) {
+  font-family: fonts.$font-family;
+  font-size: $fs;
+  font-weight: 700;
+  line-height: 1.4;
+  color: $c;
+  text-transform: capitalize;
+}
+
+@mixin headline-2($c: vars.$color-black) {
+  font-family: fonts.$font-family;
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.4;
+  color: $c;
+  text-transform: capitalize;
+}
+
+@mixin headline-3($c: vars.$color-black) {
+  font-family: fonts.$font-family;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.4;
+  color: $c;
+  text-transform: capitalize;
+}
+
+@mixin headline-4($c: vars.$color-black) {
+  font-family: fonts.$font-family;
+  font-size: 0.88rem;
+  font-weight: 700;
+  line-height: 1.4;
+  color: $c;
+  text-transform: capitalize;
+}
+
+@mixin headline-5($c: vars.$color-black) {
+  font-family: fonts.$font-family;
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1.4;
+  color: $c;
+  text-transform: capitalize;
+}
+
+@mixin body-l($c: vars.$color-black) {
+  font-family: fonts.$font-family;
+  font-size: 0.88rem;
+  font-weight: 400;
+  line-height: 1.8;
+  color: $c;
+  text-transform: capitalize;
+}
+
+@mixin body-m($c: vars.$color-black) {
+  font-family: fonts.$font-family;
+  font-size: 0.88rem;
+  font-weight: 400;
+  line-height: 1.4;
+  color: $c;
+  text-transform: capitalize;
+}
+
+@mixin body-s($c: vars.$color-black) {
+  font-family: fonts.$font-family;
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-height: 1.8;
+  color: $c;
+  text-transform: capitalize;
+}
+
+@mixin body-xs($c: vars.$color-black) {
+  font-family: fonts.$font-family;
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: $c;
+  text-transform: capitalize;
+}
+
+@mixin caption($fs: 0.75rem, $c: vars.$color-black) {
+  font-family: fonts.$font-family;
+  font-size: $fs;
+  font-weight: 600;
+  line-height: 1.4;
+  color: $c;
+  text-transform: capitalize;
+}
+
+@mixin btn($w: auto) {
+  display: inline-flex;
+  flex-direction: row;
+  gap: 0.25rem;
+  align-items: center;
+  justify-content: center;
+  width: $w;
+  height: 2.5rem;
+  padding: 1rem 2rem;
+  border: none;
+  background: vars.$color-primary;
+
+  @include body-m(vars.$color-white);
+
+  &:disabled {
+    cursor: default;
+    opacity: 0.5;
+    background-color: vars.$color-primary700;
+  }
+
+  @media (hover: hover) {
+    cursor: pointer;
+    transition: all 0.5s ease;
+
+    &:hover {
+      background-color: vars.$color-primary700;
+    }
+  }
+}
+
+@mixin link {
+  border-bottom: 2px solid transparent;
+  font-weight: 600;
+  color: vars.$color-black;
+  transition: all 0.4s ease-in-out;
+
+  @media (hover: hover) {
+    &:hover {
+      border-bottom: 2px solid vars.$color-primary;
+      color: vars.$color-primary;
+    }
+  }
+}
+
+@mixin icon {
+  transition: all 0.4s ease-in-out;
+
+  @media (hover: hover) {
+    &:hover {
+      color: vars.$color-primary;
+    }
+  }
+}

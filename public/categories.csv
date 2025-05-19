@@ -1,0 +1,25 @@
+key,name.en,slug.en,parent.key,parent.typeId
+dog,"Dog","dog",,
+dog-food,"Food","dog-food","dog","category"
+dog-food-wet,"Wet Food","dog-food-wet","dog-food","category"
+dog-food-dry,"Dry Food","dog-food-dry","dog-food","category"
+dog-treats,"Treats","dog-treats","dog","category"
+dog-toys,"Toys","dog-toys","dog","category"
+dog-clothing,"Coats & Clothing","dog-coats-clothing","dog","category"
+dog-healthcare,"Healthcare & Treatments","dog-healthcare","dog","category"
+cat,"Cat","cat",,
+cat-food,"Food","cat-food","cat","category"
+cat-food-wet,"Wet Food","cat-food-wet","cat-food","category"
+cat-food-dry,"Dry Food","cat-food-dry","cat-food","category"
+cat-treats,"Treats","cat-treats","cat","category"
+cat-trees,"Trees & Scratching Posts","cat-trees-scratching-posts","cat","category"
+cat-healthcare,"Healthcare & Treatments","cat-healthcare","cat","category"
+small-animal,"Small Animal","small-animal",,
+rabbit,"Rabbit","rabbit","small-animal","category"
+hamster,"Hamster","hamster","small-animal","category"
+rat,"Rat","rat","small-animal","category"
+chinchilla,"Chinchilla","chinchilla","small-animal","category"
+fish,"Fish","fish",,
+fish-food,"Food","fish-food","fish","category"
+fish-tanks,"Fish Tanks","fish-tanks","fish","category"
+fish-health,"Health & Tank Cleaning","fish-health-tank-cleaning","fish","category"

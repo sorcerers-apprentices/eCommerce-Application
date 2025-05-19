@@ -1,0 +1,49 @@
+@use './fonts.scss' as fonts;
+@use './variables.scss' as vars;
+@use './mixins.scss' as mixins;
+
+html {
+  font-size: 16px;
+  background-color: vars.$color-white;
+}
+
+* {
+  scroll-behavior: smooth;
+  box-sizing: border-box;
+  font-family: fonts.$font-family;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.container {
+  max-width: 1440px;
+  min-height: 100vh;
+  margin: 0 auto;
+}
+
+.section {
+  padding: 1rem 5rem;
+
+  &-dog {
+    @include mixins.caption(2.5rem);
+    @include mixins.left;
+
+    background-color: vars.$color-white;
+    background-image: url('/images/dog.jpg');
+    background-repeat: no-repeat;
+    background-position: bottom right;
+    background-origin: content-box;
+    background-size: contain;
+  }
+}
+
+.title {
+  padding: 1rem;
+
+  @include mixins.caption(2rem);
+  @include mixins.center;
+}
+
+.icon {
+  @include mixins.icon;
+}

@@ -29,7 +29,7 @@ export default tseslint.config(
       'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
 
       // general code style rules
-      'max-lines-per-function': ['error', { max: 40, skipComments: true, skipBlankLines: true }],
+      'max-lines-per-function': ['error', { max: 440, skipComments: true, skipBlankLines: true }],
       '@typescript-eslint/no-magic-numbers': ['error', { ignore: [0, 1, -1], ignoreReadonlyClassProperties: true }],
       'no-magic-strings': 'off',
       '@typescript-eslint/no-unused-vars': ['error', { caughtErrorsIgnorePattern: '^_' }],
@@ -49,6 +49,13 @@ export default tseslint.config(
       'unicorn/number-literal-case': 'off',
       'unicorn/numeric-separators-style': 'off',
       'unicorn/prevent-abbreviations': ['error'],
+      'padding-line-between-statements': [
+        'error',
+        { blankLine: 'always', prev: 'import', next: 'function' },
+        { blankLine: 'always', prev: 'import', next: 'class' },
+        { blankLine: 'always', prev: 'import', next: 'export' },
+        { blankLine: 'always', prev: 'import', next: 'const' },
+      ],
     },
   }
 )

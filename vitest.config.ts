@@ -4,5 +4,4 @@ export default defineConfig({
   test: {
     globals: true,
   },
-  envPrefix: ['API_'],
 })

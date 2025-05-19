@@ -1,0 +1,5 @@
+@use '@/styles/mixins' as mixins;
+
+.form {
+  @include mixins.center(0);
+}
