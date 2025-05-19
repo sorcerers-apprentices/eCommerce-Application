@@ -1,5 +1,4 @@
 import type { RouteProps } from 'react-router-dom'
-import NotFoundPage from '@/pages/NotFoundPage/NotFoundPage'
 import { MainPageAsync } from '@/pages/MainPage/MainPage.async'
 import { LoginPageAsync } from '@/pages/LoginPage/LoginPage.async'
 import { AboutPageAsync } from '@/pages/AboutPage/AboutPage.async'
@@ -27,10 +26,6 @@ export const publicRoutes: RouteProps[] = [
   {
     path: RoutePath.ABOUT,
     element: <AboutPageAsync />,
-  },
-  {
-    path: RoutePath.NOT_FOUND,
-    element: <NotFoundPage />,
   },
 ]
 
