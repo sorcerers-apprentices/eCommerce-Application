@@ -1,0 +1,14 @@
+@use '@/styles/variables' as vars;
+@use '@/styles/mixins' as mixins;
+
+.navbar {
+  display: flex;
+  flex-direction: row;
+  gap: 1.5rem;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.link {
+  @include mixins.link;
+}

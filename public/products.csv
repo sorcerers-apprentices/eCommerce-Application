@@ -1,0 +1,173 @@
+sku,type,variant key,Product name,Product description,Product key,category,Product price mode,brand,Premium Wet Pet Food,Premium Dry Pet Food,weight,price EUR,price PLN, price GBP,url
+//Dog
+D-F-DF-PP1,DFD001,"pet-food",dog_food_dry,Pro Plan Veterinary Diets HA Hypoallergenic Adult Dry Dog Food 11kg,dog_food_dry_001,Dog > Food > dog-food-dry,embedded prices,Pro Plan,No,Yes,11,"EUR",74,"PLN",311,"GBP",62,dog_food_dry,dog_food_dry1
+D-F-DF-RC1,DFD002,"pet-food",dog_food_dry,Royal Canin Veterinary Hypoallergenic Dry Dog Food 14kg,dog_food_dry_002,Dog > Food > dog-food-dry,embedded prices,Royal Canin,No,Yes,14,"EUR",95,"PLN",400,"GBP",80,dog_food_dry2
+D-F-DF-RC2,DFD003,"pet-food",dog_food_dry,Royal Canin Veterinary Gastrointestinal Low Fat Dry Dog Food 12kg,dog_food_dry_003,Dog > Food > dog-food-dry,embedded prices,Royal Canin,No,Yes,12,"EUR",84,"PLN",355,"GBP",71,dog_food_dry3
+D-F-DF-RC3,DFD004,"pet-food",dog_food_dry,Royal Canin Veterinary Satiety Adult Dry Dog Food 12kg,dog_food_dry_004,Dog > Food > dog-food-dry,embedded prices,Royal Canin,No,Yes,12,"EUR",75,"PLN",320,"GBP",64,dog_food_dry4
+D-F-DF-JW1,DFD005,"pet-food",dog_food_dry,James Wellbeloved Hypoallergenic Adult Dry Dog Food Turkey & Rice 15kg,dog_food_dry_005,Dog > Food > dog-food-dry,embedded prices,James Wellbeloved,No,Yes,15,"EUR",59,"PLN",250,"GBP",50,dog_food_dry5
+D-F-DF-AVA1,DFD006,"pet-food",dog_food_dry,AVA Optimum Health Sensitive Skin & Stomach Dry Dog Food 15kg,dog_food_dry_006,Dog > Food > dog-food-dry,embedded prices,AVA,No,Yes,15,"EUR",61,"PLN",260,"GBP",52,dog_food_dry6
+D-F-DF-AVA2,DFD007,"pet-food",dog_food_dry,AVA Optimum Health Medium Breed Adult Dry Dog Food Chicken 15kg,dog_food_dry_007,Dog > Food > dog-food-dry,embedded prices,AVA,No,Yes,15,"EUR",56,"PLN",240,"GBP",48,dog_food_dry7
+D-F-DF-RC4,DFD008,"pet-food",dog_food_dry,Royal Canin Maxi Dry Adult Dog Food 15kg,dog_food_dry_008,Dog > Food > dog-food-dry,embedded prices,Royal Canin,No,Yes,15,"EUR",67,"PLN",285,"GBP",57,dog_food_dry8
+D-F-DF-WM1,DFD009,"pet-food",dog_food_dry,Wainwright's Mature Dry Dog Food Turkey with Rice 15kg,dog_food_dry_009,Dog > Food > dog-food-dry,embedded prices,Wainwright's Mature,No,Yes,15,"EUR",55,"PLN",235,"GBP",47,dog_food_dry9
+D-F-DF-WM2,DFD010,"pet-food",dog_food_dry,Wainwright's Complete Adult Dry Dog Food Salmon with Rice 15kg,dog_food_dry_010,Dog > Food > dog-food-dry,embedded prices,Wainwright's Mature,No,Yes,15,"EUR",55,"PLN",235,"GBP",47,dog_food_dry10
+
+D-F-WF-PP1,DFW001,"pet-food",dog_food_wet,Pro Plan Veterinary Diets HA Hypoallergenic Adult Wet Dog Food 12x400g,dog_food_wet_001,Dog > Food > dog-food-wet,Pro Plan,4.8,"EUR",38,"PLN",160,"GBP",32,dog_food_wet1
+D-F-WF-RC1,DFW002,"pet-food",dog_food_wet,Royal Canin Vet Gastrointestinal Low Fat Wet Adult Dog Food 12x410g,dog_food_wet_002,Dog > Food > dog-food-wet,Royal Canin,4.92,"EUR",47,"PLN",200,"GBP",40,dog_food_wet2
+D-F-WF-RC2,DFW003,"pet-food",dog_food_wet,Royal Canin Veterinary Hypoallergenic Wet Dog Food In Loaf 12x400g,dog_food_wet_003,Dog > Food > dog-food-wet,Royal Canin,4.8,"EUR",52,"PLN",220,"GBP",44,dog_food_wet3
+D-F-WF-Hl1,DFW004,"pet-food",dog_food_wet,Hill's Prescription Diet Digestive Care Low Fat Wet Adult Dog Food 12x354g,dog_food_wet_004,Dog > Food > dog-food-wet,Hill's,4.248,"EUR",43,"PLN",180,"GBP",36,dog_food_wet4
+D-F-WF-Hl2,DFW005,"pet-food",dog_food_wet,Hill's Prescription Diet z/d Food Sensitivities Wet Adult Dog Food 12x370g,dog_food_wet_005,Dog > Food > dog-food-wet,Hill's,4.44,"EUR",50,"PLN",210,"GBP",42,dog_food_wet5
+D-F-WF-RC3,DFW006,"pet-food",dog_food_wet,Royal Canin Veterinary Urinary S / O Wet Dog Food In Loaf 12x410g,dog_food_wet_006,Dog > Food > dog-food-wet,Royal Canin,4.92,"EUR",47,"PLN",200,"GBP",40,dog_food_wet6
+D-F-WF-PP2,DFW007,"pet-food",dog_food_wet,Pro Plan Veterinary Diets EN Gastrointestinal Adult Wet Dog Food 12x400g,dog_food_wet_007,Dog > Food > dog-food-wet,Pro Plan,4.8,"EUR",38,"PLN",160,"GBP",32,dog_food_wet7
+D-F-WF-BT1,DFW008,"pet-food",dog_food_wet,Butcher's Grain Free Joints & Coat Adult Wet Dog Food 18x390g,dog_food_wet_008,Dog > Food > dog-food-wet,Butcher's,7.02,"EUR",21,"PLN",90,"GBP",18,dog_food_wet8
+D-F-WF-BT2,DFW009,"pet-food",dog_food_wet,Butcher's Simply Gentle Wet Adult Dog Food 18x390g,dog_food_wet_009,Dog > Food > dog-food-wet,Butcher's,7.02,"EUR",21,"PLN",90,"GBP",18,dog_food_wet9
+D-F-WF-BT3,DFW010,"pet-food",dog_food_wet,Butcher's Grain Free Healthy Heart Adult Wet Dog Food 18 x 390g,dog_food_wet_010,Dog > Food > dog-food-wet,Butcher's,7.02,"EUR",21,"PLN",90,"GBP",18,dog_food_wet10
+
+D-T-DT-LK1,DTT001,pet-treats,dog_treats,Lily's Kitchen Bedtime Biscuits Dog Treats 80g,dog_treats_001,Dog > treats,Lily's Kitchen,0.08,"EUR",4,"PLN",15,"GBP",3,dog_treats1
+D-T-DT-WG1,DTT002,pet-treats,dog_treats,Wagg Dog Treats Cookies with Peanut Butter & Banana 125g,dog_treats_002,Dog > treats,Wagg,0.125,"EUR",4,"PLN",10,"GBP",2,dog_treats2
+D-T-DT-GB1,DTT003,pet-treats,dog_treats,Good Boy Chicken Twists Dog Treats,dog_treats_003,Dog > treats,Good Boy,0.32,"EUR",10,"PLN",40,"GBP",8,dog_treats3
+D-T-DT-WG2,DTT004,pet-treats,dog_treats,Wagg Low Fat Dog Treats 125g,dog_treats_004,Dog > treats,Wagg,0.125,"EUR",4,"PLN",10,"GBP",2,dog_treats4
+D-T-DT-WHL1,DTT005,pet-treats,dog_treats,Hill's Prescription Diet Hypoallergenic Dog Treats,dog_treats_005,Dog > treats,Hill's,0.2,"EUR",7,"PLN",30,"GBP",6,dog_treats5
+D-T-DT-LK2,DTT006,pet-treats,dog_treats,Lily's Kitchen Best Ever Beef Mini Burgers Dog Treats 70g,dog_treats_006,Dog > treats,Lily's Kitchen,0.07,"EUR",5,"PLN",20,"GBP",4,dog_treats6
+D-T-DT-LK3,DTT007,pet-treats,dog_treats,Lily's Kitchen Woofbrush Daily Dental Gut Health Dog Chews Large 7x47g,dog_treats_007,Dog > treats,Lily's Kitchen,0.329,"EUR",11,"PLN",45,"GBP",9,dog_treats7
+D-T-DT-PM1,DTT008,pet-treats,dog_treats,Pooch and Mutt Calming Meaty Dog Treats with Turkey and Hemp 120g,dog_treats_008,Dog > treats,Pooch and Mutt,0.12,"EUR",5,"PLN",20,"GBP",4,dog_treats8
+D-T-DT-PM2,DTT009,pet-treats,dog_treats,Pooch and Mutt Dental Meaty Dog Treats with Duck and Rosemary 120g,dog_treats_009,Dog > treats,Pooch and Mutt,0.12,"EUR",5,"PLN",20,"GBP",4,dog_treats9
+D-T-DT-PM3,DTT010,pet-treats,dog_treats,Pooch and Mutt Skin and Coat Meaty Dog Treats with Shrimp and Coconut 120g,dog_treats_010,Dog > treats,Pooch and Mutt,0.12,"EUR",5,"PLN",20,"GBP",4,dog_treats10
+
+D-D-DT-NL1,DTD001,pet-toys,dog_toys,Nylabone Bacon Glaze Extreme Chew Donut Dog Toy Medium,dog_toys_001,Dog>Toys,Nylabone,Medium,"EUR",11,"PLN",45,"GBP",9,dog_toys1
+D-D-DT-NL2,DTD002,pet-toys,dog_toys,Nylabone Bacon & Cheese Extreme Chew Dog Toy Large,dog_toys_002,Dog>Toys,Nylabone,Large,"EUR",14,"PLN",60,"GBP",12,dog_toys2
+D-D-DT-PH1,DTD003,pet-toys,dog_toys,Pets at Home Float & Fetch Nev the Octopus Dog Toy,dog_toys_003,Dog>Toys,Pets at Home,One size,"EUR",6,"PLN",25,"GBP",5,dog_toys3
+D-D-DT-PH2,DTD004,pet-toys,dog_toys,Pets at Home Squeaky Unicorn Dog Toy Mini,dog_toys_004,Dog>Toys,Pets at Home,Mini,"EUR",4,"PLN",15,"GBP",3,dog_toys4
+D-D-DT-PH3,DTD005,pet-toys,dog_toys,Pets at Home Play Time Snuffle Ball Dog Toy,dog_toys_005,Dog>Toys,Pets at Home,One size,"EUR",8,"PLN",35,"GBP",7,dog_toys5
+
+D-C-DC-SD1,DCD001,pet-clothing,dog_clothing,Sunny Daze Elastofit Dog Cooling Vest Blue Large,dog_clothing_001,Dog>Coats and Clothing,Sunny Daze,Large,"EUR",24,"PLN",100,"GBP",20,dog_clothing1
+D-C-DC-PH1,DCD002,pet-clothing,dog_clothing,Pets at Home Ripstop Reflective Trim Dog Coat Charcoal Medium,dog_clothing_002,Dog>Coats and Clothing,Pets at Home,Medium,"EUR",20,"PLN",85,"GBP",17,dog_clothing2
+D-C-DC-PH2,DCD003,pet-clothing,dog_clothing,Pets at Home Printed Transpawrent Flower Dog Raincoat Yellow Small,dog_clothing_003,Dog>Coats and Clothing,Pets at Home,Small,"EUR",14,"PLN",60,"GBP",12,dog_clothing3
+D-C-DC-PK1,DCD004,pet-clothing,dog_clothing,3 Peaks Waterproof Dog Terrain Suit Green Large,dog_clothing_004,Dog>Coats and Clothing,3 Peaks,Large,"EUR",35,"PLN",150,"GBP",30,dog_clothing4
+D-C-DC-PH3,DCD005,pet-clothing,dog_clothing,Pets at Home Quilted Plaid Dog Jacket Pink,dog_clothing_005,Dog>Coats and Clothing,Pets at Home,Small,"EUR",14,"PLN",60,"GBP",12,dog_clothing5
+
+//Cat
+K-F-DF-HL1,KFD001,"pet-food",cat_food_dry,Hill's Prescription Diet Dental Care Adult Dry Cat Food with Chicken 3kg,cat_food_dry_001,Cat>Food>Dry Food,Hill's,3,"EUR",36,"PLN",155,"GBP",31,cat_food_dry1
+K-F-DF-HL2,KFD002,"pet-food",cat_food_dry,Hill's Science Plan Sensitive Stomach & Skin Adult Dry Cat Food Chicken 1.5kg,cat_food_dry_002,Cat>Food>Dry Food,Hill's,1.5,"EUR",24,"PLN",100,"GBP",20,cat_food_dry2
+K-F-DF-RC1,KFD003,"pet-food",cat_food_dry,Royal Canin British Shorthair Adult Dry Cat Food 4kg,cat_food_dry_003,Cat>Food>Dry Food,Royal Canin,4,"EUR",46,"PLN",195,"GBP",39,cat_food_dry3
+K-F-DF-PP1,KFD004,"pet-food",cat_food_dry,Pro Plan Vet Diet UR Urinary Dry Cat Food Chicken 5kg,cat_food_dry_004,Cat>Food>Dry Food,Pro Plan,5,"EUR",39,"PLN",165,"GBP",33,cat_food_dry4
+K-F-DF-RC2,KFD005,"pet-food",cat_food_dry,Royal Canin Feline Hairball Adult Dry Cat Food 4kg,cat_food_dry_005,Cat>Food>Dry Food,Royal Canin,4,"EUR",46,"PLN",195,"GBP",39,cat_food_dry5
+K-F-DF-RC3,KFD006,"pet-food",cat_food_dry,Royal Canin Feline Indoor Adult Dry Cat Food 4kg,cat_food_dry_006,Cat>Food>Dry Food,Royal Canin,4,"EUR",46,"PLN",195,"GBP",39,cat_food_dry6
+K-F-DF-RC4,KFD007,"pet-food",cat_food_dry,Royal Canin Feline Light Weight Adult Dry Cat Food 8kg,cat_food_dry_007,Cat>Food>Dry Food,Royal Canin,8,"EUR",70,"PLN",300,"GBP",60,cat_food_dry7
+K-F-DF-RC5,KFD008,"pet-food",cat_food_dry,Royal Canin Feline Ageing 12+ Dry Senior Cat Food 4kg,cat_food_dry_008,Cat>Food>Dry Food,Royal Canin,4,"EUR",46,"PLN",195,"GBP",39,cat_food_dry8
+K-F-DF-RC6,KFD009,"pet-food",cat_food_dry,Royal Canin Veterinary Renal Adult Dry Cat Food 4kg,cat_food_dry_009,Cat>Food>Dry Food,Royal Canin,4,"EUR",50,"PLN",210,"GBP",42,cat_food_dry9
+K-F-DF-RC5,KFD008,"pet-food",cat_food_dry,Royal Canin Feline Ageing 12+ Dry Senior Cat Food 4kg,cat_food_dry_008,Cat>Food>Dry Food,Royal Canin,4,"EUR",46,"PLN",195,"GBP",39,cat_food_dry8
+K-F-DF-RC7,KFD010,"pet-food",cat_food_dry,Royal Canin Veterinary Satiety Adult Dry Cat Food 6kg,cat_food_dry_010,Cat>Food>Dry Food,Royal Canin,6,"EUR",63,"PLN",265,"GBP",53,cat_food_dry9
+
+K-F-WF-SG1,KFW001,"pet-food",cat_food_wet,Seriously Good Wet Adult Cat Food Chicken a la Carte Jelly 12 Pack,cat_food_wet_001,Cat>Food>Wet Food,Seriously Good,0.84,"EUR",12,"PLN",50,"GBP",10,cat_food_wet1
+K-F-WF-SG2,KFW002,"pet-food",cat_food_wet,Seriously Good Wet Kitten Food Chicken Breast Shreds 12x70g,cat_food_wet_002,Cat>Food>Wet Food,Seriously Good,0.84,"EUR",12,"PLN",50,"GBP",10,cat_food_wet2
+K-F-WF-RC1,KFW003,"pet-food",cat_food_wet,Royal Canin Veterinary Renal Adult Wet Cat Food 48x85g,cat_food_wet_003,Cat>Food>Wet Food,Royal Canin,4.08,"EUR",70,"PLN",295,"GBP",59,cat_food_wet3
+K-F-WF-RC2,KFW004,"pet-food",cat_food_wet,Royal Canin Feline Instinctive Adult Wet Cat Food In Gravy 48x85g,cat_food_wet_004,Cat>Food>Wet Food,Royal Canin,4.08,"EUR",58,"PLN",246,"GBP",49,cat_food_wet4
+K-F-WF-RC3,KFW005,"pet-food",cat_food_wet,Royal Canin Veterinary Satiety Adult Wet Cat Food 48x85g,cat_food_wet_005,Cat>Food>Wet Food,Royal Canin,4.08,"EUR",64,"PLN",270,"GBP",54,cat_food_wet5
+K-F-WF-RC4,KFW006,"pet-food",cat_food_wet,Royal Canin Ageing 12+ Senior Wet Cat Food In Gravy 48x85g,cat_food_wet_006,Cat>Food>Wet Food,Royal Canin,4.08,"EUR",70,"PLN",295,"GBP",59,cat_food_wet6
+K-F-WF-BL1,KFW007,"pet-food",cat_food_wet,Blink! Adult Cat Wet Food Chicken In Jelly 40x85g,cat_food_wet_007,Cat>Food>Wet Food,Blink!,3.4,"EUR",48,"PLN",205,"GBP",41,cat_food_wet7
+K-F-WF-PP1,KFW008,"pet-food",cat_food_wet,Pro Plan Vet Diet NF Care Renal Function Wet Senior Cat Food,cat_food_wet_008,Cat>Food>Wet Food,Pro Plan,0.85,"EUR",48,"PLN",60,"GBP",12,cat_food_wet8
+K-F-WF-AVA1,KFW009,"pet-food",cat_food_wet,AVA Optimum Health Wet Adult Cat Food Chicken In Gravy 80x85g,cat_food_wet_009,Cat>Food>Wet Food,AVA,6.8,"EUR",45,"PLN",190,"GBP",38,cat_food_wet9
+K-F-WF-HL1,KFW010,"pet-food",cat_food_wet,Hill's Science Plan Light Adult Cat Wet Food Chicken & Ocean Fish 48x85g,cat_food_wet_010,Cat>Food>Wet Food,Hill's,4.08,"EUR",45,"PLN",190,"GBP",38,cat_food_wet9
+
+K-T-DT-LL1,KTT001,pet-treats,cat_treats,Webbox Lick-e-Lix Cat Treat Chicken and Zinc 5x15g,cat_treats_001,Cat > treats,Lick-e-Lix,0.075,"EUR",4,"PLN",10,"GBP",2,cat_treats1
+K-T-DT-LL2,KTT002,pet-treats,cat_treats,Webbox Lick-e-Lix Yoghurt Salmon Sachets Cat Treat 5 x 15g,cat_treats_002,Cat > treats,Lick-e-Lix,0.075,"EUR",4,"PLN",10,"GBP",2,cat_treats2
+K-T-DT-LL3,KTT003,pet-treats,cat_treats,Webbox Lick-e-Lix Cat Treats Liver and Cat Grass 75g,cat_treats_003,Cat > treats,Lick-e-Lix,0.075,"EUR",4,"PLN",10,"GBP",2,cat_treats3
+K-T-DT-LL4,KTT004,pet-treats,cat_treats,Webbox Lick-e-Lix Cat Treats Cheese and Taurine 75g,cat_treats_004,Cat > treats,Lick-e-Lix,0.075,"EUR",4,"PLN",10,"GBP",2,cat_treats4
+K-T-DT-PK1,KTT005,pet-treats,cat_treats,Pickle's Kitten Treat with Chicken & Yoghurt 65g,cat_treats_005,Cat > treats,Pickle's Kitten,0.065,"EUR",1,"PLN",5,"GBP",1,cat_treats5
+K-T-DT-PK2,KTT006,pet-treats,cat_treats,Pickle's Crunchy Filled Cat Treats Salmon 350g,cat_treats_006,Cat > treats,Pickle's Kitten,0.35,"EUR",5,"PLN",20,"GBP",4,cat_treats6
+K-T-DT-CC2,KTT007,pet-treats,cat_treats,Catit Creamy Cat Treats 15x10g,cat_treats_007,Cat > treats,Catit Creamy,0.18,"EUR",7,"PLN",30,"GBP",6,cat_treats8
+K-T-DT-AP1,KTT008,pet-treats,cat_treats,Applaws Natural Chicken Puree Lickable Cat Treats 4x15g,cat_treats_008,Cat > treats,Applaws,0.06,"EUR",4,"PLN",10,"GBP",2,cat_treats7
+K-T-DT-AP2,KTT009,pet-treats,cat_treats,Applaws Natural Adult Cat Treat Mackerel Fillet 30g,cat_treats_009,Cat > treats,Applaws,0.03,"EUR",4,"PLN",10,"GBP",2,cat_treats9
+K-T-DT-CC1,KTT010,pet-treats,cat_treats,Catit Creamy Lickable Cat Treats Salmon & Prawn 15x10g,cat_treats_010,Cat > treats,Catit Creamy,0.15,"EUR",8,"PLN",35,"GBP",7,cat_treats10
+
+K-F-KF-PH1,KFK001,pet-furniture,cat_furniture,Pets at Home Smokey High Cat Hideaway Brown,cat_furniture_001,Cat > Trees & Scratching Posts,Pets at Home,One size,"EUR",17,"PLN",395,"GBP",79,cat_furniture1
+K-F-KF-PH2,KFK002,pet-furniture,cat_furniture,Pets at Home Coco Haven Cat Tower Natural,cat_furniture_002,Cat > Trees & Scratching Posts,Pets at Home,One size,"EUR",58,"PLN",245,"GBP",49,cat_furniture2
+K-F-KF-CT1,KFK003,pet-furniture,cat_furniture,Catit Vesper Treehouse Cat Furniture Large,cat_furniture_003,Cat > Trees & Scratching Posts,Pets at Home,Large,"EUR",271,"PLN",1150,"GBP",230,cat_furniture3
+K-F-KF-PH3,KFK004,pet-furniture,cat_furniture,Pets at Home Gizmo Hammock Cat Tower Grey,cat_furniture_004,Cat > Trees & Scratching Posts,Pets at Home,One size,"EUR",47,"PLN",200,"GBP",40,cat_furniture4
+K-F-KF-LL1,KFK005,pet-furniture,cat_furniture,Lords & Labradors The Helsinki Levels Fit Me Cat Play Centre,cat_furniture_005,Cat > Trees & Scratching Posts,Lords & Labradors,One size,"EUR",355,"PLN",1500,"GBP",300,cat_furniture5
+
+K-H-KH-NR1,KHK001,pet-healthcare,cat_healthcare,Nature's Greatest Secret Colloidal Silver Antibacterial Eye Drops 30ml,cat_healthcare_001,Cat > Healthcare & Treatments,Nature's,30,"EUR",17,"PLN",75,"GBP",15,cat_healthcare1
+K-H-KH-BC1,KHK002,pet-healthcare,cat_healthcare,B-Calm CBD Calming Cat Bedding Spray30ml,cat_healthcare_002,Cat > Healthcare & Treatments,B-Calm,30,"EUR",12,"PLN",50,"GBP",10,cat_healthcare2
+K-H-KH-YM1,KHK003,pet-healthcare,cat_healthcare,YuMOVE Skin & Coat Care Moulting For All Cats 50ml,cat_healthcare_003,Cat > Healthcare & Treatments,YuMOVE,50,"EUR",7,"PLN",30,"GBP",6,cat_healthcare3
+K-H-KH-AV1,KHK004,pet-healthcare,cat_healthcare,AniVatio ProJoint Salmon Oral Gel for Cats,cat_healthcare_004,Cat > Healthcare & Treatments,AniVatio,60,"EUR",47,"PLN",200,"GBP",40,cat_healthcare4
+K-H-KH-PH1,KHK005,pet-healthcare,cat_healthcare,Pets at Home Calming & Conditioning Cat Shampoo 200ml,cat_healthcare_005,Cat > Healthcare & Treatments,Pets at Home,200,"EUR",6,"PLN",25,"GBP",5,cat_healthcare5
+
+//Rabbit
+R-F-RF-PH1,RFF001,"pet-food",rabbit_food,Pets at Home Nutri Pressed Adult Rabbit Food Nuggets 10kg,rabbit_food_001,Small animal>Rabbit,Pets at Home,10,"EUR",15,"PLN",75,"GBP",15,fish_food1
+R-F-RF-BE1,RFF002,"pet-food",rabbit_food,Burgess Excel Timothy Feeding Hay Dandelion & Marigold 1kg,rabbit_food_002,Small animal>Rabbit,Burgess Excel,1,"EUR",10,"PLN",40,"GBP",8,fish_food2
+R-F-RF-BE2,RFF003,"pet-food",rabbit_food,Burgess Excel Junior & Dwarf Rabbit Nuggets 3kg,rabbit_food_003,Small animal>Rabbit,Burgess Excel,3,"EUR",11,"PLN",45,"GBP",9,fish_food3
+
+R-T-RT-PH1,RTT001,pet-treats,rabbit_treats,Pets at Home Small Animal Biscuit Bites Treats with Maple Syrup 60g,rabbit_treats_001,Small animal>Rabbit,Pets at Home,0.06,"EUR",4,"PLN",10,"GBP",2,rabbit_treats1
+R-T-RT-PH2,RTT002,pet-treats,rabbit_treats,Pets at Home Small Animal Biscuit Bites Treats with Carrot & Apple 60g,rabbit_treats_002,Small animal>Rabbit,Pets at Home,0.06,"EUR",4,"PLN",10,"GBP",2,rabbit_treats2
+R-T-RT-PH3,RTT003,pet-treats,rabbit_treats,Pets at Home Small Animal Biscuit Bites Treats with Strawberry 60g,rabbit_treats_003,Small animal>Rabbit,Pets at Home,0.06,"EUR",4,"PLN",10,"GBP",2,rabbit_treats3
+R-T-RT-SN1,RTT004,pet-treats,rabbit_treats,Selective Naturals Country Loops Small Animal Treats with Carrot & Timothy Hay 80g,rabbit_treats_004,Small animal>Rabbit,Selective Naturals,0.08,"EUR",4,"PLN",15,"GBP",3,rabbit_treats4
+R-T-RT-SN2,RTT005,pet-treats,rabbit_treats,Selective Naturals Orchard Loops Small Animal Treats with Timothy Hay & Apple 80g,rabbit_treats_005,Small animal>Rabbit,Selective Naturals,0.08,"EUR",4,"PLN",15,"GBP",3,rabbit_treats4
+
+R-C-RC-WD1,RCR001,pet-crates-and-tanks,rabbit_crate,Woodlands Seagrass Rabbit Hideaway,rabbit_crate_001,Small animal>Rabbit,Woodlands,One size,"EUR",17,"PLN",70,"GBP",14,rabbit_crate1
+R-C-RC-PH1,RCR002,pet-crates-and-tanks,rabbit_crate,Pets at Home Rabbit Home 120 Indoor Cage Pink,rabbit_crate_002,Small animal>Rabbit,Pets at Home,120,"EUR",59,"PLN",250,"GBP",50,rabbit_crate2
+R-C-RC-WD2,RCR003,pet-crates-and-tanks,rabbit_crate,Woodlands Carrot Rabbit Cottage,rabbit_crate_003,Small animal>Rabbit,Woodlands,Large,"EUR",17,"PLN",75,"GBP",15,rabbit_crate3
+
+R-T-RT-QK1,RTR001,pet-toys,rabbit_toys,Quiko Snack and Play Rabbit Fitness Carrot 100g,rabbit_toys_001,Small animal>rabbit,Quiko,100g,"EUR",8,"PLN",35,"GBP",7,rabbit_toys1
+R-T-RT-PH4,RTR002,pet-toys,rabbit_toys,Pets at Home Rabbit Carrot Toy Orange,rabbit_toys_002,Small animal>rabbit,Pets at Home,One size,"EUR",1,"PLN",5,"GBP",1,rabbit_toys2
+
+//Hamster
+H-F-HF-TFF1,HFF001,"pet-food",hamster_food,Tiny Friends Farm Harry Hamster Tasty Mix Muesli Food 700g,hamster_food_001,Small animal>Hamster,Tiny Friends Farm,0.7,"EUR",4,"PLN",15,"GBP",3,hamster_food1
+H-F-HF-TFF2,HFF002,"pet-food",hamster_food,Tiny Friends Farm Small Animal Bathing Sand 1kg,hamster_food_002,Small animal>Hamster,Tiny Friends Farm,1,"EUR",6,"PLN",25,"GBP",5,hamster_food2
+H-F-HF-PH1,HFF003,"pet-food",hamster_food,Pets at Home Small Animal Hamster Muesli Food 1kg,hamster_food_003,Small animal>Hamster,Pets at Home,1,"EUR",4,"PLN",15,"GBP",3,hamster_food2
+
+H-T-HT-VK1,HTT001,pet-treats,hamster_treats,Vitakraft Kracker Sticks Hamster Treat Fruit & Flakes x2 66g,hamster_treats_001,Small animal>Hamster,Vitakraft Kracker,0.132,"EUR",4,"PLN",15,"GBP",3,rabbit_treats1
+H-T-HT-VK2,HTT002,pet-treats,hamster_treats,Vitakraft Kracker Sticks Hamster Treat Grape & Nut x2 66g,hamster_treats_002,Small animal>Hamster,Vitakraft Kracker,0.132,"EUR",4,"PLN",15,"GBP",3,rabbit_treats2
+H-T-HT-VK3,HTT003,pet-treats,hamster_treats,Vitakraft Kracker Sticks Hamster Treat Honey Spelt x2 66g,hamster_treats_003,Small animal>Hamster,Vitakraft Kracker,0.132,"EUR",4,"PLN",15,"GBP",3,rabbit_treats3
+
+H-C-HC-SV1,HCH001,pet-crates-and-tanks,hamster_crate,Savic Hamster Sky Cage,hamster_crate_001,Small animal>hamster,Savic,One size,"EUR",51,"PLN",260,"GBP",52,hamster_crate1
+H-C-HC-PH1,HCH002,pet-crates-and-tanks,hamster_crate,Pets at Home Plastic Home 1 with Accessories Dwarf Hamster,hamster_crate_002,Small animal>hamster,Pets at Home,One size,"EUR",47,"PLN",200,"GBP",40,hamster_crate2
+
+H-T-HH-PH1,HTH001,pet-toys,hamster_toys,Pets at Home Hamster Seesaw,hamster_toys_001,Small animal>hamster,Pets at Home,One size,"EUR",5,"PLN",20,"GBP",4,hamster_toys1
+H-T-HH-PH2,HTH002,pet-toys,hamster_toys,Pets at Home Hamster Bamboo Hideaway Aubergine,hamster_toys_002,Small animal>hamster,Pets at Home,One size,"EUR",6,"PLN",25,"GBP",5,hamster_toys2
+
+//Rat
+R-F-RR-SS1,RRF001,"pet-food",rat_food,Science Selective Complete Rat and Mouse Food 1.5kg,rat_food_001,Small animal>Rat,Science Selective,1.5,"EUR",10,"PLN",40,"GBP",8,rat_food1
+R-F-RR-PH1,RRF002,"pet-food",rat_food,Pets at Home Rat & Mouse Muesli Small Animal Food 1kg,rat_food_002,Small animal>Rat,Pets at Home,1,"EUR",4,"PLN",15,"GBP",3,rat_food2
+R-F-RF-PH2,RRF003,"pet-food",rat_food,Pets at Home Nutri Pressed Rat Nuggets 2kg,rat_food_003,Small animal>Rat,Pets at Home,2,"EUR",7,"PLN",30,"GBP",6,rat_food3
+
+R-C-RR-FR1,RRR001,pet-crates-and-tanks,rat_crate,Ferplast Furat Home Rat Cage,rat_crate_001,Small animal>Rat,Ferplast,One size,"EUR",130,"PLN",550,"GBP",110,rat_crate1
+
+R-T-RR-OX1,TRT001,pet-toys,rat_toys,Oxbow Garden Dig Box Rat Forage Box,rat_toys_001,Small animal>Rat,Oxbow,One size,"EUR",15,"PLN",65,"GBP",13,rat_toys1
+R-T-RR-PH1,TRT002,pet-toys,rat_toys,Pets at Home Rat Wood Roll Treats Carrot/Parsley,rat_toys_002,Small animal>Rat,Pets at Home,One size,"EUR",4,"PLN",15,"GBP",3,rat_toys2
+R-T-RR-PH2,TRT003,pet-toys,rat_toys,Pets at Home Gnaw Hideaway Log Large,rat_toys_003,Small animal>Rat,Pets at Home,Large,"EUR",12,"PLN",50,"GBP",10,rat_toys3
+R-T-RR-OX2,TRT004,pet-toys,rat_toys,Oxbow Celebration Cupcake Rat Chew Toy,rat_toys_004,Small animal>Rat,Oxbow,One size,"EUR",15,"PLN",65,"GBP",13,rat_toys4
+
+//Chinchilla
+C-F-CF-SS1,CFF001,"pet-food",chinchilla_food,Science Selective Balanced Chinchilla Food 1.5kg,chinchilla_food_001,Small animal>Chinchilla,Science Selective,1.5,"EUR",10,"PLN",40,"GBP",8,chinchilla_food1
+C-F-CF-NT1,CFF002,"pet-food",chinchilla_food,Nature's Touch Chinchilla Food 1.45kg,chinchilla_food_002,Small animal>Chinchilla,Nature's Touch,1.45,"EUR",12,"PLN",50,"GBP",10,chinchilla_food2
+C-F-CF-BE1,CFF003,"pet-food",chinchilla_food,Burgess Excel Chinchilla Nuggets 1.5kg,chinchilla_food_003,Small animal>Chinchilla,Burgess Excel,1.5,"EUR",6,"PLN",25,"GBP",5,chinchilla_food3
+
+C-T-CT-VK1,CTT001,pet-treats,chinchilla_treats,Vitakraft Kracker Sticks Chinchilla Treat Herbal x2 66g,chinchilla_treats_001,Small animal>chinchilla,Vitakraft Kracker,0.132,"EUR",4,"PLN",15,"GBP",3,chinchilla_treats1
+C-T-CT-PH1,CTT002,pet-treats,chinchilla_treats,Pets at Home Small Animal Apple & Thistle Blossom Treats x2 70g,chinchilla_treats_002,Small animal>chinchilla,Pets at Home,0.14,"EUR",3,"PLN",10,"GBP",2,chinchilla_treats2
+C-T-CT-PH2,CTT003,pet-treats,chinchilla_treats,Pets at Home Small Animal Flower Forage Treat Bar 45g,chinchilla_treats_003,Small animal>chinchilla,Pets at Home,0.045,"EUR",3,"PLN",10,"GBP",2,chinchilla_treats3
+
+C-C-CC-SV1,CCC001,pet-crates-and-tanks,chinchilla_crate,Savic Freddy Chinchilla Cage,chinchilla_crate_001,Small animal>chinchilla,Savic,One size,"EUR",213,"PLN",520,"GBP",104,chinchilla_crate1
+C-C-CC-PH1,CCC002,pet-crates-and-tanks,chinchilla_crate,Pets at Home Chinchilla Carrier 4 Grey,chinchilla_crate_002,Small animal>chinchilla,Pets at Home,One size,"EUR",21,"PLN",90,"GBP",18,chinchilla_crate2
+
+C-T-TT-PH1,CTC001,pet-toys,chinchilla_toys,Pets at Home Chinchilla Hanging Play Tunnel Spotty,chinchilla_toys_001,Small animal>chinchilla,Pets at Home,One size,"EUR",17,"PLN",70,"GBP",14,chinchilla_toys1
+C-T-TT-PH2,CTC002,pet-toys,chinchilla_toys,Pets at Home Chinchilla Peanut Gnawing Chew,chinchilla_toys_002,Small animal>chinchilla,Pets at Home,One size,"EUR",5,"PLN",20,"GBP",4,chinchilla_toys2
+C-T-TT-PH3,CTC003,pet-toys,chinchilla_toys,Pets at Home Chinchilla Arched Bridge,chinchilla_toys_003,Small animal>chinchilla,Pets at Home,One size,"EUR",6,"PLN",25,"GBP",5,chinchilla_toys3
+
+//Fish
+F-F-FF-AQ1,FFF001,"pet-food",fish_food,Aquarian Goldfish Flake Food 200g,fish_food_001,Fish>Food,Aquarian,0.2,"EUR",15,"PLN",65,"GBP",13,fish_food1
+F-F-FF-AQ2,FFF002,"pet-food",fish_food,Aquarian Tropical and Temperate Fish Flake Food 200g,fish_food_002,Fish>Food,Aquarian,0.2,"EUR",25,"PLN",105,"GBP",21,fish_food2
+F-F-FF-TT1,FFF003,"pet-food",fish_food,Tetra Slowly Sinking Complete Fish Food Micro Granules 45g,fish_food_003,CFish>Food,Tetra,0.045,"EUR",8,"PLN",35,"GBP",7,fish_food3
+F-F-FF-TT2,FFF004,"pet-food",fish_food,TetraPro Colour Premium Advanced Nutrition Fish Food Crisp Tropical Aquarium 55g,fish_food_004,CFish>Food,Tetra,0.055,"EUR",8,"PLN",35,"GBP",7,fish_food4
+F-F-FF-AT1,FFF005,"pet-food",fish_food,Aqua Town Fish Flakes 18g,fish_food_005,CFish>Food,Aqua Town,0.018,"EUR",4,"PLN",15,"GBP",3,fish_food5
+
+F-C-FC-LF1,FCF001,pet-crates-and-tanks,fish_tank,Love Fish Vantage Aquarium 94L,fish_tank_001,Fish>Tanks,Love Fish,94L,"EUR",213,"PLN",900,"GBP",180,fish_tank1
+F-C-FC-AO1,FCF002,pet-crates-and-tanks,fish_tank,Aqua One Aqua Vue 580 Aquarium 75L,fish_tank_002,Fish>Tanks,Aqua One,75L,"EUR",225,"PLN",950,"GBP",190,fish_tank2
+F-C-FC-LF2,FCF003,pet-crates-and-tanks,fish_tank,Love Fish Panorama Tank 64L,fish_tank_003,Fish>Tanks,Love Fish,64L,"EUR",188,"PLN",795,"GBP",159,fish_tank3
+F-C-FC-BO1,FCF004,pet-crates-and-tanks,fish_tank,BiOrb Life Pure LED Aquarium Kit 15L,fish_tank_004,Fish>Tanks,BiOrb,15L,"EUR",148,"PLN",625,"GBP",125,fish_tank4
+F-C-FC-BO2,FCF005,pet-crates-and-tanks,fish_tank,BiOrb Classic LED Aquarium Kit Silver 30L,fish_tank_005,Fish>Tanks,BiOrb,30L,"EUR",188,"PLN",590,"GBP",118,fish_tank5
+
+F-H-FH-TT1,FHF001,pet-healthcare,fish_healthcare,Tetra EasyBalance Aquarium Water Care Stabilising Treatment 500ml,fish_healthcare_001,Fish > Health & Tank Cleaning,Tetra,500,"EUR",17,"PLN",75,"GBP",15,fish_healthcare1
+F-H-FH-AP1,FHF002,pet-healthcare,fish_healthcare,API Aqua Essential Tap Water Conditioner 237ml,fish_healthcare_002,Fish > Health & Tank Cleaning,API,237,"EUR",11,"PLN",45,"GBP",9,fish_healthcare2
+F-H-FH-AP2,FHF003,pet-healthcare,fish_healthcare,API AccuClear Freshwater Aquarium Water Clarifier 118ml,fish_healthcare_003,Fish > Health & Tank Cleaning,API,118,"EUR",13,"PLN",55,"GBP",11,fish_healthcare3
+F-H-FH-IP2,FHF004,pet-healthcare,fish_healthcare,Interpet Quick Clear Aquarium Treatment 125ml,fish_healthcare_004,Fish > Health & Tank Cleaning,Interpet,125,"EUR",6,"PLN",25,"GBP",5,fish_healthcare4
+F-H-FH-TT2,FHF005,pet-healthcare,fish_healthcare,Tetra AquaSafe Aquarium Tap Water Treatment 250ml,fish_healthcare_005,Fish > Health & Tank Cleaning,Tetra,250,"EUR",11,"PLN",45,"GBP",9,fish_healthcare5

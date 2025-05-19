@@ -1,0 +1,40 @@
+@use '@/styles/mixins' as mixins;
+@use '@/styles/variables' as vars;
+
+.element {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.label {
+  @include mixins.body-m;
+}
+
+.input {
+  width: 20rem;
+  height: 2.5rem;
+  padding: 0 1rem;
+  border: 1px solid vars.$neutral-gray606060;
+
+  &::placeholder {
+    color: vars.$neutral-gray606060;
+
+    @include mixins.body-xs(vars.$neutral-gray606060);
+
+    text-transform: none;
+  }
+
+  &:focus {
+    border-color: vars.$color-primary;
+    outline: none;
+    box-shadow: 0 0 0 1px vars.$color-primary200;
+  }
+}
+
+.error {
+  color: vars.$state-color-error;
+
+  @include mixins.text-m(0.75rem);
+}

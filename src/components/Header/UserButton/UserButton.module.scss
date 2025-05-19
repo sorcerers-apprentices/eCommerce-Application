@@ -1,0 +1,30 @@
+.overlay {
+  position: fixed;
+  z-index: 8;
+  top: 5rem;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #748c7052;
+  backdrop-filter: blur(4px);
+}
+
+.navbar {
+  display: flex;
+  flex-direction: row;
+  gap: 1.5rem;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.button {
+  padding: 0;
+  border: none;
+  background-color: transparent;
+}
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

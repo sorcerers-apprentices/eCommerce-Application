@@ -1,0 +1,48 @@
+@use '@/styles/variables.scss' as vars;
+@use '@/styles/mixins.scss' as mixins;
+@use '@/styles/fonts.scss' as fonts;
+
+.hero {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  align-items: flex-start;
+  justify-content: flex-end;
+  height: 30rem;
+  padding: 5rem;
+  background-color: vars.$color-primary100;
+  background-image: url('/images/cat-transparent-bg.png');
+  background-repeat: no-repeat;
+  background-position: bottom right;
+  background-origin: border-box;
+  background-size: contain; // contain - fully visible,cover - cover container
+  box-shadow: inset 0 0 40px 10px vars.$color-primary;
+
+  @media (width <= 768px) {
+    gap: 2rem;
+    justify-content: flex-start;
+    padding: 2rem;
+  }
+
+  @media (width <= 576px) {
+    gap: 0.5rem;
+    align-items: center;
+  }
+}
+
+.title {
+  width: 12rem;
+  font-family: fonts.$second-family;
+  font-size: 2.12rem;
+  font-weight: 400;
+  font-style: italic;
+  line-height: 1;
+  color: vars.$color-black;
+  text-align: center;
+  text-transform: capitalize;
+
+  @media (width <= 576px) {
+    align-items: center;
+    width: auto;
+  }
+}

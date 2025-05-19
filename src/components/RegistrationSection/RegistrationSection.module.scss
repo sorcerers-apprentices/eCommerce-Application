@@ -1,0 +1,30 @@
+@use '@/styles/variables' as vars;
+@use '@/styles/mixins' as mixins;
+
+.section {
+  padding: 2rem;
+  background-color: vars.$color-primary25;
+}
+
+.links {
+  cursor: default;
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+}
+
+.disabled {
+  font-weight: 600;
+}
+
+.or {
+  width: 0.1rem;
+  height: 1rem;
+  background-color: black;
+}
+
+.link {
+  @include mixins.link;
+}

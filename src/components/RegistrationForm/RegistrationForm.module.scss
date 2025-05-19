@@ -1,0 +1,18 @@
+.form {
+  &_fieldset {
+    padding: 0;
+    border: none;
+  }
+}
+
+.addresses {
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+  align-items: start;
+  justify-content: center;
+
+  @media (width <= 768px) {
+    flex-direction: column;
+  }
+}
