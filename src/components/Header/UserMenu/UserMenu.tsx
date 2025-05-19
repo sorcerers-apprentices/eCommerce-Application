@@ -1,12 +1,9 @@
 import type { ReactElement } from 'react'
-
 import { useUserContext } from '@/hooks/useUserContext.tsx'
 import { useAuth } from '@/hooks/useAuth'
 import { Button } from '@/shared/ui/Button/Button'
 import { Link } from 'react-router-dom'
 import { RoutePath } from '@/shared/config/routeConfig/routeConfig'
-// import { NavigationBar } from './NavigationBar/NavigationBar'
-// import { UserBar } from './UserBar/UserBar'
 import s from './UserMenu.module.scss'
 
 type IUserMenuProperties = {

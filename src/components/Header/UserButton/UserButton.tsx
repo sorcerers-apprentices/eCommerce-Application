@@ -6,11 +6,8 @@ import { UserMenu } from '.././UserMenu/UserMenu'
 import s from './UserButton.module.scss'
 
 export const UserButton = (): JSX.Element => {
-  const [open, setOpen]: [boolean, React.Dispatch<React.SetStateAction<boolean>>] = useState(false)
+  const [open, setOpen] = useState(false)
   const menuReference = useRef<HTMLDivElement | null>(null)
-  const handleClick = (): void => {
-    setOpen((previous: boolean) => !previous)
-  }
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent): void => {
       if (menuReference.current && event.target instanceof Node && !menuReference.current.contains(event.target)) {
@@ -26,11 +23,20 @@ export const UserButton = (): JSX.Element => {
 
   return (
     <div ref={menuReference} className={s.wrapper}>
-      <button className={s.button} onClick={handleClick}>
+      <button
+        className={s.button}
+        onClick={(): void => {
+          setOpen((previous) => !previous)
+        }}
+      >
         {open ? <IoClose className="icon" /> : <FaRegUser className="icon" />}
       </button>
-      {open && <UserMenu onClose={() => setOpen(false)} />}
-      {open && <div className={s.overlay} onClick={() => setOpen(false)} />}
+      {open && (
+        <>
+          <UserMenu onClose={() => setOpen(false)} />
+          <div className={s.overlay} onClick={() => setOpen(false)} />
+        </>
+      )}
     </div>
   )
 }
