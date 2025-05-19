@@ -3,6 +3,7 @@ import PrivateGuard from './PrivateGuard'
 import Loader from '@/shared/ui/Loader/Loader'
 import { Route, Routes } from 'react-router-dom'
 import { type ReactElement, Suspense } from 'react'
+import NotFoundPage from '@/pages/NotFoundPage/NotFoundPage'
 import { guestRoutes, privateRoutes, publicRoutes } from '@/shared/config/routeConfig/routeConfig'
 
 const AppRouter = (): ReactElement => {
@@ -24,6 +25,8 @@ const AppRouter = (): ReactElement => {
             <Route path={path} element={element} />
           ))}
         </Route>
+
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </Suspense>
   )

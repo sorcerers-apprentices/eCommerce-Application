@@ -1,6 +1,6 @@
-import { useUserContext } from '@/hooks/useUserContext.tsx'
 import type { FC, ReactElement } from 'react'
 import { Navigate, Outlet } from 'react-router-dom'
+import { useUserContext } from '@/hooks/useUserContext'
 import { RoutePath } from '@/shared/config/routeConfig/routeConfig'
 
 const PrivateGuard: FC = (): ReactElement => {
