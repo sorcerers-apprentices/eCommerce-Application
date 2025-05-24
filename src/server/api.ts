@@ -1,4 +1,9 @@
-import type { ClientResponse, Customer, ProductProjectionPagedSearchResponse } from '@commercetools/platform-sdk'
+import type {
+  CategoryPagedQueryResponse,
+  ClientResponse,
+  Customer,
+  ProductProjectionPagedSearchResponse,
+} from '@commercetools/platform-sdk'
 import { builder } from '@/server/client.ts'
 
 export enum ApiErrorCode {
@@ -15,9 +20,44 @@ export const api = {
     fetchMe: async (): Promise<ClientResponse<Customer> | Error> => builder().me().get().execute(),
   },
   product: {
-    fetchProducts: async (): Promise<ClientResponse<ProductProjectionPagedSearchResponse> | Error> => {
+    fetchProducts: async (
+      offset: number,
+      limit: number
+    ): Promise<ClientResponse<ProductProjectionPagedSearchResponse> | Error> => {
       return builder()
         .productProjections()
+        .get({
+          queryArgs: {
+            limit,
+            offset,
+          },
+        })
+        .execute()
+        .catch((error: Error) => error)
+    },
+    // errors!!!
+    // fetchPrice(): async (): void => builder().productDiscounts().
+    fetchProductsInCategory: async (
+      categoryId: string,
+      offset: number,
+      limit: number
+    ): Promise<ClientResponse<ProductProjectionPagedSearchResponse> | Error> => {
+      return builder()
+        .productProjections()
+        .search()
+        .get({
+          queryArgs: {
+            limit,
+            offset,
+            filter: `categories.id:subtree("${categoryId}")`,
+          },
+        })
+        .execute()
+        .catch((error: Error) => error)
+    },
+    fetchCategories: async (): Promise<ClientResponse<CategoryPagedQueryResponse> | Error> => {
+      return builder()
+        .categories()
         .get()
         .execute()
         .catch((error: Error) => error)

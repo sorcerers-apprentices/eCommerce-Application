@@ -5,6 +5,7 @@ import { LoginPageAsync } from '@/pages/LoginPage/LoginPage.async'
 import { AboutPageAsync } from '@/pages/AboutPage/AboutPage.async'
 import { ProfilePageAsync } from '@/pages/ProfilePage/ProfilePage.async'
 import { RegistrationPageAsync } from '@/pages/RegistrationPage/RegistrationPage.async'
+import { CatalogPageAsync } from '@/pages/CatalogPage/CatalogPage.async.tsx'
 
 export enum RoutePath {
   MAIN = '/',
@@ -12,6 +13,7 @@ export enum RoutePath {
   REGISTRATION = '/registration',
   PROFILE = '/profile',
   ABOUT = '/about',
+  CATALOG = '/catalog',
   NOT_FOUND = '*',
 }
 
@@ -27,6 +29,10 @@ export const publicRoutes: RouteProps[] = [
   {
     path: RoutePath.ABOUT,
     element: <AboutPageAsync />,
+  },
+  {
+    path: RoutePath.CATALOG,
+    element: <CatalogPageAsync />,
   },
   {
     path: RoutePath.NOT_FOUND,
