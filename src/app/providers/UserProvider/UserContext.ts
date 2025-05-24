@@ -8,9 +8,11 @@ export type UserState = {
 export type UserContext = {
   state: UserState
   dispatch: Dispatch<UserAction>
+  loading: boolean
 }
 
 export const userContext = createContext<UserContext>({
   state: {},
   dispatch: (): void => {},
+  loading: true,
 })

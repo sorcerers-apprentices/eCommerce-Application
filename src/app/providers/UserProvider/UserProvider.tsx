@@ -1,7 +1,6 @@
 import { api } from '@/server/api'
 import { toast } from 'react-hot-toast'
 import { isAnonymous } from '@/server/client'
-import Loader from '@/shared/ui/Loader/Loader'
 import { useFetch } from '@/shared/hooks/useFetch'
 import { userContext, type UserState } from './UserContext'
 import { UserActionType, userReducer } from './UserReducer'
@@ -24,10 +23,5 @@ export const UserProvider = ({ value, children }: Partial<ProviderProps<UserStat
     },
   })
 
-  return (
-    <userContext.Provider value={{ state, dispatch }}>
-      {loading && <Loader />}
-      {children}
-    </userContext.Provider>
-  )
+  return <userContext.Provider value={{ state, dispatch, loading }}>{children}</userContext.Provider>
 }

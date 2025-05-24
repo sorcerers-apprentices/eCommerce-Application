@@ -3,7 +3,7 @@ import { authApi } from '@/server/auth-api'
 import { useNavigate } from 'react-router-dom'
 import { useUserContext } from '@/hooks/useUserContext'
 import { RoutePath } from '@/shared/config/routeConfig/routeConfig'
-import { UserActionType } from '@/app/providers/UserProvider/UserContext'
+import { UserActionType } from '@/app/providers/UserProvider/UserReducer'
 
 type AuthContextOperations = {
   login: (username: string, password: string) => Promise<void>
