@@ -1,0 +1,30 @@
+@use '@/styles/variables.scss' as vars;
+@use '@/styles/mixins.scss' as mixins;
+
+.category {
+  display: grid;
+  grid-template: 40px auto / 1fr minmax(0, 940px);
+  grid-template-areas:
+    'title products-list'
+    'category-list .';
+}
+
+.title {
+  grid-area: title;
+}
+
+.categorylist {
+  cursor: pointer;
+  grid-area: category-list;
+  padding-top: 8px;
+  padding-left: 10px;
+  list-style-type: none;
+}
+
+ul {
+  padding-left: 10px;
+}
+
+li {
+  padding-top: 8px;
+}
