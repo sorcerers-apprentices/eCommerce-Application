@@ -1,4 +1,32 @@
-import { type UserAction, UserActionType, type UserState } from '@/app/providers/UserProvider/UserContext.ts'
+import { type UserState } from './UserContext'
+
+export type UserAction = SetUser | UpdateUser | LoginUser | LogoutUser
+
+export enum UserActionType {
+  SET_ALL = 'SET_ALL',
+  UPDATE = 'UPDATE',
+  LOGIN = 'LOGIN',
+  LOGOUT = 'LOGOUT',
+}
+
+type SetUser = {
+  type: UserActionType.SET_ALL
+  payload: UserState
+}
+
+type UpdateUser = {
+  type: UserActionType.UPDATE
+  payload: Partial<UserState>
+}
+
+type LoginUser = {
+  type: UserActionType.LOGIN
+  payload: { email: string }
+}
+
+type LogoutUser = {
+  type: UserActionType.LOGOUT
+}
 
 export const userReducer = (state: UserState, action: UserAction): UserState => {
   switch (action.type) {

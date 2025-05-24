@@ -17,14 +17,14 @@ import { useNavigate } from 'react-router-dom'
 import s from './RegistrationForm.module.scss'
 import { useValidate } from '@/hooks/useValidate'
 import { Toggler } from '@/shared/ui/Toggler/Toggler'
+import { useUserContext } from '@/hooks/useUserContext'
 import { FormButton } from '@/components/LoginForm/FormButton'
 import { SelectInput } from '@/shared/ui/SelectInput/SelectInput'
 import { RoutePath } from '@/shared/config/routeConfig/routeConfig'
 import { isCommerceToolsError } from '@/shared/utilities/type-utilities'
+import { UserActionType } from '@/app/providers/UserProvider/UserReducer'
 import { InputComponent } from '@/shared/ui/InputComponent/InputComponent'
 import { type ChangeEvent, type FormEvent, type JSX, useState } from 'react'
-import { useUserContext } from '@/hooks/useUserContext.tsx'
-import { UserActionType } from '@/app/providers/UserProvider/UserContext.ts'
 
 export const RegistrationForm = (): JSX.Element => {
   const [sameAddress, setSameAddress] = useState(false)
