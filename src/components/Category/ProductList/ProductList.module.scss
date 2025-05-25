@@ -1,0 +1,74 @@
+@use '@/styles/variables.scss' as vars;
+@use '@/styles/mixins.scss' as mixins;
+
+.productssection {
+  margin-top: 20px;
+  padding: 10px;
+  border-top: 1px solid vars.$color-dark-grey;
+}
+
+.productlist {
+  display: flex;
+  grid-area: products-list;
+  flex-wrap: wrap;
+  gap: 4rem;
+  list-style: none;
+}
+
+.productitem {
+  cursor: pointer;
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: space-between;
+  width: 260px;
+  height: 400px;
+  margin-bottom: 15px;
+  padding: 10px;
+  border: 1px solid vars.$color-dark-grey;
+  border-radius: 4px;
+  transition:
+    outline 0.2s,
+    transform 0.2s;
+}
+
+.productitem:hover {
+  transform: scale(1.03) translateY(1px);
+  outline: 0.1rem solid vars.$color-primary;
+}
+
+.loading,
+.error,
+.empty {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+.pagination {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin-top: 20px;
+  padding-bottom: 30px;
+}
+
+.paginationbutton {
+  cursor: pointer;
+  padding: 8px 30px;
+  border: 1px solid vars.$color-dark-grey;
+  border-radius: 4px;
+  font-size: 14px;
+  background-color: vars.$color-white;
+}
+
+.paginationbutton:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+  background-color: vars.$neutral-grayadadad;
+}
+
+.paginationbutton.active {
+  border-color: vars.$color-primary;
+  color: vars.$color-white;
+  background-color: vars.$color-primary;
+}
