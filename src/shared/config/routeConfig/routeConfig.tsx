@@ -12,7 +12,7 @@ export enum RoutePath {
   REGISTRATION = '/registration',
   PROFILE = '/profile',
   ABOUT = '/about',
-  PRODUCT = '/product',
+  PRODUCT = '/product/:sku',
   NOT_FOUND = '*',
 }
 
