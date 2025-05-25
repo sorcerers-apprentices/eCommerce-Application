@@ -14,13 +14,32 @@ export const useFetch = <T,>(
   data: T | null
   error: Error | null
   loading: boolean
+  refetch: () => void
 } => {
   const { enabled = true, defaultValue = null, onSuccess, onFailure } = parameters || {}
 
   const [data, setData] = useState<null | T>(defaultValue)
   const [loading, setLoading] = useState(enabled)
   const [error, setError] = useState<null | Error>(null)
-
+  const execute = (): void => {
+    setLoading(true)
+    fetcher()
+      .then((response) => {
+        if (response instanceof Error) {
+          setError(response)
+          onFailure?.(response)
+        } else {
+          setData(response)
+          setError(null)
+          onSuccess?.(response)
+        }
+      })
+      .catch((error) => {
+        setError(error)
+        onFailure?.(error)
+      })
+      .finally(() => setLoading(false))
+  }
   useEffect(() => {
     if (!enabled) {
       return
@@ -41,11 +60,12 @@ export const useFetch = <T,>(
         onFailure?.(error)
       })
       .finally(() => setLoading(false))
-  }, [fetcher, parameters])
+  }, [fetcher, parameters, enabled, onFailure, onSuccess])
 
   return {
     data,
     error,
     loading,
+    refetch: execute,
   }
 }

@@ -10,9 +10,10 @@ import type { ClientResponse, Customer } from '@commercetools/platform-sdk'
 import type { TCustomerProfileForm } from '@/components/types/user-types'
 import { UserDataView } from './UserDataView/UserDataView'
 import { ProfileMapper } from '@/shared/lib/ProfileMapper'
+import { updateProfileApi } from '@/server/updateProfleApi'
 
 export const ProfileSection = (): ReactElement => {
-  const { data, error, loading } = useFetch<ClientResponse<Customer>>(api.user.fetchMe)
+  const { data, error, loading, refetch } = useFetch<ClientResponse<Customer>>(api.user.fetchMe)
   const [edition, setEdition] = useState(false)
   const [userData, setUserData] = useState<TCustomerProfileForm<string>>(ProfileMapper.EMPTY_PROFILE)
   useEffect(() => {
@@ -21,6 +22,16 @@ export const ProfileSection = (): ReactElement => {
       setUserData(profileView)
     }
   }, [data])
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
+    event.preventDefault()
+    try {
+      await updateProfileApi(userData)
+      refetch()
+      setEdition(false)
+    } catch (error) {
+      console.error(error)
+    }
+  }
 
   return (
     <section className={s.section}>
@@ -34,16 +45,20 @@ export const ProfileSection = (): ReactElement => {
             <>
               {!edition ? (
                 <Form>
-                  <UserDataView userData={userData} disabled={!edition} />
+                  <UserDataView
+                    userData={ProfileMapper.toProfileView(data.body)}
+                    setUserData={setUserData}
+                    disabled={!edition}
+                  />
                   <Button onClick={() => setEdition(true)}>Edit</Button>
                 </Form>
               ) : (
-                <Form>
-                  <UserDataView userData={userData} disabled={!edition} />
+                <Form onSubmit={handleSubmit}>
+                  <UserDataView userData={userData} setUserData={setUserData} disabled={!edition} />
 
                   <div className={s.buttons}>
                     <Button onClick={() => setEdition(false)}>Cancel</Button>
-                    <Button onClick={() => setEdition(false)} disabled={edition}>
+                    <Button type="submit" disabled={!edition}>
                       Save
                     </Button>
                   </div>
