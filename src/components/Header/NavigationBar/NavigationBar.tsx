@@ -9,6 +9,9 @@ export const NavigationBar = (): ReactElement => {
       <NavLink to={RoutePath.MAIN} className={s.link}>
         Main
       </NavLink>
+      <NavLink to={RoutePath.CATALOG} className={s.link}>
+        Catalog
+      </NavLink>
       <NavLink to={RoutePath.ABOUT} className={s.link}>
         About
       </NavLink>
