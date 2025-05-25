@@ -1,6 +1,7 @@
 import type { ProductProjection } from '@commercetools/platform-sdk'
 import s from './ProductList.module.scss'
 import type { ReactElement } from 'react'
+import { Link } from 'react-router-dom'
 
 type ProductListProperties = {
   currentPage: number
@@ -87,17 +88,20 @@ export const ProductList = ({
     <div className={s.productssection}>
       <ul className={s.productlist}>
         {products.map((product) => {
+          const id = product.masterVariant.key?.toLowerCase()
           const centPrice = product.masterVariant.prices?.find((price) => price.country === 'ES')?.value.centAmount
           return (
             <li key={product.id} className={s.productitem}>
-              <img
-                src={product.masterVariant.images?.[0].url}
-                alt={product.name?.['en-US'] || 'Product image'}
-                className={s.productImage}
-              />
-              {product.name?.['en-US'] && <p>{product.name['en-US']}</p>}
-              {centPrice && <p>€ {centPrice / CENTS_IN_DOLLAR}</p>}
-              {product.description?.['en-US'] && <p>{product.description['en-US']}</p>}
+              <Link to={`/product/${id}`}>
+                <img
+                  src={product.masterVariant.images?.[0].url}
+                  alt={product.name?.['en-US'] || 'Product image'}
+                  className={s.productImage}
+                />
+                {product.name?.['en-US'] && <p>{product.name['en-US']}</p>}
+                {centPrice && <p>€ {centPrice / CENTS_IN_DOLLAR}</p>}
+                {product.description?.['en-US'] && <p>{product.description['en-US']}</p>}
+              </Link>
             </li>
           )
         })}
