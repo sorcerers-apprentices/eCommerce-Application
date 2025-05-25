@@ -1,6 +1,7 @@
 import type { ProductProjection } from '@commercetools/platform-sdk'
 import s from './ProductList.module.scss'
 import type { ReactElement } from 'react'
+import { Link } from 'react-router-dom'
 
 type ProductListProperties = {
   currentPage: number
@@ -70,26 +71,29 @@ export const ProductList = ({
     <div className={s.productssection}>
       <ul className={s.productlist}>
         {products?.map((product) => {
+          const id = product.masterVariant.key?.toLowerCase()
           const centPrice = product.masterVariant.prices?.find((price) => price.country === 'ES')?.value.centAmount
           const discountPrice = product.masterVariant.prices?.find((price) => price.discounted)?.value.centAmount
           return (
             <li className={s.productitem} key={product.id}>
-              {discountPrice && <span className={s.salenumber}>15% OFF</span>}
-              <img
-                src={product.masterVariant.images?.[0].url}
-                alt={product.name?.['en-US'] || 'Product image'}
-                className={s.productImage}
-              />
-              {product.name?.['en-US'] && <p>{product.name['en-US']}</p>}
-              <div className={s.pricecontainer}>
-                {centPrice && (
-                  <p className={`${s.productprice} ${discountPrice ? s.onsale : ''}`}>
+              <Link to={`/product/${id}`}>
+                {discountPrice && <span className={s.salenumber}>15% OFF</span>}
+                <img
+                  src={product.masterVariant.images?.[0].url}
+                  alt={product.name?.['en-US'] || 'Product image'}
+                  className={s.productImage}
+                />
+                {product.name?.['en-US'] && <p>{product.name['en-US']}</p>}
+                <div className={s.pricecontainer}>
+                  {centPrice && (
+                    <p className={`${s.productprice} ${discountPrice ? s.onsale : ''}`}>
                     € {centPrice / CENTS_IN_DOLLAR}
-                  </p>
-                )}
-                {discountPrice && <p className={s.productprice}>€ {discountPrice / CENTS_IN_DOLLAR}</p>}
-              </div>
-              {product.description?.['en-US'] && <p>{product.description['en-US']}</p>}
+                    </p>
+                  )}
+                  {discountPrice && <p className={s.productprice}>€ {discountPrice / CENTS_IN_DOLLAR}</p>}
+                </div>
+                {product.description?.['en-US'] && <p>{product.description['en-US']}</p>}
+              </Link>
             </li>
           )
         })}
