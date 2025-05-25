@@ -1,9 +1,10 @@
 import type { RouteProps } from 'react-router-dom'
-import NotFoundPage from '@/pages/NotFoundPage/NotFoundPage'
 import { MainPageAsync } from '@/pages/MainPage/MainPage.async'
 import { LoginPageAsync } from '@/pages/LoginPage/LoginPage.async'
 import { AboutPageAsync } from '@/pages/AboutPage/AboutPage.async'
 import { ProfilePageAsync } from '@/pages/ProfilePage/ProfilePage.async'
+import { ProductPageAsync } from '@/pages/ProductPage/ProductPage.async'
+import { CatalogPageAsync } from '@/pages/CatalogPage/CatalogPage.async'
 import { RegistrationPageAsync } from '@/pages/RegistrationPage/RegistrationPage.async'
 
 export enum RoutePath {
@@ -12,7 +13,8 @@ export enum RoutePath {
   REGISTRATION = '/registration',
   PROFILE = '/profile',
   ABOUT = '/about',
-  NOT_FOUND = '*',
+  PRODUCT = '/product/:sku',
+  CATALOG = '/catalog',
 }
 
 export const publicRoutes: RouteProps[] = [
@@ -29,8 +31,12 @@ export const publicRoutes: RouteProps[] = [
     element: <AboutPageAsync />,
   },
   {
-    path: RoutePath.NOT_FOUND,
-    element: <NotFoundPage />,
+    path: RoutePath.PRODUCT,
+    element: <ProductPageAsync />,
+  },
+  {
+    path: RoutePath.CATALOG,
+    element: <CatalogPageAsync />,
   },
 ]
 

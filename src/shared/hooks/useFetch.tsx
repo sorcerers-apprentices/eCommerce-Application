@@ -20,13 +20,11 @@ export const useFetch = <T,>(
   const [data, setData] = useState<null | T>(defaultValue)
   const [loading, setLoading] = useState(enabled)
   const [error, setError] = useState<null | Error>(null)
-  const [called, setCalled] = useState<boolean>(false)
 
   useEffect(() => {
-    if (!enabled || called) {
+    if (!enabled) {
       return
     }
-    setCalled(true)
 
     fetcher()
       .then((response) => {

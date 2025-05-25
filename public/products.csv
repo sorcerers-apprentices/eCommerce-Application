@@ -171,3 +171,6 @@ F-H-FH-AP1,FHF002,pet-healthcare,fish_healthcare,API Aqua Essential Tap Water Co
 F-H-FH-AP2,FHF003,pet-healthcare,fish_healthcare,API AccuClear Freshwater Aquarium Water Clarifier 118ml,fish_healthcare_003,Fish > Health & Tank Cleaning,API,118,"EUR",13,"PLN",55,"GBP",11,fish_healthcare3
 F-H-FH-IP2,FHF004,pet-healthcare,fish_healthcare,Interpet Quick Clear Aquarium Treatment 125ml,fish_healthcare_004,Fish > Health & Tank Cleaning,Interpet,125,"EUR",6,"PLN",25,"GBP",5,fish_healthcare4
 F-H-FH-TT2,FHF005,pet-healthcare,fish_healthcare,Tetra AquaSafe Aquarium Tap Water Treatment 250ml,fish_healthcare_005,Fish > Health & Tank Cleaning,Tetra,250,"EUR",11,"PLN",45,"GBP",9,fish_healthcare5
+
+
+Discount: fish_tank, discount for fish tanks, fish_tank_discount_001, Relative (15%), Rank (sortOrder) - 0.5, from: 19/05/2025 00:00 to: 19/05/2028 00:00,
