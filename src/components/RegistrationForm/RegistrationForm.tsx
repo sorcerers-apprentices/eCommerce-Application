@@ -101,13 +101,13 @@ export const RegistrationForm = (): JSX.Element => {
             : formData.shippingCountry.value === 'Poland'
               ? 'PL'
               : 'ES',
-        billingStreet: formData.shippingStreet.value,
-        billingCity: formData.shippingCity.value,
-        billingPostalCode: formData.shippingPostalCode.value,
+        billingStreet: formData.billingStreet.value,
+        billingCity: formData.billingCity.value,
+        billingPostalCode: formData.billingPostalCode.value,
         billingCountry:
-          formData.shippingCountry.value === 'United Kingdom'
+          formData.billingCountry.value === 'United Kingdom'
             ? 'UK'
-            : formData.shippingCountry.value === 'Poland'
+            : formData.billingCountry.value === 'Poland'
               ? 'PL'
               : 'ES',
         defaultShippingAddress: defaultShippingValue ? 0 : undefined,
