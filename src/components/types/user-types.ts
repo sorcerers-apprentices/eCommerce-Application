@@ -13,8 +13,10 @@ export type TCustomerProfileForm<T> = {
   shippingCity: T
   shippingPostalCode: T
   shippingStreet: T
+  defaultShipping: T
   billingCountry: T
   billingCity: T
   billingPostalCode: T
   billingStreet: T
+  defaultBilling: T
 }
