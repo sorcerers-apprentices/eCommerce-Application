@@ -1,7 +1,51 @@
+@use '@/styles/variables.scss' as vars;
+
 .checkbox {
   display: flex;
   gap: 0.5rem;
   align-items: center;
   justify-content: center;
   font-display: row;
+}
+
+.input {
+  cursor: pointer;
+  position: relative;
+  width: 16px;
+  height: 16px;
+  border: 1px solid vars.$color-primary;
+  appearance: none;
+  appearance: none;
+  appearance: none;
+  background-color: white;
+  transition: all 0.2s ease;
+
+  &:disabled {
+    cursor: default;
+    border-color: vars.$neutral-gray606060;
+    opacity: 0.6;
+    background-color: #f0f0f0;
+  }
+}
+
+.input:checked {
+  border-color: vars.$color-primary;
+  background-color: vars.$color-primary;
+
+  &:disabled {
+    border-color: #999;
+    background-color: #999;
+  }
+}
+
+.input:checked::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 5px;
+  transform: rotate(45deg);
+  width: 4px;
+  height: 8px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
 }

@@ -18,6 +18,11 @@ const EMPTY_PROFILE: TCustomerProfileForm<string> = {
   billingStreet: '',
   defaultBilling: '',
 }
+const countryCodeToName: Record<string, string> = {
+  UK: 'United Kingdom',
+  PL: 'Poland',
+  ES: 'Spain',
+}
 
 export const ProfileMapper = {
   EMPTY_PROFILE,
@@ -33,26 +38,12 @@ export const ProfileMapper = {
       lastName: customer.lastName ?? '',
       dateOfBirth: customer.dateOfBirth ?? '',
       password: '',
-      shippingCountry:
-        shipping.country === 'UK'
-          ? 'United Kingdom'
-          : shipping.country === 'PL'
-            ? 'Poland'
-            : shipping.country === 'ES'
-              ? 'Spain'
-              : '',
+      shippingCountry: countryCodeToName[shipping.country ?? ''] ?? '',
       shippingCity: shipping.city ?? '',
       shippingPostalCode: shipping.postalCode ?? '',
       shippingStreet: shipping.streetName ?? '',
       defaultShipping: defaultShippingAddressId ?? '',
-      billingCountry:
-        billing.country === 'UK'
-          ? 'United Kingdom'
-          : billing.country === 'PL'
-            ? 'Poland'
-            : billing.country === 'ES'
-              ? 'Spain'
-              : '',
+      billingCountry: countryCodeToName[billing.country ?? ''] ?? '',
       billingCity: billing.city ?? '',
       billingPostalCode: billing.postalCode ?? '',
       billingStreet: billing.streetName ?? '',

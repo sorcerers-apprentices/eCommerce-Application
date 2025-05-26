@@ -5,6 +5,8 @@ import { SelectInput } from '@/shared/ui/SelectInput/SelectInput'
 import { useKeenSlider } from 'keen-slider/react'
 import 'keen-slider/keen-slider.min.css'
 import './UserDataView.scss' // Assuming you have a CSS file for styles, adjust the path as necessary
+import { Checkbox } from '@/shared/ui/Checkbox/Checkbox'
+
 //import s from './UserDataView.module.scss'
 
 type TProperties = {
@@ -15,13 +17,6 @@ type TProperties = {
 }
 
 export const UserDataView = ({ userData, setUserData, disabled }: TProperties): ReactElement => {
-  const handleChange = (event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>): void => {
-    const { name, value } = event.target
-    setUserData((previous) => ({
-      ...previous,
-      [name]: value,
-    }))
-  }
   const [currentSlide, setCurrentSlide] = useState(0)
   const [loaded, setLoaded] = useState(false)
   const [sliderReference, instanceReference] = useKeenSlider({
@@ -33,6 +28,28 @@ export const UserDataView = ({ userData, setUserData, disabled }: TProperties): 
       setLoaded(true)
     },
   })
+  const [sameAddress, setSameAddress] = useState(false)
+  const handleChange = (event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>): void => {
+    const { name, value } = event.target
+    setUserData((previous) => ({
+      ...previous,
+      [name]: value,
+    }))
+    setSameAddress(false)
+  }
+
+  const handleSameAddress = (checked: boolean): void => {
+    setSameAddress(checked)
+    if (checked) {
+      setUserData((previous) => ({
+        ...previous,
+        billingCountry: previous.shippingCountry,
+        billingCity: previous.shippingCity,
+        billingPostalCode: previous.shippingPostalCode,
+        billingStreet: previous.shippingStreet,
+      }))
+    }
+  }
   return (
     <>
       <div className="navigation-wrapper">
@@ -124,14 +141,33 @@ export const UserDataView = ({ userData, setUserData, disabled }: TProperties): 
               onChange={handleChange}
               disabled={disabled}
             />
+            <Checkbox
+              title={'Use as default shippinging address'}
+              onInput={(event: ChangeEvent<HTMLInputElement>) => {
+                console.log(event.target.checked)
+              }}
+              disabled={disabled}
+              id="defaultShipping"
+            />
           </fieldset>
           <fieldset className="keen-slider__slide number-slide3">
             <legend>Billing Address</legend>
+            <Checkbox
+              title={'Set shipping address as billing'}
+              onChange={(event: ChangeEvent<HTMLInputElement>) => {
+                const checked = event.target.checked
+                setSameAddress(checked)
+                handleSameAddress(checked)
+              }}
+              checked={sameAddress}
+              disabled={disabled}
+              id="sameAddress"
+            />
             <SelectInput
               value={userData.billingCountry}
               name={'billingCountry'}
               title={'Country'}
-              disabled={disabled}
+              disabled={disabled || sameAddress}
               options={['United Kingdom', 'Poland', 'Spain']}
               //errors={errors.billingCountry || serverErrors.billingCountry}
               onChange={handleChange}
@@ -141,7 +177,7 @@ export const UserDataView = ({ userData, setUserData, disabled }: TProperties): 
               name={'billingCity'}
               title={'City'}
               type={'text'}
-              disabled={disabled}
+              disabled={disabled || sameAddress}
               placeholder={'London'}
               allowWhitespaces={true}
               //errors={errors.billingCity || serverErrors.billingCity}
@@ -152,7 +188,7 @@ export const UserDataView = ({ userData, setUserData, disabled }: TProperties): 
               name={'billingPostalCode'}
               title={'Postal Code'}
               type={'text'}
-              disabled={disabled}
+              disabled={disabled || sameAddress}
               placeholder={'221B'}
               allowWhitespaces={true}
               //errors={errors.billingPostalCode || serverErrors.billingPostalCode}
@@ -163,11 +199,19 @@ export const UserDataView = ({ userData, setUserData, disabled }: TProperties): 
               name={'billingStreet'}
               title={'Street'}
               type={'text'}
-              disabled={disabled}
+              disabled={disabled || sameAddress}
               placeholder={'Baker Street'}
               allowWhitespaces={true}
               //errors={errors.billingStreet || serverErrors.billingStreet}
               onChange={handleChange}
+            />
+            <Checkbox
+              title={'Use as default billing address'}
+              onInput={(event: ChangeEvent<HTMLInputElement>) => {
+                console.log(event.target.checked)
+              }}
+              disabled={disabled}
+              id="defaultBilling"
             />
           </fieldset>
         </div>
