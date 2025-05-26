@@ -21,35 +21,21 @@ export const api = {
   },
   product: {
     fetchProducts: async (
-      offset: number,
-      limit: number
-    ): Promise<ClientResponse<ProductProjectionPagedSearchResponse> | Error> => {
-      return builder()
-        .productProjections()
-        .get({
-          queryArgs: {
-            limit,
-            offset,
-          },
-        })
-        .execute()
-        .catch((error: Error) => error)
-    },
-    // errors!!!
-    // fetchPrice(): async (): void => builder().productDiscounts().
-    fetchProductsInCategory: async (
-      categoryId: string,
-      offset: number,
-      limit: number
+      filter: CategoryFilter
     ): Promise<ClientResponse<ProductProjectionPagedSearchResponse> | Error> => {
       return builder()
         .productProjections()
         .search()
         .get({
           queryArgs: {
-            limit,
-            offset,
-            filter: `categories.id:subtree("${categoryId}")`,
+            limit: filter.limit,
+            offset: filter.offset,
+            filter: [
+              filter.categoryIds.length
+                ? `categories.id:${filter.categoryIds.map((categoryId) => `subtree("${categoryId}")`).join(',')}`
+                : [],
+            ].flat(),
+            'filter.query': [filter.sale ? 'variants.prices.discounted:exists' : []].flat(),
           },
         })
         .execute()
@@ -58,9 +44,20 @@ export const api = {
     fetchCategories: async (): Promise<ClientResponse<CategoryPagedQueryResponse> | Error> => {
       return builder()
         .categories()
-        .get()
+        .get({
+          queryArgs: {
+            limit: 150,
+          },
+        })
         .execute()
         .catch((error: Error) => error)
     },
   },
+}
+
+export type CategoryFilter = {
+  categoryIds: Array<string>
+  sale?: true
+  offset: number
+  limit: number
 }
