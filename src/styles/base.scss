@@ -38,8 +38,6 @@ html {
 }
 
 .title {
-  padding: 1rem;
-
   @include mixins.caption(2rem);
   @include mixins.center;
 }

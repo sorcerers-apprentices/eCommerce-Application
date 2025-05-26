@@ -8,8 +8,8 @@
 .wrapper {
   display: flex;
   flex-direction: row;
-  gap: 1rem;
-  align-items: center;
+  gap: 2rem;
+  align-items: flex-start;
   justify-content: space-between;
 }
 

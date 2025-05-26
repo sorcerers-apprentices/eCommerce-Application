@@ -2,14 +2,13 @@ import { useEffect, useState, type ReactElement } from 'react'
 import Loader from '@/shared/ui/Loader/Loader'
 import { Button } from '@/shared/ui/Button/Button'
 import { Form } from '@/shared/ui/Form/Form'
-
 import { useFetch } from '@/shared/hooks/useFetch'
 import { api } from '@/server/api'
 import s from './ProfileSection.module.scss'
 import type { ClientResponse, Customer } from '@commercetools/platform-sdk'
 import type { TCustomerProfileForm } from '@/types/user-types'
 import { UserDataView } from './UserDataView/UserDataView'
-import { ProfileMapper } from '@/shared/lib/ProfileMapper'
+import { ProfileMapper } from '@/components/ProfileSection/ProfileMapper'
 import { updateProfileApi } from '@/server/updateProfleApi'
 
 export const ProfileSection = (): ReactElement => {
@@ -32,7 +31,8 @@ export const ProfileSection = (): ReactElement => {
       console.error(error)
     }
   }
-
+  const REPLACER = null
+  const SPACE = 2
   return (
     <section className={s.section}>
       <div className={s.wrapper}>
@@ -62,6 +62,7 @@ export const ProfileSection = (): ReactElement => {
                       Save
                     </Button>
                   </div>
+                  <pre>{JSON.stringify(data.body, REPLACER, SPACE)}</pre>
                 </Form>
               )}
             </>
