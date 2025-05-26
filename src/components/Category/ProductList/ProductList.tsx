@@ -78,6 +78,8 @@ export const ProductList = ({
             <li className={s.productitem} key={product.id}>
               <Link to={`/product/${id}`}>
                 {discountPrice && <span className={s.salenumber}>15% OFF</span>}
+            <li key={product.id} className={s.productitem}>
+              <Link to={`/product/${id}`}>
                 <img
                   src={product.masterVariant.images?.[0].url}
                   alt={product.name?.['en-US'] || 'Product image'}
@@ -100,6 +102,7 @@ export const ProductList = ({
                   )}
                   {discountPrice && <p className={s.productprice}>€ {discountPrice / CENTS_IN_DOLLAR}</p>}
                 </div>
+                {centPrice && <p>€ {centPrice / CENTS_IN_DOLLAR}</p>}
                 {product.description?.['en-US'] && <p>{product.description['en-US']}</p>}
               </Link>
             </li>
