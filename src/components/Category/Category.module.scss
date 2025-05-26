@@ -5,12 +5,38 @@
   display: grid;
   grid-template: 40px auto / 1fr minmax(0, 940px);
   grid-template-areas:
-    'title products-list'
-    'category-list .';
+    'title options'
+    'category-list products-list';
 }
 
 .title {
   grid-area: title;
+}
+
+.options {
+  cursor: pointer;
+  display: flex;
+  grid-area: options;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.options > h2 {
+  width: 100%;
+  height: 100%;
+  text-align: center;
+}
+
+.options > h2:hover {
+  border-bottom: solid 1px vars.$color-primary;
+  color: vars.$color-primary;
+  background-color: vars.$neutral-grayf9f9f9;
+}
+
+.activelink {
+  border-bottom: solid 1px vars.$color-primary;
+  color: vars.$color-primary;
+  background-color: vars.$neutral-grayf9f9f9;
 }
 
 .categorylist {
@@ -27,4 +53,10 @@ ul {
 
 li {
   padding-top: 8px;
+}
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
 }

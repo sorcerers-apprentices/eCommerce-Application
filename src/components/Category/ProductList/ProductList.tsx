@@ -9,8 +9,6 @@ type ProductListProperties = {
   total?: number
   onPageChange: (page: number) => void
   products: ProductProjection[] | null
-  loading: boolean
-  error: string | null
 }
 
 export const ProductList = ({
@@ -19,24 +17,9 @@ export const ProductList = ({
   total,
   onPageChange,
   products,
-  loading,
-  error,
 }: ProductListProperties): ReactElement => {
   const CENTS_IN_DOLLAR = 100
   const MAX_PAGE_BUTTONS = 10
-
-  if (loading) {
-    return <div className={s.loading}>Loading products...</div>
-  }
-
-  if (!products || products.length === 0 || error) {
-    return (
-      <div className={s.empty}>
-        <img src="./images/no-products.jpg" alt="no products" />
-        No products found for this category
-      </div>
-    )
-  }
 
   const totalProducts = total || 0
   const totalPages = Math.ceil(totalProducts / pageSize)
@@ -50,7 +33,7 @@ export const ProductList = ({
 
     const sideButtons = 2
     const aroundCurrent = 2
-    buttons.push(1)
+    buttons.push(0)
 
     let start = Math.max(sideButtons, currentPage - aroundCurrent)
     let end = Math.min(totalPages - sideButtons, currentPage + aroundCurrent)
@@ -68,7 +51,7 @@ export const ProductList = ({
       buttons.push('...')
     }
 
-    for (let index = start; index <= end; index++) {
+    for (let index = start - 1; index <= end; index++) {
       buttons.push(index)
     }
 
@@ -85,21 +68,30 @@ export const ProductList = ({
   }
 
   return (
-    <div className={s.productssection}>
+    <section className={s.productssection}>
       <ul className={s.productlist}>
-        {products.map((product) => {
+        {products?.map((product) => {
           const id = product.masterVariant.key?.toLowerCase()
           const centPrice = product.masterVariant.prices?.find((price) => price.country === 'ES')?.value.centAmount
+          const discountPrice = product.masterVariant.prices?.find((price) => price.discounted)?.value.centAmount
           return (
-            <li key={product.id} className={s.productitem}>
-              <Link to={`/product/${id}`}>
+            <li key={product.id}>
+              <Link to={`/product/${id}`} className={s.productitem}>
+                {discountPrice && <span className={s.salenumber}>15% OFF</span>}
                 <img
                   src={product.masterVariant.images?.[0].url}
                   alt={product.name?.['en-US'] || 'Product image'}
                   className={s.productImage}
                 />
                 {product.name?.['en-US'] && <p>{product.name['en-US']}</p>}
-                {centPrice && <p>€ {centPrice / CENTS_IN_DOLLAR}</p>}
+                <div className={s.pricecontainer}>
+                  {centPrice && (
+                    <p className={`${s.productprice} ${discountPrice ? s.onsale : ''}`}>
+                      € {centPrice / CENTS_IN_DOLLAR}
+                    </p>
+                  )}
+                  {discountPrice && <p className={s.productprice}>€ {discountPrice / CENTS_IN_DOLLAR}</p>}
+                </div>
                 {product.description?.['en-US'] && <p>{product.description['en-US']}</p>}
               </Link>
             </li>
@@ -135,6 +127,6 @@ export const ProductList = ({
           </button>
         </div>
       )}
-    </div>
+    </section>
   )
 }
