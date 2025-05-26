@@ -9,7 +9,7 @@ const CatalogPage = (): ReactElement => {
       <div>
         <Header />
       </div>
-      <InputComponent value={''} title={''} type={'text'} placeholder={'Search'} />
+      <InputComponent isPassword={false} type={'text'} placeholder={'Search'} title={''} />
       <Category />
     </>
   )

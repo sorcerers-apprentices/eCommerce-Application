@@ -1,5 +1,5 @@
 import type { Customer } from '@commercetools/platform-sdk'
-import type { TCustomerProfileForm } from '@/components/types/user-types'
+import type { TCustomerProfileForm } from '@/types/user-types'
 
 const EMPTY_PROFILE: TCustomerProfileForm<string> = {
   email: '',

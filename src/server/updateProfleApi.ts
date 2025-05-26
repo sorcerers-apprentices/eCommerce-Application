@@ -1,4 +1,4 @@
-import type { TCustomerProfileForm } from '@/components/types/user-types'
+import type { TCustomerProfileForm } from '@/types/user-types'
 import type { Customer, MyCustomerUpdateAction } from '@commercetools/platform-sdk'
 import { builder } from './client'
 
