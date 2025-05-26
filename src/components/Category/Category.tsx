@@ -1,5 +1,5 @@
 import s from './Category.module.scss'
-import { type ReactElement, useCallback, useEffect, useMemo, useState } from 'react'
+import { type ChangeEvent, type ReactElement, useCallback, useEffect, useMemo, useState } from 'react'
 import { api, type CategoryFilter } from '@/server/api.ts'
 import type {
   CategoryPagedQueryResponse,
@@ -9,6 +9,7 @@ import type {
 import { CategoryMenu } from '@/components/Category/RenderCategory/CategoryMenu.tsx'
 import { ProductList } from '@/components/Category/ProductList/ProductList.tsx'
 import { useFetch } from '@/shared/hooks/useFetch.tsx'
+import { InputComponent } from '@/shared/ui/InputComponent/InputComponent.tsx'
 
 export const Category = (): ReactElement => {
   const ITEMS_PER_PAGE = 6
@@ -46,6 +47,21 @@ export const Category = (): ReactElement => {
 
   return (
     <section className={`section ${s.category}`}>
+      <InputComponent
+        onInput={(event: ChangeEvent<HTMLInputElement>) =>
+          setFilter(
+            (previous: CategoryFilter): CategoryFilter => ({
+              ...previous,
+              text: event.target.value,
+            })
+          )
+        }
+        isPassword={false}
+        type={'text'}
+        placeholder={'Search'}
+        title={''}
+        newClass={s.search}
+      />
       <h2 className={`${s.title}`}>Category</h2>
       <div className={`${s.options}`}>
         <h2

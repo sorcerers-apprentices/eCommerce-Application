@@ -2,13 +2,13 @@
 @use '@/styles/mixins.scss' as mixins;
 
 .productssection {
+  grid-area: products-list;
   padding: 10px;
   border-top: 1px solid vars.$color-dark-grey;
 }
 
 .productlist {
   display: flex;
-  grid-area: products-list;
   flex-wrap: wrap;
   gap: 4rem;
   list-style: none;

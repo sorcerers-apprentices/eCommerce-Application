@@ -3,10 +3,25 @@
 
 .category {
   display: grid;
-  grid-template: 40px auto / 1fr minmax(0, 940px);
+  grid-template: 50px 40px auto/ 1fr minmax(0, 940px);
   grid-template-areas:
+    'search search'
     'title options'
     'category-list products-list';
+}
+
+.search {
+  grid-area: search;
+  grid-column: 1 / span 3;
+  width: 100%;
+}
+
+.search > div {
+  width: 100%;
+}
+
+.search > div > input {
+  width: 100%;
 }
 
 .title {
@@ -57,6 +72,7 @@ li {
 
 .empty {
   display: flex;
+  grid-area: products-list;
   flex-direction: column;
   text-align: center;
 }

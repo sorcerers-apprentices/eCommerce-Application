@@ -15,6 +15,10 @@ export enum ApiErrorCode {
   RESOURCE_NOT_FOUND = 'ResourceNotFound',
 }
 
+const FIRST_CHECK_LENGTH = 2
+const SECOND_CHECK_LENGTH = 5
+const MAX_FUZZY_LEVEL = 2
+
 export const api = {
   user: {
     fetchMe: async (): Promise<ClientResponse<Customer> | Error> => builder().me().get().execute(),
@@ -36,6 +40,18 @@ export const api = {
                 : [],
             ].flat(),
             'filter.query': [filter.sale ? 'variants.prices.discounted:exists' : []].flat(),
+            ...(filter.text
+              ? {
+                  'text.en-US': `*${filter.text}*`,
+                  fuzzy: true,
+                  fuzzyLevel:
+                    filter.text.length < FIRST_CHECK_LENGTH
+                      ? 0
+                      : filter.text.length < SECOND_CHECK_LENGTH
+                        ? 1
+                        : MAX_FUZZY_LEVEL,
+                }
+              : {}),
           },
         })
         .execute()
@@ -60,4 +76,5 @@ export type CategoryFilter = {
   sale?: true
   offset: number
   limit: number
+  text?: string
 }

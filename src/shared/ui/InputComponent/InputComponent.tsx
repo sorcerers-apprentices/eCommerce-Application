@@ -10,12 +10,14 @@ type InputComponentProperties = InputHTMLAttributes<HTMLInputElement> & {
   title: string
   errors?: string | null
   isPassword?: boolean
+  newClass?: string
 }
 
 export const InputComponent: FC<InputComponentProperties> = ({
   name,
   title,
   type,
+  newClass,
   errors = null,
   isPassword = false,
   ...rest
@@ -25,7 +27,7 @@ export const InputComponent: FC<InputComponentProperties> = ({
   const classes = `${s.input} ${errors ? s.error : ''}`
 
   return (
-    <div className={s.element}>
+    <div className={`${s.element} ${newClass}`}>
       <Label htmlFor={name} className={s.label}>
         {title}
       </Label>
