@@ -1,6 +1,5 @@
 import type { ChangeEvent, ReactElement } from 'react'
-//import { Button } from '@/shared/ui/Button/Button'
-import type { TCustomerProfileForm } from '@/components/types/user-types'
+import type { TCustomerProfileForm } from '@/types/user-types'
 import { InputComponent } from '@/shared/ui/InputComponent/InputComponent'
 
 type TProperties = {
@@ -56,7 +55,6 @@ export const UserDataView = ({ userData, setUserData, disabled }: TProperties): 
         disabled={disabled}
         onChange={handleChange}
       />
-      {/* <Button onClick={onEdit}>Edit</Button> */}
     </>
   )
 }
