@@ -68,18 +68,16 @@ export const ProductList = ({
   }
 
   return (
-    <div className={s.productssection}>
+    <section className={s.productssection}>
       <ul className={s.productlist}>
         {products?.map((product) => {
           const id = product.masterVariant.key?.toLowerCase()
           const centPrice = product.masterVariant.prices?.find((price) => price.country === 'ES')?.value.centAmount
           const discountPrice = product.masterVariant.prices?.find((price) => price.discounted)?.value.centAmount
           return (
-            <li className={s.productitem} key={product.id}>
-              <Link to={`/product/${id}`}>
+            <li key={product.id}>
+              <Link to={`/product/${id}`} className={s.productitem}>
                 {discountPrice && <span className={s.salenumber}>15% OFF</span>}
-            <li key={product.id} className={s.productitem}>
-              <Link to={`/product/${id}`}>
                 <img
                   src={product.masterVariant.images?.[0].url}
                   alt={product.name?.['en-US'] || 'Product image'}
@@ -94,15 +92,6 @@ export const ProductList = ({
                   )}
                   {discountPrice && <p className={s.productprice}>€ {discountPrice / CENTS_IN_DOLLAR}</p>}
                 </div>
-                <div className={s.pricecontainer}>
-                  {centPrice && (
-                    <p className={`${s.productprice} ${discountPrice ? s.onsale : ''}`}>
-                      € {centPrice / CENTS_IN_DOLLAR}
-                    </p>
-                  )}
-                  {discountPrice && <p className={s.productprice}>€ {discountPrice / CENTS_IN_DOLLAR}</p>}
-                </div>
-                {centPrice && <p>€ {centPrice / CENTS_IN_DOLLAR}</p>}
                 {product.description?.['en-US'] && <p>{product.description['en-US']}</p>}
               </Link>
             </li>
@@ -138,6 +127,6 @@ export const ProductList = ({
           </button>
         </div>
       )}
-    </div>
+    </section>
   )
 }
