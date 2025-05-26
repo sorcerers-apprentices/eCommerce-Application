@@ -87,7 +87,15 @@ export const ProductList = ({
                 <div className={s.pricecontainer}>
                   {centPrice && (
                     <p className={`${s.productprice} ${discountPrice ? s.onsale : ''}`}>
-                    € {centPrice / CENTS_IN_DOLLAR}
+                      € {centPrice / CENTS_IN_DOLLAR}
+                    </p>
+                  )}
+                  {discountPrice && <p className={s.productprice}>€ {discountPrice / CENTS_IN_DOLLAR}</p>}
+                </div>
+                <div className={s.pricecontainer}>
+                  {centPrice && (
+                    <p className={`${s.productprice} ${discountPrice ? s.onsale : ''}`}>
+                      € {centPrice / CENTS_IN_DOLLAR}
                     </p>
                   )}
                   {discountPrice && <p className={s.productprice}>€ {discountPrice / CENTS_IN_DOLLAR}</p>}
