@@ -46,11 +46,10 @@ export const updateProfileApi = async (userData: TCustomerProfileForm<string>): 
     })
   }
 
-  const shippingAddressId = me.body.addresses?.[0]?.id
-  if (shippingAddressId) {
+  if (userData.shippingID) {
     actions.push({
       action: 'changeAddress',
-      addressId: shippingAddressId,
+      addressId: userData.shippingID,
       address: {
         streetName: userData.shippingStreet,
         postalCode: userData.shippingPostalCode,
@@ -60,11 +59,10 @@ export const updateProfileApi = async (userData: TCustomerProfileForm<string>): 
     })
   }
 
-  const billingAddressId = me.body.addresses?.[1]?.id
-  if (billingAddressId) {
+  if (userData.billingID) {
     actions.push({
       action: 'changeAddress',
-      addressId: billingAddressId,
+      addressId: userData.billingID,
       address: {
         streetName: userData.billingStreet,
         postalCode: userData.billingPostalCode,
@@ -73,6 +71,35 @@ export const updateProfileApi = async (userData: TCustomerProfileForm<string>): 
       },
     })
   }
+  if (userData.defaultShipping) {
+    actions.push({
+      action: 'setDefaultShippingAddress',
+      ...(userData.defaultShipping ? { addressId: userData.defaultShipping } : {}),
+    })
+  } else {
+    actions.push({
+      action: 'removeShippingAddressId',
+      addressId: userData.shippingID,
+    })
+  }
+
+  if (userData.defaultBilling) {
+    actions.push({
+      action: 'setDefaultBillingAddress',
+      ...(userData.defaultBilling ? { addressId: userData.defaultBilling } : {}),
+    })
+  } else {
+    actions.push({
+      action: 'removeBillingAddressId',
+      addressId: userData.billingID,
+    })
+  }
+
+  // actions.push({
+  //   action: 'setDefaultShippingAddress',
+  //   ...(userData.defaultShipping ? { addressId: userData.defaultShipping } : {}),
+  // })
+
   const result = await builder()
     .me()
     .post({

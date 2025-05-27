@@ -7,15 +7,20 @@ const EMPTY_PROFILE: TCustomerProfileForm<string> = {
   lastName: '',
   dateOfBirth: '',
   password: '',
+
+  shippingID: '',
   shippingCountry: '',
   shippingCity: '',
   shippingPostalCode: '',
   shippingStreet: '',
-  defaultShipping: '',
+
+  billingID: '',
   billingCountry: '',
   billingCity: '',
   billingPostalCode: '',
   billingStreet: '',
+
+  defaultShipping: '',
   defaultBilling: '',
 }
 const countryCodeToName: Record<string, string> = {
@@ -29,8 +34,8 @@ export const ProfileMapper = {
   toProfileView(customer: Customer): TCustomerProfileForm<string> {
     const shipping = customer.addresses?.[0] ?? {}
     const billing = customer.addresses?.[1] ?? {}
-    const defaultShippingAddressId = customer.defaultShippingAddressId
-    const defaultBillingAddressId = customer.defaultBillingAddressId
+    const shippingAddressId = customer.shippingAddressIds?.[0] ?? ''
+    const billingAddressId = customer.billingAddressIds?.[0] ?? ''
 
     return {
       email: customer.email ?? '',
@@ -38,16 +43,21 @@ export const ProfileMapper = {
       lastName: customer.lastName ?? '',
       dateOfBirth: customer.dateOfBirth ?? '',
       password: '',
+
+      shippingID: shipping.id ?? '',
       shippingCountry: countryCodeToName[shipping.country ?? ''] ?? '',
       shippingCity: shipping.city ?? '',
       shippingPostalCode: shipping.postalCode ?? '',
       shippingStreet: shipping.streetName ?? '',
-      defaultShipping: defaultShippingAddressId ?? '',
+
+      billingID: billing.id ?? '',
       billingCountry: countryCodeToName[billing.country ?? ''] ?? '',
       billingCity: billing.city ?? '',
       billingPostalCode: billing.postalCode ?? '',
       billingStreet: billing.streetName ?? '',
-      defaultBilling: defaultBillingAddressId ?? '',
+
+      defaultShipping: shippingAddressId ?? '',
+      defaultBilling: billingAddressId ?? '',
     }
   },
 }

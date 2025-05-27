@@ -50,6 +50,17 @@ export const UserDataView = ({ userData, setUserData, disabled }: TProperties): 
       }))
     }
   }
+  const handleDefaultAddress = (
+    checked: boolean,
+    type: 'defaultShipping' | 'defaultBilling',
+    addressId: string
+  ): void => {
+    setUserData((previous) => ({
+      ...previous,
+      [type]: checked ? addressId : '',
+    }))
+  }
+
   return (
     <>
       <div className="navigation-wrapper">
@@ -143,10 +154,9 @@ export const UserDataView = ({ userData, setUserData, disabled }: TProperties): 
             />
             <Checkbox
               title={'Use as default shippinging address'}
-              onInput={(event: ChangeEvent<HTMLInputElement>) => {
-                console.log(event.target.checked)
-              }}
+              onChange={(event) => handleDefaultAddress(event.target.checked, 'defaultShipping', userData.shippingID)}
               disabled={disabled}
+              checked={userData.defaultShipping !== ''}
               id="defaultShipping"
             />
           </fieldset>
@@ -207,10 +217,9 @@ export const UserDataView = ({ userData, setUserData, disabled }: TProperties): 
             />
             <Checkbox
               title={'Use as default billing address'}
-              onInput={(event: ChangeEvent<HTMLInputElement>) => {
-                console.log(event.target.checked)
-              }}
+              onChange={(event) => handleDefaultAddress(event.target.checked, 'defaultBilling', userData.billingID)}
               disabled={disabled}
+              checked={userData.defaultBilling !== ''}
               id="defaultBilling"
             />
           </fieldset>

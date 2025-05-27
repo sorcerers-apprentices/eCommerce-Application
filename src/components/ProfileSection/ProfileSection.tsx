@@ -51,6 +51,7 @@ export const ProfileSection = (): ReactElement => {
                     disabled={!edition}
                   />
                   <Button onClick={() => setEdition(true)}>Edit</Button>
+                  <pre>{JSON.stringify(userData, REPLACER, SPACE)}</pre>
                 </Form>
               ) : (
                 <Form onSubmit={handleSubmit}>
