@@ -6,12 +6,16 @@ import { ProfilePageAsync } from '@/pages/ProfilePage/ProfilePage.async'
 import { ProductPageAsync } from '@/pages/ProductPage/ProductPage.async'
 import { CatalogPageAsync } from '@/pages/CatalogPage/CatalogPage.async'
 import { RegistrationPageAsync } from '@/pages/RegistrationPage/RegistrationPage.async'
+import { AddressesPageAsync } from '@/pages/AddressesPage/AddressesPage.async'
+import { PasswordPageAsync } from '@/pages/PasswordPage/PasswordPage.async'
 
 export enum RoutePath {
   MAIN = '/',
   LOGIN = '/login',
   REGISTRATION = '/registration',
   PROFILE = '/profile',
+  ADDRESSES = '/profile/addresses',
+  PASSWORD = '/profile/password',
   ABOUT = '/about',
   PRODUCT = '/product/:sku',
   CATALOG = '/catalog',
@@ -51,5 +55,13 @@ export const privateRoutes: RouteProps[] = [
   {
     path: RoutePath.PROFILE,
     element: <ProfilePageAsync />,
+  },
+  {
+    path: RoutePath.ADDRESSES,
+    element: <AddressesPageAsync />,
+  },
+  {
+    path: RoutePath.PASSWORD,
+    element: <PasswordPageAsync />,
   },
 ]

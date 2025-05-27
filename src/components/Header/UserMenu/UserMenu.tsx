@@ -30,6 +30,9 @@ export const UserMenu = ({ onClose }: IUserMenuProperties): ReactElement => {
           <Link to={RoutePath.PROFILE} className={s.button} onClick={onClose}>
             Profile
           </Link>
+          <Link to={RoutePath.ADDRESSES} className={s.button} onClick={onClose}>
+            Addresses
+          </Link>
         </>
       ) : (
         <>

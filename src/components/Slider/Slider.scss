@@ -2,17 +2,19 @@
 
 .navigation-wrapper {
   position: relative;
-  width: 21.5rem;
+}
+
+.keen-slider {
+  width: 300px;
 }
 
 [class^='number-slide'],
 [class*=' number-slide'] {
   display: flex;
-  flex-direction: column;
-  align-items: start;
+  align-items: center;
   justify-content: center;
-  margin: 0;
-  border: none;
+  height: 600px;
+  max-height: 100vh;
 }
 
 .dots {
@@ -51,11 +53,12 @@
 }
 
 .arrow-left {
-  left: -2rem;
+  left: 2rem;
 }
 
 .arrow-right {
-  right: -2rem;
+  right: 2rem;
+  left: auto;
 }
 
 .arrow-disabled {

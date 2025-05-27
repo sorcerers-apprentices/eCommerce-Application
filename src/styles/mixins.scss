@@ -208,6 +208,7 @@
 }
 
 @mixin icon {
+  color: vars.$color-black;
   transition: all 0.4s ease-in-out;
 
   @media (hover: hover) {

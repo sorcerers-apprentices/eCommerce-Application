@@ -7,11 +7,20 @@ import { api } from '@/server/api'
 import s from './ProfileSection.module.scss'
 import type { ClientResponse, Customer } from '@commercetools/platform-sdk'
 import type { TCustomerProfileForm } from '@/types/user-types'
-import { UserDataView } from './UserDataView/UserDataView'
-import { ProfileMapper } from '@/components/ProfileSection/ProfileMapper'
+import { ProfileView } from './ProfileView/ProfileView'
+import { ProfileMapper } from '@/components/Profile/ProfileMapper'
 import { updateProfileApi } from '@/server/updateProfleApi'
+import { Link } from 'react-router-dom'
+import { IoMdKey } from 'react-icons/io'
+import { RoutePath } from '@/shared/config/routeConfig/routeConfig'
+import toast from 'react-hot-toast'
+import { useUserContext } from '@/hooks/useUserContext'
+import { UserActionType } from '@/app/providers/UserProvider/UserReducer'
+//import { useAuth } from '@/hooks/useAuth'
 
 export const ProfileSection = (): ReactElement => {
+  //const { login } = useAuth()
+  const { dispatch } = useUserContext()
   const { data, error, loading, refetch } = useFetch<ClientResponse<Customer>>(api.user.fetchMe)
   const [edition, setEdition] = useState(false)
   const [userData, setUserData] = useState<TCustomerProfileForm<string>>(ProfileMapper.EMPTY_PROFILE)
@@ -27,8 +36,10 @@ export const ProfileSection = (): ReactElement => {
       await updateProfileApi(userData)
       refetch()
       setEdition(false)
+      dispatch({ type: UserActionType.UPDATE, payload: { email: userData.email } })
+      toast.success('Profile has been updated')
     } catch (error) {
-      console.error(error)
+      toast.error(`${error}Profile has not been updated`)
     }
   }
   const REPLACER = null
@@ -45,17 +56,17 @@ export const ProfileSection = (): ReactElement => {
             <>
               {!edition ? (
                 <Form>
-                  <UserDataView
+                  <ProfileView
                     userData={ProfileMapper.toProfileView(data.body)}
                     setUserData={setUserData}
                     disabled={!edition}
                   />
                   <Button onClick={() => setEdition(true)}>Edit</Button>
-                  <pre>{JSON.stringify(userData, REPLACER, SPACE)}</pre>
+                  <pre style={{ textAlign: 'left' }}>{JSON.stringify(userData, REPLACER, SPACE)}</pre>
                 </Form>
               ) : (
                 <Form onSubmit={handleSubmit}>
-                  <UserDataView userData={userData} setUserData={setUserData} disabled={!edition} />
+                  <ProfileView userData={userData} setUserData={setUserData} disabled={!edition} />
 
                   <div className={s.buttons}>
                     <Button onClick={() => setEdition(false)}>Cancel</Button>
@@ -63,12 +74,15 @@ export const ProfileSection = (): ReactElement => {
                       Save
                     </Button>
                   </div>
-                  <pre>{JSON.stringify(data.body, REPLACER, SPACE)}</pre>
+                  <pre style={{ textAlign: 'left' }}>{JSON.stringify(data.body, REPLACER, SPACE)}</pre>
                 </Form>
               )}
             </>
           )}
         </div>
+        <Link to={RoutePath.PASSWORD}>
+          <IoMdKey className={`icon ${s.password}`} />
+        </Link>
       </div>
     </section>
   )
