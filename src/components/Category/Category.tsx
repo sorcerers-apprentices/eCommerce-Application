@@ -1,15 +1,15 @@
-import s from './Category.module.scss'
-import { type ChangeEvent, type ReactElement, useCallback, useEffect, useMemo, useState } from 'react'
-import { api, type CategoryFilter } from '@/server/api.ts'
 import type {
   CategoryPagedQueryResponse,
   ClientResponse,
   ProductProjectionPagedSearchResponse,
 } from '@commercetools/platform-sdk'
-import { CategoryMenu } from '@/components/Category/RenderCategory/CategoryMenu.tsx'
-import { ProductList } from '@/components/Category/ProductList/ProductList.tsx'
-import { useFetch } from '@/shared/hooks/useFetch.tsx'
-import { InputComponent } from '@/shared/ui/InputComponent/InputComponent.tsx'
+import s from './Category.module.scss'
+import { useFetch } from '@/shared/hooks/useFetch'
+import { api, type CategoryFilter } from '@/server/api'
+import { InputComponent } from '@/shared/ui/InputComponent/InputComponent'
+import { ProductList } from '@/components/Category/ProductList/ProductList'
+import { CategoryMenu } from '@/components/Category/RenderCategory/CategoryMenu'
+import { type ChangeEvent, type ReactElement, useCallback, useEffect, useMemo, useState } from 'react'
 
 export const Category = (): ReactElement => {
   const ITEMS_PER_PAGE = 6
