@@ -294,7 +294,7 @@ export const RegistrationForm = (): JSX.Element => {
           <legend>Billing Address</legend>
           <SelectInput
             value={formData.billingCountry.value}
-            name={'billingCountry'}
+            name={'Choose your Country'}
             title={'Country'}
             disabled={sameAddress}
             options={['United Kingdom', 'Poland', 'Spain']}

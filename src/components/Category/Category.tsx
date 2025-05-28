@@ -1,16 +1,17 @@
+import s from './Category.module.scss'
+import { type ChangeEvent, type ReactElement, useCallback, useEffect, useMemo, useState } from 'react'
+import { api, type CategoryFilter } from '@/server/api.ts'
 import type {
   CategoryPagedQueryResponse,
   ClientResponse,
   ProductProjectionPagedSearchResponse,
 } from '@commercetools/platform-sdk'
-import s from './Category.module.scss'
-import { useFetch } from '@/shared/hooks/useFetch'
+import { CategoryMenu } from '@/components/Category/RenderCategory/CategoryMenu.tsx'
+import { ProductList } from '@/components/Category/ProductList/ProductList.tsx'
+import { useFetch } from '@/shared/hooks/useFetch.tsx'
+import { InputComponent } from '@/shared/ui/InputComponent/InputComponent.tsx'
+import { SortControlComponent } from '@/components/Category/SortComponent/SortControlComponent.tsx'
 import { useSearchParams } from 'react-router-dom'
-import { api, type CategoryFilter } from '@/server/api'
-import { InputComponent } from '@/shared/ui/InputComponent/InputComponent'
-import { ProductList } from '@/components/Category/ProductList/ProductList'
-import { CategoryMenu } from '@/components/Category/RenderCategory/CategoryMenu'
-import { type ChangeEvent, type ReactElement, useCallback, useEffect, useMemo, useState } from 'react'
 
 export const Category = (): ReactElement => {
   const ITEMS_PER_PAGE = 6
@@ -22,6 +23,7 @@ export const Category = (): ReactElement => {
     categoryIds: initialCategoryIds,
     offset: 0,
     limit: ITEMS_PER_PAGE,
+    sort: {},
     text: initialText,
   })
   const currentPage = useMemo(() => filter.offset / ITEMS_PER_PAGE, [filter])
@@ -84,15 +86,6 @@ export const Category = (): ReactElement => {
 
   return (
     <section className={`section ${s.category}`}>
-      <InputComponent
-        onInput={handleSearchInput}
-        isPassword={false}
-        type={'text'}
-        placeholder={'Search'}
-        title={''}
-        newClass={s.search}
-        value={filter.text}
-      />
       <h2 className={`${s.title}`}>Category</h2>
       <div className={`${s.options}`}>
         <h2
@@ -115,6 +108,20 @@ export const Category = (): ReactElement => {
       <ul className={`${s.categorylist}`}>
         <CategoryMenu categories={categoriesData?.body.results} onCategoryClick={handleCategoryClick} />
       </ul>
+      <div className={s.searchsort}>
+        <InputComponent
+          onInput={handleSearchInput}
+          isPassword={false}
+          type={'text'}
+          placeholder={'Search'}
+          title={''}
+          newClass={s.search}
+        />
+        <SortControlComponent
+          fields={[{ name: 'name', locale: 'en-US' }, { name: 'price' }]}
+          onSortChange={(sort) => setFilter((previous) => ({ ...previous, sort }))}
+        />
+      </div>
       {productsLoading && <div className={s.loading}>Loading products...</div>}
       {(productsError || products?.body.results.length === 0) && (
         <div className={s.empty}>
