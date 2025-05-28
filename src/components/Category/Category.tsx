@@ -16,8 +16,10 @@ export const Category = (): ReactElement => {
   const ITEMS_PER_PAGE = 6
   const [searchParams, setSearchParams] = useSearchParams()
   const initialText = searchParams.get('search') ?? ''
+  const initialCategoryParam = searchParams.get('subcategory') ?? searchParams.get('category')
+  const initialCategoryIds = initialCategoryParam ? [initialCategoryParam] : []
   const [filter, setFilter] = useState<CategoryFilter>({
-    categoryIds: [],
+    categoryIds: initialCategoryIds,
     offset: 0,
     limit: ITEMS_PER_PAGE,
     text: initialText,
