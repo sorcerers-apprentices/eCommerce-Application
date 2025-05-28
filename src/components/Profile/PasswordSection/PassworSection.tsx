@@ -108,7 +108,19 @@ export const PasswordSection = (): ReactElement => {
             />
 
             <div className={s.buttons}>
-              <Button onClick={() => {}}>Cancel</Button>
+              <Button
+                type="button"
+                onClick={() => {
+                  setPasswords({
+                    currentPassword: { value: '', touched: false },
+                    newPassword: { value: '', touched: false },
+                    confirmPassword: { value: '', touched: false },
+                  })
+                  navigation(RoutePath.PROFILE)
+                }}
+              >
+                Cancel
+              </Button>
               <Button type="submit" disabled={!isValid}>
                 Save
               </Button>

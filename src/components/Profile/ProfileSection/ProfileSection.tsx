@@ -122,7 +122,16 @@ export const ProfileSection = (): ReactElement => {
                   />
 
                   <div className={s.buttons}>
-                    <Button onClick={handleEditClick}>Cancel</Button>
+                    <Button
+                      type="button"
+                      onClick={() => {
+                        setEdition(false)
+                        setUserData(ProfileMapper.toProfileView(data.body))
+                        setServerErrors({})
+                      }}
+                    >
+                      Cancel
+                    </Button>
                     <Button type="submit" disabled={!isFormValid}>
                       Save
                     </Button>
