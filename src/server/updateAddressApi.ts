@@ -18,34 +18,6 @@ export const updateAddressApi = async (userData: TCustomerProfileForm<string>): 
   const me = await builder().me().get().execute()
   const actions: MyCustomerUpdateAction[] = []
 
-  // if (userData.email) {
-  //   actions.push({
-  //     action: 'changeEmail',
-  //     email: userData.email,
-  //   })
-  // }
-
-  // if (userData.firstName) {
-  //   actions.push({
-  //     action: 'setFirstName',
-  //     firstName: userData.firstName,
-  //   })
-  // }
-
-  // if (userData.lastName) {
-  //   actions.push({
-  //     action: 'setLastName',
-  //     lastName: userData.lastName,
-  //   })
-  // }
-
-  // if (userData.dateOfBirth) {
-  //   actions.push({
-  //     action: 'setDateOfBirth',
-  //     dateOfBirth: userData.dateOfBirth,
-  //   })
-  // }
-
   if (userData.shippingID) {
     actions.push({
       action: 'changeAddress',
