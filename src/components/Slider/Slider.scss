@@ -1,0 +1,69 @@
+@use '@/styles/variables.scss' as vars;
+
+.slider {
+  width: 40rem;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: vars.$color-primary25;
+}
+
+.navigation-wrapper {
+  position: relative;
+}
+
+[class^='number-slide'],
+[class*=' number-slide'] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-height: 100vh;
+  padding: 0 1rem;
+}
+
+.dots {
+  display: flex;
+  justify-content: center;
+  padding: 10px 0;
+}
+
+.dot {
+  cursor: pointer;
+  width: 10px;
+  height: 10px;
+  margin: 0 5px;
+  padding: 5px;
+  border: none;
+  border-radius: 50%;
+  background: vars.$color-primary100;
+}
+
+.dot:focus {
+  outline: none;
+}
+
+.dot.active {
+  background: vars.$color-primary700;
+}
+
+.arrow {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 30px;
+  height: 30px;
+  fill: vars.$color-primary700;
+}
+
+.arrow-left {
+  left: 2rem;
+}
+
+.arrow-right {
+  right: 2rem;
+  left: auto;
+}
+
+.arrow-disabled {
+  fill: vars.$color-primary100;
+}

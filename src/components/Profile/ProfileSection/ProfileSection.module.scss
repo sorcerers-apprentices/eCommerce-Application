@@ -1,0 +1,47 @@
+@use '@/styles/variables.scss' as vars;
+
+.section {
+  padding: 2rem;
+  background-color: vars.$color-primary25;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.image {
+  width: 22rem;
+  height: 30rem;
+  background-image: url('/images/dog-green-bg.jpg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-origin: border-box;
+  background-size: cover; // contain - fully visible,cover - cover container
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+}
+
+.password {
+  rotate: 60deg;
+  width: 2rem;
+  height: 2rem;
+}

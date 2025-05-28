@@ -10,8 +10,8 @@ type TCheckboxProperties = InputHTMLAttributes<HTMLInputElement> & {
 export const Checkbox: FC<TCheckboxProperties> = ({ id, title, ...rest }) => {
   return (
     <div className={s.checkbox}>
-      <input id={id} name={id} type={'checkbox'} {...rest} />
-      <Label htmlFor={id} children={title} />
+      <input id={id} name={id} type={'checkbox'} {...rest} className={s.input} />
+      <Label htmlFor={id} children={title} className={s.lable} />
     </div>
   )
 }

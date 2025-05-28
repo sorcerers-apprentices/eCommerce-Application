@@ -7,9 +7,12 @@ import { isCommerceToolsError } from '@/shared/utilities/type-utilities'
 import { InputComponent } from '@/shared/ui/InputComponent/InputComponent'
 import { type ChangeEvent, type FormEvent, type JSX, useState } from 'react'
 import { validateEmail, validatePassword } from '@/shared/utilities/validation'
+import { useNavigate } from 'react-router-dom'
+import { RoutePath } from '@/shared/config/routeConfig/routeConfig'
 
 export const LoginForm = (): JSX.Element => {
   const { login } = useAuth()
+  const navigate = useNavigate()
   const [formData, setFormData] = useState({
     email: { value: '', touched: false },
     password: { value: '', touched: false },
@@ -24,6 +27,7 @@ export const LoginForm = (): JSX.Element => {
     event.preventDefault()
     try {
       await login(formData.email.value, formData.password.value)
+      navigate(RoutePath.MAIN)
     } catch (error) {
       if (isCommerceToolsError(error)) {
         const firstError = error.body.errors[0]
