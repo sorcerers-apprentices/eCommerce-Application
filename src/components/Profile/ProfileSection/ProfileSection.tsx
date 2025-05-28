@@ -3,6 +3,7 @@ import Loader from '@/shared/ui/Loader/Loader'
 import { Button } from '@/shared/ui/Button/Button'
 import { Form } from '@/shared/ui/Form/Form'
 import { useFetch } from '@/shared/hooks/useFetch'
+import { ApiErrorCode } from '@/server/api'
 import { api } from '@/server/api'
 import s from './ProfileSection.module.scss'
 import type { ClientResponse, Customer } from '@commercetools/platform-sdk'
@@ -16,20 +17,35 @@ import { RoutePath } from '@/shared/config/routeConfig/routeConfig'
 import toast from 'react-hot-toast'
 import { useUserContext } from '@/hooks/useUserContext'
 import { UserActionType } from '@/app/providers/UserProvider/UserReducer'
-//import { useAuth } from '@/hooks/useAuth'
+import { isCommerceToolsError } from '@/shared/utilities/type-utilities'
 
 export const ProfileSection = (): ReactElement => {
-  //const { login } = useAuth()
   const { dispatch } = useUserContext()
   const { data, error, loading, refetch } = useFetch<ClientResponse<Customer>>(api.user.fetchMe)
   const [edition, setEdition] = useState(false)
   const [userData, setUserData] = useState<TCustomerProfileForm<string>>(ProfileMapper.EMPTY_PROFILE)
+  const [isFormValid, setIsFormValid] = useState(false)
+  const [serverErrors, setServerErrors] = useState<{
+    email?: string
+    firstName?: string
+    lastName?: string
+    dateOfBirth?: string
+  }>({})
   useEffect(() => {
     if (data) {
       const profileView = ProfileMapper.toProfileView(data.body)
       setUserData(profileView)
     }
   }, [data])
+
+  const handleEditClick = (): void => {
+    setEdition(true)
+    if (data) {
+      setUserData(ProfileMapper.toProfileView(data.body))
+    }
+    setServerErrors({})
+  }
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault()
     try {
@@ -39,11 +55,43 @@ export const ProfileSection = (): ReactElement => {
       dispatch({ type: UserActionType.UPDATE, payload: { email: userData.email } })
       toast.success('Profile has been updated')
     } catch (error) {
-      toast.error(`${error}Profile has not been updated`)
+      toast.error('Profile has not been updated')
+      if (isCommerceToolsError(error)) {
+        const firstError = error.body.errors[0]
+        const field: string | undefined = firstError.field
+        switch (firstError.code) {
+          case ApiErrorCode.DUPLICATE_FIELD:
+            setServerErrors((previous) => ({ ...previous, email: firstError.message }))
+            break
+          case ApiErrorCode.LOCKED_FIELD:
+            if (field) {
+              setServerErrors((previous) => ({ ...previous, [field]: firstError.message }))
+            } else {
+              setServerErrors((previous) => ({ ...previous, email: firstError.message }))
+            }
+            break
+          case ApiErrorCode.INVALID_FIELD:
+            if (field) {
+              setServerErrors((previous) => ({ ...previous, [field]: firstError.message }))
+            } else {
+              setServerErrors((previous) => ({ ...previous, email: firstError.message }))
+            }
+            break
+          case ApiErrorCode.REQUIRED_FIELD:
+            if (field) {
+              setServerErrors((previous) => ({ ...previous, [field]: firstError.message }))
+            } else {
+              setServerErrors((previous) => ({ ...previous, email: firstError.message }))
+            }
+            break
+          case ApiErrorCode.RESOURCE_NOT_FOUND:
+            setServerErrors((previous) => ({ ...previous, email: firstError.message }))
+            break
+        }
+      }
+      throw new Error(JSON.stringify(error))
     }
   }
-  const REPLACER = null
-  const SPACE = 2
   return (
     <section className={s.section}>
       <div className={s.wrapper}>
@@ -61,20 +109,24 @@ export const ProfileSection = (): ReactElement => {
                     setUserData={setUserData}
                     disabled={!edition}
                   />
-                  <Button onClick={() => setEdition(true)}>Edit</Button>
-                  <pre style={{ textAlign: 'left' }}>{JSON.stringify(userData, REPLACER, SPACE)}</pre>
+                  <Button onClick={handleEditClick}>Edit</Button>
                 </Form>
               ) : (
                 <Form onSubmit={handleSubmit}>
-                  <ProfileView userData={userData} setUserData={setUserData} disabled={!edition} />
+                  <ProfileView
+                    userData={userData}
+                    setUserData={setUserData}
+                    disabled={!edition}
+                    onValidationChange={setIsFormValid}
+                    serverErrors={serverErrors}
+                  />
 
                   <div className={s.buttons}>
-                    <Button onClick={() => setEdition(false)}>Cancel</Button>
-                    <Button type="submit" disabled={!edition}>
+                    <Button onClick={handleEditClick}>Cancel</Button>
+                    <Button type="submit" disabled={!isFormValid}>
                       Save
                     </Button>
                   </div>
-                  <pre style={{ textAlign: 'left' }}>{JSON.stringify(data.body, REPLACER, SPACE)}</pre>
                 </Form>
               )}
             </>

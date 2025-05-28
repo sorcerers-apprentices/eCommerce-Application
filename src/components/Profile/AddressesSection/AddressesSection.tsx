@@ -37,8 +37,8 @@ export const AddressesSection = (): ReactElement => {
       toast.error(`${error}Address has not been updated`)
     }
   }
-  const REPLACER = null
-  const SPACE = 2
+  // const REPLACER = null
+  // const SPACE = 2
   return (
     <section className={s.section}>
       <div className={s.content}>
@@ -55,7 +55,7 @@ export const AddressesSection = (): ReactElement => {
                   disabled={!edition}
                 />
                 <Button onClick={() => setEdition(true)}>Edit</Button>
-                <pre style={{ textAlign: 'left' }}>{JSON.stringify(userData, REPLACER, SPACE)}</pre>
+                {/* <pre style={{ textAlign: 'left' }}>{JSON.stringify(userData, REPLACER, SPACE)}</pre> */}
               </Form>
             ) : (
               <Form onSubmit={handleSubmit}>
@@ -67,7 +67,7 @@ export const AddressesSection = (): ReactElement => {
                     Save
                   </Button>
                 </div>
-                <pre style={{ textAlign: 'left' }}>{JSON.stringify(data.body, REPLACER, SPACE)}</pre>
+                {/* <pre style={{ textAlign: 'left' }}>{JSON.stringify(data.body, REPLACER, SPACE)}</pre> */}
               </Form>
             )}
           </>

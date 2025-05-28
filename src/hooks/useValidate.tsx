@@ -3,6 +3,17 @@ import { useEffect, useState } from 'react'
 export type ValidationErrors = { [key: string]: string | null }
 export type ValidationData = { [key: string]: { value: string; touched: boolean } }
 
+export const transformToValidationData = (data: Record<string, string>): ValidationData => {
+  const result: ValidationData = {}
+  Object.entries(data).forEach(([key, value]) => {
+    result[key] = {
+      value,
+      touched: true,
+    }
+  })
+  return result
+}
+
 export const useValidate = (
   state: ValidationData,
   validators: { [key: string]: Array<(value: string, state: ValidationData) => string | null> }
