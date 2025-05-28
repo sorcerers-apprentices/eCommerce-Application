@@ -3,17 +3,24 @@
 
 .category {
   display: grid;
-  grid-template: 50px 40px auto/ 1fr minmax(0, 940px);
+  grid-template: 40px 80px auto/ 1fr minmax(0, 940px);
   grid-template-areas:
-    'search search'
     'title options'
+    'category-list searchsort'
     'category-list products-list';
 }
 
+.searchsort {
+  display: flex;
+  grid-area: searchsort;
+  gap: 1%;
+  align-items: center;
+  padding-left: 0.5%;
+}
+
 .search {
-  grid-area: search;
-  grid-column: 1 / span 3;
-  width: 100%;
+  align-self: flex-end;
+  width: 70%;
 }
 
 .search > div {
@@ -34,6 +41,7 @@
   grid-area: options;
   align-items: center;
   justify-content: space-around;
+  border-bottom: 1px solid vars.$color-primary900;
 }
 
 .options > h2 {
@@ -56,18 +64,31 @@
 
 .categorylist {
   cursor: pointer;
+  display: flex;
   grid-area: category-list;
+  grid-row: 2 / span 3;
+  flex-direction: column;
   padding-top: 8px;
   padding-left: 10px;
+  border-radius: 4px;
   list-style-type: none;
+  background-color: vars.$color-primary50;
 }
 
-ul {
+.categorylist ul {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
   padding-left: 10px;
 }
 
-li {
-  padding-top: 8px;
+.categorylist ul li {
+  width: 100%;
+  padding: 3%;
+  transition:
+    color 0.2s,
+    background-color 0.2s;
 }
 
 .empty {

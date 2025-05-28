@@ -5,6 +5,7 @@ import type {
   ProductProjectionPagedSearchResponse,
 } from '@commercetools/platform-sdk'
 import { builder } from '@/server/client.ts'
+import type { Sort } from '@/components/Category/SortComponent/SortControlComponent.tsx'
 
 export enum ApiErrorCode {
   INVALID_CUSTOMER_ACCOUNT_CREDENTIALS = 'invalid_customer_account_credentials',
@@ -27,6 +28,13 @@ export const api = {
     fetchProducts: async (
       filter: CategoryFilter
     ): Promise<ClientResponse<ProductProjectionPagedSearchResponse> | Error> => {
+      const sort = Object.entries(filter.sort).flatMap(([name, { locale, direction }]) => {
+        if (direction && name === 'price') {
+          return [`variants.scopedPrice.currentValue.centAmount ${direction}`]
+        }
+        return direction ? [`${name}${locale ? `.${locale}` : ''} ${direction}`] : []
+      })
+
       return builder()
         .productProjections()
         .search()
@@ -52,6 +60,9 @@ export const api = {
                         : MAX_FUZZY_LEVEL,
                 }
               : {}),
+            sort,
+            priceCurrency: 'EUR',
+            priceCountry: 'ES',
           },
         })
         .execute()
@@ -77,4 +88,5 @@ export type CategoryFilter = {
   offset: number
   limit: number
   text?: string
+  sort: Sort
 }

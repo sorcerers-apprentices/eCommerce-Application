@@ -10,10 +10,11 @@ import { CategoryMenu } from '@/components/Category/RenderCategory/CategoryMenu.
 import { ProductList } from '@/components/Category/ProductList/ProductList.tsx'
 import { useFetch } from '@/shared/hooks/useFetch.tsx'
 import { InputComponent } from '@/shared/ui/InputComponent/InputComponent.tsx'
+import { SortControlComponent } from '@/components/Category/SortComponent/SortControlComponent.tsx'
 
 export const Category = (): ReactElement => {
   const ITEMS_PER_PAGE = 6
-  const [filter, setFilter] = useState<CategoryFilter>({ categoryIds: [], offset: 0, limit: ITEMS_PER_PAGE })
+  const [filter, setFilter] = useState<CategoryFilter>({ categoryIds: [], offset: 0, limit: ITEMS_PER_PAGE, sort: {} })
   const currentPage = useMemo(() => filter.offset / ITEMS_PER_PAGE, [filter])
 
   const productsFetcher = useCallback(() => {
@@ -47,21 +48,6 @@ export const Category = (): ReactElement => {
 
   return (
     <section className={`section ${s.category}`}>
-      <InputComponent
-        onInput={(event: ChangeEvent<HTMLInputElement>) =>
-          setFilter(
-            (previous: CategoryFilter): CategoryFilter => ({
-              ...previous,
-              text: event.target.value,
-            })
-          )
-        }
-        isPassword={false}
-        type={'text'}
-        placeholder={'Search'}
-        title={''}
-        newClass={s.search}
-      />
       <h2 className={`${s.title}`}>Category</h2>
       <div className={`${s.options}`}>
         <h2
@@ -84,6 +70,27 @@ export const Category = (): ReactElement => {
       <ul className={`${s.categorylist}`}>
         <CategoryMenu categories={categoriesData?.body.results} onCategoryClick={handleCategoryClick} />
       </ul>
+      <div className={s.searchsort}>
+        <InputComponent
+          onInput={(event: ChangeEvent<HTMLInputElement>) =>
+            setFilter(
+              (previous: CategoryFilter): CategoryFilter => ({
+                ...previous,
+                text: event.target.value,
+              })
+            )
+          }
+          isPassword={false}
+          type={'text'}
+          placeholder={'Search'}
+          title={''}
+          newClass={s.search}
+        />
+        <SortControlComponent
+          fields={[{ name: 'name', locale: 'en-US' }, { name: 'price' }]}
+          onSortChange={(sort) => setFilter((previous) => ({ ...previous, sort }))}
+        />
+      </div>
       {productsLoading && <div className={s.loading}>Loading products...</div>}
       {(productsError || products?.body.results.length === 0) && (
         <div className={s.empty}>
