@@ -11,10 +11,21 @@ import { ProductList } from '@/components/Category/ProductList/ProductList.tsx'
 import { useFetch } from '@/shared/hooks/useFetch.tsx'
 import { InputComponent } from '@/shared/ui/InputComponent/InputComponent.tsx'
 import { SortControlComponent } from '@/components/Category/SortComponent/SortControlComponent.tsx'
+import { useSearchParams } from 'react-router-dom'
 
 export const Category = (): ReactElement => {
   const ITEMS_PER_PAGE = 6
-  const [filter, setFilter] = useState<CategoryFilter>({ categoryIds: [], offset: 0, limit: ITEMS_PER_PAGE, sort: {} })
+  const [searchParams, setSearchParams] = useSearchParams()
+  const initialText = searchParams.get('search') ?? ''
+  const initialCategoryParam = searchParams.get('subcategory') ?? searchParams.get('category')
+  const initialCategoryIds = initialCategoryParam ? [initialCategoryParam] : []
+  const [filter, setFilter] = useState<CategoryFilter>({
+    categoryIds: initialCategoryIds,
+    offset: 0,
+    limit: ITEMS_PER_PAGE,
+    sort: {},
+    text: initialText,
+  })
   const currentPage = useMemo(() => filter.offset / ITEMS_PER_PAGE, [filter])
 
   const productsFetcher = useCallback(() => {
@@ -26,6 +37,11 @@ export const Category = (): ReactElement => {
     error: productsError,
     loading: productsLoading,
   } = useFetch<ClientResponse<ProductProjectionPagedSearchResponse>>(productsFetcher)
+
+  useEffect(() => {
+    const search = searchParams.get('search') ?? ''
+    setFilter((previous) => ({ ...previous, text: search, offset: 0 }))
+  }, [searchParams])
 
   const {
     data: categoriesData,
@@ -44,6 +60,28 @@ export const Category = (): ReactElement => {
         : [...previous.categoryIds, categoryId]
       return { ...previous, categoryIds, offset: 0, sale: undefined }
     })
+  }
+
+  const handleSearchInput = (event: ChangeEvent<HTMLInputElement>): void => {
+    const text = event.target.value
+    setFilter(
+      (previous: CategoryFilter): CategoryFilter => ({
+        ...previous,
+        text: event.target.value,
+      })
+    )
+    const params = Object.fromEntries(searchParams.entries())
+    if (text) {
+      params.search = text
+    } else {
+      delete params.search
+    }
+    setSearchParams(params)
+  }
+
+  const handlePageChange = (page: number): void => {
+    const newOffset = page * ITEMS_PER_PAGE
+    setFilter((prev) => ({ ...prev, offset: newOffset }))
   }
 
   return (
@@ -72,14 +110,7 @@ export const Category = (): ReactElement => {
       </ul>
       <div className={s.searchsort}>
         <InputComponent
-          onInput={(event: ChangeEvent<HTMLInputElement>) =>
-            setFilter(
-              (previous: CategoryFilter): CategoryFilter => ({
-                ...previous,
-                text: event.target.value,
-              })
-            )
-          }
+          onInput={handleSearchInput}
           isPassword={false}
           type={'text'}
           placeholder={'Search'}
@@ -104,7 +135,7 @@ export const Category = (): ReactElement => {
           currentPage={currentPage}
           pageSize={ITEMS_PER_PAGE}
           total={products?.body.total}
-          onPageChange={(page) => setFilter((previous) => ({ ...previous, offset: page * ITEMS_PER_PAGE }))}
+          onPageChange={handlePageChange}
         />
       )}
     </section>

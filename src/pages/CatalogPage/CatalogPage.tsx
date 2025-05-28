@@ -5,12 +5,8 @@ import { Category } from '@/components/Category/Category.tsx'
 const CatalogPage = (): ReactElement => {
   return (
     <>
-      <div>
-        <Header />
-      </div>
-      <div>
-        <Category />
-      </div>
+      <Header />
+      <Category />
     </>
   )
 }
