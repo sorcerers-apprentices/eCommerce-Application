@@ -5,6 +5,7 @@ import type {
 } from '@commercetools/platform-sdk'
 import s from './Category.module.scss'
 import { useFetch } from '@/shared/hooks/useFetch'
+import { useSearchParams } from 'react-router-dom'
 import { api, type CategoryFilter } from '@/server/api'
 import { InputComponent } from '@/shared/ui/InputComponent/InputComponent'
 import { ProductList } from '@/components/Category/ProductList/ProductList'
@@ -13,7 +14,14 @@ import { type ChangeEvent, type ReactElement, useCallback, useEffect, useMemo, u
 
 export const Category = (): ReactElement => {
   const ITEMS_PER_PAGE = 6
-  const [filter, setFilter] = useState<CategoryFilter>({ categoryIds: [], offset: 0, limit: ITEMS_PER_PAGE })
+  const [searchParams, setSearchParams] = useSearchParams()
+  const initialText = searchParams.get('search') ?? ''
+  const [filter, setFilter] = useState<CategoryFilter>({
+    categoryIds: [],
+    offset: 0,
+    limit: ITEMS_PER_PAGE,
+    text: initialText,
+  })
   const currentPage = useMemo(() => filter.offset / ITEMS_PER_PAGE, [filter])
 
   const productsFetcher = useCallback(() => {
@@ -25,6 +33,11 @@ export const Category = (): ReactElement => {
     error: productsError,
     loading: productsLoading,
   } = useFetch<ClientResponse<ProductProjectionPagedSearchResponse>>(productsFetcher)
+
+  useEffect(() => {
+    const search = searchParams.get('search') ?? ''
+    setFilter((previous) => ({ ...previous, text: search, offset: 0 }))
+  }, [searchParams])
 
   const {
     data: categoriesData,
@@ -45,22 +58,38 @@ export const Category = (): ReactElement => {
     })
   }
 
+  const handleSearchInput = (event: ChangeEvent<HTMLInputElement>): void => {
+    const text = event.target.value
+    setFilter(
+      (previous: CategoryFilter): CategoryFilter => ({
+        ...previous,
+        text: event.target.value,
+      })
+    )
+    const params = Object.fromEntries(searchParams.entries())
+    if (text) {
+      params.search = text
+    } else {
+      delete params.search
+    }
+    setSearchParams(params)
+  }
+
+  const handlePageChange = (page: number): void => {
+    const newOffset = page * ITEMS_PER_PAGE
+    setFilter((prev) => ({ ...prev, offset: newOffset }))
+  }
+
   return (
     <section className={`section ${s.category}`}>
       <InputComponent
-        onInput={(event: ChangeEvent<HTMLInputElement>) =>
-          setFilter(
-            (previous: CategoryFilter): CategoryFilter => ({
-              ...previous,
-              text: event.target.value,
-            })
-          )
-        }
+        onInput={handleSearchInput}
         isPassword={false}
         type={'text'}
         placeholder={'Search'}
         title={''}
         newClass={s.search}
+        value={filter.text}
       />
       <h2 className={`${s.title}`}>Category</h2>
       <div className={`${s.options}`}>
@@ -97,7 +126,7 @@ export const Category = (): ReactElement => {
           currentPage={currentPage}
           pageSize={ITEMS_PER_PAGE}
           total={products?.body.total}
-          onPageChange={(page) => setFilter((previous) => ({ ...previous, offset: page * ITEMS_PER_PAGE }))}
+          onPageChange={handlePageChange}
         />
       )}
     </section>
