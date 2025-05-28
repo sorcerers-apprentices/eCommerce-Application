@@ -5,6 +5,7 @@ import type {
   ProductProjectionPagedSearchResponse,
 } from '@commercetools/platform-sdk'
 import { builder } from '@/server/client.ts'
+import type { Sort } from '@/components/Category/SortComponent/SortControlComponent.tsx'
 
 export enum ApiErrorCode {
   INVALID_CUSTOMER_ACCOUNT_CREDENTIALS = 'invalid_customer_account_credentials',
@@ -15,41 +16,53 @@ export enum ApiErrorCode {
   RESOURCE_NOT_FOUND = 'ResourceNotFound',
 }
 
+const FIRST_CHECK_LENGTH = 2
+const SECOND_CHECK_LENGTH = 5
+const MAX_FUZZY_LEVEL = 2
+
 export const api = {
   user: {
     fetchMe: async (): Promise<ClientResponse<Customer> | Error> => builder().me().get().execute(),
   },
   product: {
     fetchProducts: async (
-      offset: number,
-      limit: number
+      filter: CategoryFilter
     ): Promise<ClientResponse<ProductProjectionPagedSearchResponse> | Error> => {
-      return builder()
-        .productProjections()
-        .get({
-          queryArgs: {
-            limit,
-            offset,
-          },
-        })
-        .execute()
-        .catch((error: Error) => error)
-    },
-    // errors!!!
-    // fetchPrice(): async (): void => builder().productDiscounts().
-    fetchProductsInCategory: async (
-      categoryId: string,
-      offset: number,
-      limit: number
-    ): Promise<ClientResponse<ProductProjectionPagedSearchResponse> | Error> => {
+      const sort = Object.entries(filter.sort).flatMap(([name, { locale, direction }]) => {
+        if (direction && name === 'price') {
+          return [`variants.scopedPrice.currentValue.centAmount ${direction}`]
+        }
+        return direction ? [`${name}${locale ? `.${locale}` : ''} ${direction}`] : []
+      })
+
       return builder()
         .productProjections()
         .search()
         .get({
           queryArgs: {
-            limit,
-            offset,
-            filter: `categories.id:subtree("${categoryId}")`,
+            limit: filter.limit,
+            offset: filter.offset,
+            filter: [
+              filter.categoryIds.length
+                ? `categories.id:${filter.categoryIds.map((categoryId) => `subtree("${categoryId}")`).join(',')}`
+                : [],
+            ].flat(),
+            'filter.query': [filter.sale ? 'variants.prices.discounted:exists' : []].flat(),
+            ...(filter.text
+              ? {
+                  'text.en-US': `*${filter.text}*`,
+                  fuzzy: true,
+                  fuzzyLevel:
+                    filter.text.length < FIRST_CHECK_LENGTH
+                      ? 0
+                      : filter.text.length < SECOND_CHECK_LENGTH
+                        ? 1
+                        : MAX_FUZZY_LEVEL,
+                }
+              : {}),
+            sort,
+            priceCurrency: 'EUR',
+            priceCountry: 'ES',
           },
         })
         .execute()
@@ -58,9 +71,22 @@ export const api = {
     fetchCategories: async (): Promise<ClientResponse<CategoryPagedQueryResponse> | Error> => {
       return builder()
         .categories()
-        .get()
+        .get({
+          queryArgs: {
+            limit: 150,
+          },
+        })
         .execute()
         .catch((error: Error) => error)
     },
   },
+}
+
+export type CategoryFilter = {
+  categoryIds: Array<string>
+  sale?: true
+  offset: number
+  limit: number
+  text?: string
+  sort: Sort
 }

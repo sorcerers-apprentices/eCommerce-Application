@@ -2,27 +2,31 @@
 @use '@/styles/mixins.scss' as mixins;
 
 .productssection {
-  margin-top: 20px;
+  grid-area: products-list;
   padding: 10px;
   border-top: 1px solid vars.$color-dark-grey;
 }
 
 .productlist {
   display: flex;
-  grid-area: products-list;
   flex-wrap: wrap;
   gap: 4rem;
   list-style: none;
 }
 
+.pricecontainer {
+  display: flex;
+  gap: 1rem;
+}
+
 .productitem {
   cursor: pointer;
   display: flex;
-  flex-flow: column wrap;
+  flex-direction: column;
+  align-items: center;
   justify-content: space-between;
   width: 260px;
   height: 400px;
-  margin-bottom: 15px;
   padding: 10px;
   border: 1px solid vars.$color-dark-grey;
   border-radius: 4px;
@@ -31,17 +35,24 @@
     transform 0.2s;
 }
 
+.salenumber {
+  position: relative;
+  width: 4.5rem;
+  height: 1.5rem;
+  background-color: vars.$color-primary;
+}
+
+.productprice {
+  color: vars.$color-primary;
+}
+
+.onsale {
+  text-decoration: line-through;
+}
+
 .productitem:hover {
   transform: scale(1.03) translateY(1px);
   outline: 0.1rem solid vars.$color-primary;
-}
-
-.loading,
-.error,
-.empty {
-  display: flex;
-  flex-direction: column;
-  text-align: center;
 }
 
 .pagination {
@@ -49,12 +60,12 @@
   gap: 8px;
   justify-content: center;
   margin-top: 20px;
-  padding-bottom: 30px;
+  padding: 20px 0;
 }
 
 .paginationbutton {
   cursor: pointer;
-  padding: 8px 30px;
+  padding: 1.1% 2.2%;
   border: 1px solid vars.$color-dark-grey;
   border-radius: 4px;
   font-size: 14px;
