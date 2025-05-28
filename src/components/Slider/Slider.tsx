@@ -17,7 +17,7 @@ export const Slider = (): ReactElement => {
   })
 
   return (
-    <>
+    <div className="slider">
       <div className="navigation-wrapper">
         <div ref={sliderReference} className="keen-slider">
           <div className="keen-slider__slide number-slide1">
@@ -67,7 +67,7 @@ export const Slider = (): ReactElement => {
           })}
         </div>
       )}
-    </>
+    </div>
   )
 }
 type ArrowProperties = {

@@ -1,11 +1,14 @@
 @use '@/styles/variables.scss' as vars;
 
-.navigation-wrapper {
-  position: relative;
+.slider {
+  width: 40rem;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: vars.$color-primary25;
 }
 
-.keen-slider {
-  width: 300px;
+.navigation-wrapper {
+  position: relative;
 }
 
 [class^='number-slide'],
@@ -13,8 +16,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 600px;
   max-height: 100vh;
+  padding: 0 1rem;
 }
 
 .dots {

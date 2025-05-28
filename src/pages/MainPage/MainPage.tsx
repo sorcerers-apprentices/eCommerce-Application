@@ -8,9 +8,7 @@ const MainPage = (): ReactElement => {
     <>
       <Header />
       <HeroSection />
-      <section className="section">
-        <Slider />
-      </section>
+      <Slider />
     </>
   )
 }
