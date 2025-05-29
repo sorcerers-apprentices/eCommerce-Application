@@ -1,12 +1,10 @@
-import s from './Category.module.scss'
 import type {
-  CategoryPagedQueryResponse,
-  ClientResponse,
-  FacetResult,
   FacetTerm,
+  ClientResponse,
+  CategoryPagedQueryResponse,
   ProductProjectionPagedSearchResponse,
-  TermFacetResult,
 } from '@commercetools/platform-sdk'
+import s from './Category.module.scss'
 import { useFetch } from '@/shared/hooks/useFetch'
 import { useSearchParams } from 'react-router-dom'
 import { api, type CategoryFilter } from '@/server/api'
@@ -17,206 +15,190 @@ import { CategoryMenu } from '@/components/Category/RenderCategory/CategoryMenu'
 import { SortControlComponent } from '@/components/Category/SortComponent/SortControlComponent'
 import { type ChangeEvent, type ReactElement, useCallback, useEffect, useMemo, useState } from 'react'
 
+const ITEMS_PER_PAGE = 6
+const CENTS_IN_DOLLAR = 100
+
 export const Category = (): ReactElement => {
-  const ITEMS_PER_PAGE = 6
-  const CENTS_IN_DOLLAR = 100
   const [searchParams, setSearchParams] = useSearchParams()
-  const initialText = searchParams.get('search') ?? ''
-  const initialCategoryParam = searchParams.get('subcategory') ?? searchParams.get('category')
-  const initialCategoryIds = initialCategoryParam ? [initialCategoryParam] : []
+  const slugsParams: string[] = useMemo(
+    () => [...searchParams.getAll('category'), ...searchParams.getAll('subcategory')],
+    [searchParams]
+  )
+
   const [filter, setFilter] = useState<CategoryFilter>({
-    categoryIds: initialCategoryIds,
+    categoryIds: [],
     offset: 0,
     limit: ITEMS_PER_PAGE,
     sort: {},
-    text: initialText,
+    text: searchParams.get('search') ?? '',
     brand: '',
     priceRange: { from: 100, to: 100000 },
   })
+
   const currentPage = useMemo(() => filter.offset / ITEMS_PER_PAGE, [filter])
 
-  const productsFetcher = useCallback(() => {
-    return api.product.fetchProducts(filter)
-  }, [filter])
-
+  const productsFetcher = useCallback(() => api.product.fetchProducts(filter), [filter])
   const {
     data: products,
     error: productsError,
     loading: productsLoading,
   } = useFetch<ClientResponse<ProductProjectionPagedSearchResponse>>(productsFetcher)
-
   const {
     data: facets,
     error: facetsError,
     loading: facetsLoading,
   } = useFetch<ClientResponse<ProductProjectionPagedSearchResponse>>(api.product.fetchFacets)
-
   const {
     data: categoriesData,
     error: categoriesError,
     loading: categoriesLoading,
   } = useFetch<ClientResponse<CategoryPagedQueryResponse>>(api.product.fetchCategories)
 
-  const brands: Array<FacetTerm> = useMemo(() => {
-    if (!facets) {
-      return []
-    }
-    const brands = (facets.body.facets ?? {})['variants.attributes.brand'] ?? []
-    const isTermFacet = (facet: FacetResult): facet is TermFacetResult => facet.type === 'terms'
-    if (isTermFacet(brands)) {
-      return brands.terms
-    }
-    return []
-  }, [facets])
+  useEffect((): void => {
+    if (!categoriesData) return
 
-  useEffect(() => {
+    const matchingIds = categoriesData.body.results
+      .filter((category) => {
+        const slug = category.slug['en']?.toLowerCase()
+        return slug !== undefined && slugsParams.includes(slug)
+      })
+      .map((category) => category.id)
+
+    setFilter((prev) => ({ ...prev, categoryIds: matchingIds, offset: 0 }))
+  }, [categoriesData, slugsParams])
+
+  useEffect((): void => {
     window.scrollTo(0, 0)
   }, [currentPage])
 
-  useEffect(() => {
+  useEffect((): void => {
     const search = searchParams.get('search') ?? ''
-    setFilter((previous) => ({ ...previous, text: search, offset: 0 }))
+    setFilter((prev) => ({ ...prev, text: search, offset: 0 }))
   }, [searchParams])
 
   const handleCategoryClick = (categoryId: string): void => {
-    setFilter((previous: CategoryFilter): CategoryFilter => {
-      const categoryIds = previous.categoryIds.includes(categoryId)
-        ? previous.categoryIds.filter((it) => it !== categoryId)
-        : [...previous.categoryIds, categoryId]
-      return { ...previous, categoryIds, offset: 0, sale: undefined }
-    })
+    setFilter((prev) => ({
+      ...prev,
+      categoryIds: prev.categoryIds.includes(categoryId)
+        ? prev.categoryIds.filter((id) => id !== categoryId)
+        : [...prev.categoryIds, categoryId],
+      offset: 0,
+    }))
   }
 
   const handleSearchInput = (event: ChangeEvent<HTMLInputElement>): void => {
     const text = event.target.value
-    setFilter(
-      (previous: CategoryFilter): CategoryFilter => ({
-        ...previous,
-        text: text,
-      })
-    )
-    const params = Object.fromEntries(searchParams.entries())
-    if (text) {
-      params.search = text
-    } else {
-      delete params.search
-    }
+    setFilter((prev) => ({ ...prev, text }))
+    const params = new URLSearchParams(searchParams.toString())
+    if (text) params.set('search', text)
+    else params.delete('search')
     setSearchParams(params)
   }
 
   const handleBrandFilterChange = (event: ChangeEvent<HTMLSelectElement>): void => {
-    const brand = event.target.value
-    setFilter(
-      (previous: CategoryFilter): CategoryFilter => ({
-        ...previous,
-        brand: brand,
-      })
-    )
+    setFilter((prev) => ({ ...prev, brand: event.target.value }))
   }
 
+  const handlePriceChange =
+    (field: 'from' | 'to') =>
+    (event: ChangeEvent<HTMLInputElement>): void => {
+      const value = +event.target.value * CENTS_IN_DOLLAR
+      setFilter((prev) => ({ ...prev, priceRange: { ...prev.priceRange, [field]: value } }))
+    }
+
   const handlePageChange = (page: number): void => {
-    const newOffset = page * ITEMS_PER_PAGE
-    setFilter((prev) => ({ ...prev, offset: newOffset }))
+    setFilter((prev) => ({ ...prev, offset: page * ITEMS_PER_PAGE }))
   }
+
+  const brands = useMemo<FacetTerm[]>(() => {
+    const facet = facets?.body.facets?.['variants.attributes.brand']
+    if (facet && facet.type === 'terms') {
+      return facet.terms
+    }
+    return []
+  }, [facets])
 
   return (
     <section className={`section ${s.category}`}>
-      <h2 className={`${s.title}`}>Category</h2>
-      <div className={`${s.options}`}>
+      <h2 className={s.title}>Category</h2>
+
+      <div className={s.options}>
         <h2
-          className={filter.sale === undefined ? s.activelink : ''}
-          onClick={() => setFilter((previous) => ({ ...previous, sale: undefined }))}
+          onClick={() => setFilter((prev) => ({ ...prev, sale: undefined }))}
+          className={!filter.sale ? s.activelink : ''}
         >
           All PRODUCTS
         </h2>
-        <h2
-          className={filter.sale !== undefined ? s.activelink : ''}
-          onClick={() => setFilter((previous) => ({ ...previous, sale: true }))}
-        >
+        <h2 onClick={() => setFilter((prev) => ({ ...prev, sale: true }))} className={filter.sale ? s.activelink : ''}>
           SALE
         </h2>
       </div>
+
       {categoriesLoading && <div className={s.loading}>Loading categories...</div>}
-      {(categoriesError || categoriesData?.body.results.length === 0) && (
-        <div className={s.empty}>No categories found</div>
-      )}
-      <ul className={`${s.categorylist}`}>
+      {(categoriesError || !categoriesData) && <div className={s.empty}>No categories found</div>}
+
+      <ul className={s.categorylist}>
         <CategoryMenu categories={categoriesData?.body.results} onCategoryClick={handleCategoryClick} />
         {facetsLoading && <div className={s.loading}>Loading brands...</div>}
         {(facetsError || brands.length === 0) && <div>We don't have any brands</div>}
         <SelectInput
-          name={'brand'}
-          title={'Brand'}
+          name="brand"
+          title="Brand"
           options={brands.map((term) => term.term)}
           onChange={handleBrandFilterChange}
         />
         <InputComponent
+          name="from"
+          title="From €"
+          type="number"
           value={filter.priceRange.from / CENTS_IN_DOLLAR}
-          name={'from'}
-          title={'From €'}
-          type={'number'}
-          placeholder={'1'}
-          allowWhitespaces={false}
           min={1}
           step={1}
-          onChange={(event) =>
-            setFilter(
-              (previous): CategoryFilter => ({
-                ...previous,
-                priceRange: { ...previous.priceRange, from: +event.target.value * CENTS_IN_DOLLAR },
-              })
-            )
-          }
+          onChange={handlePriceChange('from')}
         />
         <InputComponent
+          name="to"
+          title="To €"
+          type="number"
           value={filter.priceRange.to / CENTS_IN_DOLLAR}
-          name={'to'}
-          title={'To €'}
-          type={'number'}
-          placeholder={'100'}
-          allowWhitespaces={false}
           max={1000}
           step={1}
-          onChange={(event) =>
-            setFilter(
-              (previous): CategoryFilter => ({
-                ...previous,
-                priceRange: { ...previous.priceRange, to: +event.target.value * CENTS_IN_DOLLAR },
-              })
-            )
-          }
+          onChange={handlePriceChange('to')}
         />
       </ul>
+
       <div className={s.searchsort}>
         <InputComponent
-          onInput={handleSearchInput}
+          type="text"
+          placeholder="Search"
+          title="Search"
+          value={filter.text}
           isPassword={false}
-          type={'text'}
-          placeholder={'Search'}
-          title={''}
-          newClass={s.search}
+          onInput={handleSearchInput}
         />
         <SortControlComponent
           fields={[{ name: 'name', locale: 'en-US' }, { name: 'price' }]}
-          onSortChange={(sort) => setFilter((previous) => ({ ...previous, sort }))}
+          onSortChange={(sort) => setFilter((prev) => ({ ...prev, sort }))}
         />
       </div>
+
       {productsLoading && <div className={s.loading}>Loading products...</div>}
-      {(productsError || products?.body.results.length === 0) && (
+      {(productsError || products?.body.results?.length === 0) && !productsLoading && (
         <div className={s.empty}>
-          <img src="./images/no-products.jpg" alt="no products" />
+          <img src="/images/no-products.jpg" alt="no products" />
           No products found for this category
         </div>
       )}
-      {products?.body.results.length !== 0 && (
+
+      {products?.body.results?.length ? (
         <ProductList
-          products={products?.body.results || null}
+          products={products.body.results}
           currentPage={currentPage}
           pageSize={ITEMS_PER_PAGE}
-          total={products?.body.total}
+          total={products.body.total}
           onPageChange={handlePageChange}
         />
-      )}
+      ) : null}
     </section>
   )
 }
