@@ -1,7 +1,7 @@
 import { useAuth } from '@/hooks/useAuth'
 import { FormButton } from './FormButton'
 import { ApiErrorCode } from '@/server/api'
-import { Form } from '@/shared/ui/AddressCardForm/AddressCardForm'
+import { Form } from '@/shared/ui/Form/Form'
 import { useValidate } from '@/hooks/useValidate'
 import { isCommerceToolsError } from '@/shared/utilities/type-utilities'
 import { InputComponent } from '@/shared/ui/InputComponent/InputComponent'
