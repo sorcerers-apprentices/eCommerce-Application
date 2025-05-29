@@ -1,78 +1,145 @@
 import { useEffect, useState, type ReactElement } from 'react'
 import Loader from '@/shared/ui/Loader/Loader'
-import { Button } from '@/shared/ui/Button/Button'
-import { Form } from '@/shared/ui/Form/Form'
 import { useFetch } from '@/shared/hooks/useFetch'
 import { api } from '@/server/api'
 import s from './AddressesSection.module.scss'
 import type { ClientResponse, Customer } from '@commercetools/platform-sdk'
-import type { TCustomerProfileForm } from '@/types/user-types'
-import { ProfileMapper } from '@/components/Profile/ProfileMapper'
-import toast from 'react-hot-toast'
-import { useUserContext } from '@/hooks/useUserContext'
-import { UserActionType } from '@/app/providers/UserProvider/UserReducer'
-import { AddressCard } from './AddressCard/AddressCard'
-import { updateAddressApi } from '@/server/updateAddressApi'
+import { AddressMapper, type TAddressMapped } from '../AddressMapper'
+import { AddressCardForm } from '@/shared/ui/AddressCardForm/AddressCardForm'
+import { BsHouseAddFill } from 'react-icons/bs'
+import { TbHomeEdit } from 'react-icons/tb'
+import { Form } from '@/shared/ui/Form/Form'
+import { Button } from '@/shared/ui/Button/Button'
+import { Modal } from '@/shared/ui/Modal/Modal'
 
 export const AddressesSection = (): ReactElement => {
-  const { dispatch } = useUserContext()
-  const { data, error, loading, refetch } = useFetch<ClientResponse<Customer>>(api.user.fetchMe)
-  const [edition, setEdition] = useState(false)
-  const [userData, setUserData] = useState<TCustomerProfileForm<string>>(ProfileMapper.EMPTY_PROFILE)
+  const [isEditing, setIsEditing] = useState(false)
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const emptyAddress: TAddressMapped = {
+    id: crypto.randomUUID(),
+    country: '',
+    city: '',
+    street: '',
+    postalCode: '',
+    defaultShipping: false,
+    defaultBilling: false,
+    shipping: false,
+    billing: false,
+  }
+  const { data, error, loading } = useFetch<ClientResponse<Customer>>(api.user.fetchMe)
+
+  const [userAddresses, setUserAddresses] = useState<TAddressMapped[]>([])
   useEffect(() => {
     if (data) {
-      const profileView = ProfileMapper.toProfileView(data.body)
-      setUserData(profileView)
+      const addressView = AddressMapper.toAddressView(data.body)
+      setUserAddresses(addressView)
     }
   }, [data])
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
-    event.preventDefault()
-    try {
-      await updateAddressApi(userData)
-      refetch()
-      setEdition(false)
-      dispatch({ type: UserActionType.UPDATE, payload: { email: userData.email } })
-      toast.success('Address has been updated')
-    } catch (error) {
-      toast.error(`${error}Address has not been updated`)
-    }
-  }
-  // const REPLACER = null
-  // const SPACE = 2
-  return (
-    <section className={s.section}>
-      <div className={s.content}>
-        <h2 className="title">Addresses</h2>
-        {loading && <Loader />}
-        {error && <div>{error.message}</div>}
-        {data && (
-          <>
-            {!edition ? (
-              <Form>
-                <AddressCard
-                  userData={ProfileMapper.toProfileView(data.body)}
-                  setUserData={setUserData}
-                  disabled={!edition}
-                />
-                <Button onClick={() => setEdition(true)}>Edit</Button>
-                {/* <pre style={{ textAlign: 'left' }}>{JSON.stringify(userData, REPLACER, SPACE)}</pre> */}
-              </Form>
-            ) : (
-              <Form onSubmit={handleSubmit}>
-                <AddressCard userData={userData} setUserData={setUserData} disabled={!edition} />
 
+  const handleDelete = (id: string): void => {
+    setUserAddresses((prev) => prev.filter((addr) => addr.id !== id))
+  }
+
+  const handleToggleDefault = (field: 'defaultShipping' | 'defaultBilling', id: string): void => {
+    setUserAddresses((prev) => {
+      const clickedAddress = prev.find((addr) => addr.id === id)
+      const isCurrentlyChecked = clickedAddress?.[field] ?? false
+      return prev.map((addr) => {
+        if (addr.id === id) {
+          return { ...addr, [field]: !isCurrentlyChecked }
+        }
+        return { ...addr, [field]: false }
+      })
+    })
+  }
+  const handleModalClose = (newAddress?: TAddressMapped): void => {
+    if (newAddress) {
+      setUserAddresses((prev) => [...prev, newAddress])
+      //  handleSubmit()
+    }
+    setIsModalOpen(false)
+  }
+
+  const handleToggleFlag = (field: 'shipping' | 'billing', id: string): void => {
+    setUserAddresses((prev) => prev.map((addr) => (addr.id === id ? { ...addr, [field]: !addr[field] } : addr)))
+  }
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>, id: string): void => {
+    const { name, value } = e.target
+    setUserAddresses((prev) => prev.map((addr) => (addr.id === id ? { ...addr, [name]: value } : addr)))
+  }
+  const REPLACER = null
+  const SPACE = 2
+  return (
+    <>
+      <Modal isOpen={isModalOpen} onClose={() => handleModalClose()}>
+        <AddressCardForm
+          addressData={emptyAddress}
+          index={1}
+          onDelete={handleDelete}
+          onToggleDefault={handleToggleDefault}
+          onToggleFlag={handleToggleFlag}
+          onChange={handleChange}
+          disabled={false}
+        />
+      </Modal>
+      <section className={s.section}>
+        <div className={s.links}>
+          {!isEditing && (
+            <>
+              <button className="icon" onClick={() => setIsEditing(true)}>
+                <TbHomeEdit className={`icon ${s.edit}`} />
+              </button>
+              <button
+                className="icon"
+                onClick={() => {
+                  setIsEditing(true)
+                  setIsModalOpen(true)
+                }}
+              >
+                <BsHouseAddFill className={`icon ${s.add}`} />
+              </button>
+            </>
+          )}
+        </div>
+        <div className={s.content}>
+          <h2 className="title">Addresses</h2>
+          {loading && <Loader />}
+          {error && <div>{error.message}</div>}
+          {data && userAddresses.length > 0 && (
+            <Form onSubmit={(e) => e.preventDefault()}>
+              {userAddresses.map((address, index) => (
+                <AddressCardForm
+                  key={address.id}
+                  index={index}
+                  addressData={address}
+                  onDelete={handleDelete}
+                  onToggleDefault={handleToggleDefault}
+                  onToggleFlag={handleToggleFlag}
+                  onChange={handleChange}
+                  disabled={!isEditing}
+                />
+              ))}
+              {isEditing && (
                 <div className={s.buttons}>
-                  <Button onClick={() => setEdition(false)}>Cancel</Button>
-                  <Button type="submit" disabled={!edition}>
-                    Save
+                  <Button type="submit">Save</Button>
+                  <Button
+                    type="reset"
+                    onClick={() => {
+                      setIsEditing(false)
+                      setUserAddresses(AddressMapper.toAddressView(data.body))
+                    }}
+                  >
+                    Cencel
                   </Button>
                 </div>
-                {/* <pre style={{ textAlign: 'left' }}>{JSON.stringify(data.body, REPLACER, SPACE)}</pre> */}
-              </Form>
-            )}
-          </>
-        )}
-      </div>
-    </section>
+              )}
+            </Form>
+          )}
+          <pre style={{ textAlign: 'left' }}>{JSON.stringify(userAddresses, REPLACER, SPACE)}</pre>
+        </div>
+        <div className={s.image}></div>
+      </section>
+    </>
   )
 }

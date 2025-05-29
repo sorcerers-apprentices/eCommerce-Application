@@ -13,6 +13,7 @@ import { ProfileMapper } from '@/components/Profile/ProfileMapper'
 import { updateProfileApi } from '@/server/updateProfleApi'
 import { Link } from 'react-router-dom'
 import { IoMdKey } from 'react-icons/io'
+import { TbTruckDelivery } from 'react-icons/tb'
 import { RoutePath } from '@/shared/config/routeConfig/routeConfig'
 import toast from 'react-hot-toast'
 import { useUserContext } from '@/hooks/useUserContext'
@@ -122,7 +123,16 @@ export const ProfileSection = (): ReactElement => {
                   />
 
                   <div className={s.buttons}>
-                    <Button onClick={handleEditClick}>Cancel</Button>
+                    <Button
+                      type="button"
+                      onClick={() => {
+                        setEdition(false)
+                        setUserData(ProfileMapper.toProfileView(data.body))
+                        setServerErrors({})
+                      }}
+                    >
+                      Cancel
+                    </Button>
                     <Button type="submit" disabled={!isFormValid}>
                       Save
                     </Button>
@@ -132,9 +142,14 @@ export const ProfileSection = (): ReactElement => {
             </>
           )}
         </div>
-        <Link to={RoutePath.PASSWORD}>
-          <IoMdKey className={`icon ${s.password}`} />
-        </Link>
+        <div className={s.links}>
+          <Link to={RoutePath.PASSWORD}>
+            <IoMdKey className={`icon ${s.password}`} />
+          </Link>
+          <Link to={RoutePath.ADDRESSES}>
+            <TbTruckDelivery className={`icon ${s.address}`} />
+          </Link>
+        </div>
       </div>
     </section>
   )
