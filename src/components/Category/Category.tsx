@@ -1,6 +1,4 @@
 import s from './Category.module.scss'
-import { type ChangeEvent, type ReactElement, useCallback, useEffect, useMemo, useState } from 'react'
-import { api, type CategoryFilter } from '@/server/api.ts'
 import type {
   CategoryPagedQueryResponse,
   ClientResponse,
@@ -9,13 +7,15 @@ import type {
   ProductProjectionPagedSearchResponse,
   TermFacetResult,
 } from '@commercetools/platform-sdk'
-import { CategoryMenu } from '@/components/Category/RenderCategory/CategoryMenu.tsx'
-import { ProductList } from '@/components/Category/ProductList/ProductList.tsx'
-import { useFetch } from '@/shared/hooks/useFetch.tsx'
-import { InputComponent } from '@/shared/ui/InputComponent/InputComponent.tsx'
-import { SortControlComponent } from '@/components/Category/SortComponent/SortControlComponent.tsx'
+import { useFetch } from '@/shared/hooks/useFetch'
 import { useSearchParams } from 'react-router-dom'
-import { SelectInput } from '@/shared/ui/SelectInput/SelectInput.tsx'
+import { api, type CategoryFilter } from '@/server/api'
+import { SelectInput } from '@/shared/ui/SelectInput/SelectInput'
+import { InputComponent } from '@/shared/ui/InputComponent/InputComponent'
+import { ProductList } from '@/components/Category/ProductList/ProductList'
+import { CategoryMenu } from '@/components/Category/RenderCategory/CategoryMenu'
+import { SortControlComponent } from '@/components/Category/SortComponent/SortControlComponent'
+import { type ChangeEvent, type ReactElement, useCallback, useEffect, useMemo, useState } from 'react'
 
 export const Category = (): ReactElement => {
   const ITEMS_PER_PAGE = 6
