@@ -24,10 +24,11 @@ export const EMPTY_ADDRESS = {
   postalCode: '',
   city: '',
   country: '',
-  defaultShipping: false,
   shipping: false,
-  defaultBilling: false,
   billing: false,
+
+  defaultShipping: false,
+  defaultBilling: false,
 }
 
 export const AddressMapper = {
@@ -48,10 +49,12 @@ export const AddressMapper = {
       postalCode: address.postalCode ?? '',
       city: address.city ?? '',
       country: (countryCodeToName[address.country] || address.country) ?? '',
-      defaultShipping: address.id === defaultShippingAddressId,
+
       shipping: address.id ? shippingAddressIds.includes(address.id) : false,
-      defaultBilling: address.id === defaultBillingAddressId,
       billing: address.id ? billingAddressIds.includes(address.id) : false,
+
+      defaultShipping: address.id === defaultShippingAddressId,
+      defaultBilling: address.id === defaultBillingAddressId,
     }))
   },
 }
