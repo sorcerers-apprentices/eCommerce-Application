@@ -62,6 +62,9 @@ export const api = {
             'filter.query': [
               filter.sale ? 'variants.prices.discounted:exists' : [],
               filter.brand ? [`variants.attributes.brand:"${filter.brand}"`] : [],
+              filter.priceRange
+                ? [`variants.price.centAmount:range(${filter.priceRange.from} to ${filter.priceRange.to})`]
+                : [],
             ].flat(),
             ...(filter.text
               ? {
@@ -97,6 +100,7 @@ export const api = {
   },
 }
 
+export type CentPriceRange = { from: number; to: number }
 export type CategoryFilter = {
   categoryIds: Array<string>
   sale?: true
@@ -105,4 +109,5 @@ export type CategoryFilter = {
   text?: string
   sort: Sort
   brand: string
+  priceRange: CentPriceRange
 }

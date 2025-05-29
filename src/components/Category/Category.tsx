@@ -19,6 +19,7 @@ import { SelectInput } from '@/shared/ui/SelectInput/SelectInput.tsx'
 
 export const Category = (): ReactElement => {
   const ITEMS_PER_PAGE = 6
+  const CENTS_IN_DOLLAR = 100
   const [searchParams, setSearchParams] = useSearchParams()
   const initialText = searchParams.get('search') ?? ''
   const initialCategoryParam = searchParams.get('subcategory') ?? searchParams.get('category')
@@ -30,6 +31,7 @@ export const Category = (): ReactElement => {
     sort: {},
     text: initialText,
     brand: '',
+    priceRange: { from: 100, to: 100000 },
   })
   const currentPage = useMemo(() => filter.offset / ITEMS_PER_PAGE, [filter])
 
@@ -147,6 +149,42 @@ export const Category = (): ReactElement => {
           title={'Brand'}
           options={brands.map((term) => term.term)}
           onChange={handleBrandFilterChange}
+        />
+        <InputComponent
+          value={filter.priceRange.from / CENTS_IN_DOLLAR}
+          name={'from'}
+          title={'From €'}
+          type={'number'}
+          placeholder={'1'}
+          allowWhitespaces={false}
+          min={1}
+          step={1}
+          onChange={(event) =>
+            setFilter(
+              (previous): CategoryFilter => ({
+                ...previous,
+                priceRange: { ...previous.priceRange, from: +event.target.value * CENTS_IN_DOLLAR },
+              })
+            )
+          }
+        />
+        <InputComponent
+          value={filter.priceRange.to / CENTS_IN_DOLLAR}
+          name={'to'}
+          title={'To €'}
+          type={'number'}
+          placeholder={'100'}
+          allowWhitespaces={false}
+          max={1000}
+          step={1}
+          onChange={(event) =>
+            setFilter(
+              (previous): CategoryFilter => ({
+                ...previous,
+                priceRange: { ...previous.priceRange, to: +event.target.value * CENTS_IN_DOLLAR },
+              })
+            )
+          }
         />
       </ul>
       <div className={s.searchsort}>
