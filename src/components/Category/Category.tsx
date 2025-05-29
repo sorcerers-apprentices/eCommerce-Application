@@ -4,7 +4,10 @@ import { api, type CategoryFilter } from '@/server/api.ts'
 import type {
   CategoryPagedQueryResponse,
   ClientResponse,
+  FacetResult,
+  FacetTerm,
   ProductProjectionPagedSearchResponse,
+  TermFacetResult,
 } from '@commercetools/platform-sdk'
 import { CategoryMenu } from '@/components/Category/RenderCategory/CategoryMenu.tsx'
 import { ProductList } from '@/components/Category/ProductList/ProductList.tsx'
@@ -12,6 +15,7 @@ import { useFetch } from '@/shared/hooks/useFetch.tsx'
 import { InputComponent } from '@/shared/ui/InputComponent/InputComponent.tsx'
 import { SortControlComponent } from '@/components/Category/SortComponent/SortControlComponent.tsx'
 import { useSearchParams } from 'react-router-dom'
+import { SelectInput } from '@/shared/ui/SelectInput/SelectInput.tsx'
 
 export const Category = (): ReactElement => {
   const ITEMS_PER_PAGE = 6
@@ -25,6 +29,7 @@ export const Category = (): ReactElement => {
     limit: ITEMS_PER_PAGE,
     sort: {},
     text: initialText,
+    brand: '',
   })
   const currentPage = useMemo(() => filter.offset / ITEMS_PER_PAGE, [filter])
 
@@ -38,10 +43,11 @@ export const Category = (): ReactElement => {
     loading: productsLoading,
   } = useFetch<ClientResponse<ProductProjectionPagedSearchResponse>>(productsFetcher)
 
-  useEffect(() => {
-    const search = searchParams.get('search') ?? ''
-    setFilter((previous) => ({ ...previous, text: search, offset: 0 }))
-  }, [searchParams])
+  const {
+    data: facets,
+    error: facetsError,
+    loading: facetsLoading,
+  } = useFetch<ClientResponse<ProductProjectionPagedSearchResponse>>(api.product.fetchFacets)
 
   const {
     data: categoriesData,
@@ -49,9 +55,26 @@ export const Category = (): ReactElement => {
     loading: categoriesLoading,
   } = useFetch<ClientResponse<CategoryPagedQueryResponse>>(api.product.fetchCategories)
 
+  const brands: Array<FacetTerm> = useMemo(() => {
+    if (!facets) {
+      return []
+    }
+    const brands = (facets.body.facets ?? {})['variants.attributes.brand'] ?? []
+    const isTermFacet = (facet: FacetResult): facet is TermFacetResult => facet.type === 'terms'
+    if (isTermFacet(brands)) {
+      return brands.terms
+    }
+    return []
+  }, [facets])
+
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [currentPage])
+
+  useEffect(() => {
+    const search = searchParams.get('search') ?? ''
+    setFilter((previous) => ({ ...previous, text: search, offset: 0 }))
+  }, [searchParams])
 
   const handleCategoryClick = (categoryId: string): void => {
     setFilter((previous: CategoryFilter): CategoryFilter => {
@@ -67,7 +90,7 @@ export const Category = (): ReactElement => {
     setFilter(
       (previous: CategoryFilter): CategoryFilter => ({
         ...previous,
-        text: event.target.value,
+        text: text,
       })
     )
     const params = Object.fromEntries(searchParams.entries())
@@ -77,6 +100,16 @@ export const Category = (): ReactElement => {
       delete params.search
     }
     setSearchParams(params)
+  }
+
+  const handleBrandFilterChange = (event: ChangeEvent<HTMLSelectElement>): void => {
+    const brand = event.target.value
+    setFilter(
+      (previous: CategoryFilter): CategoryFilter => ({
+        ...previous,
+        brand: brand,
+      })
+    )
   }
 
   const handlePageChange = (page: number): void => {
@@ -107,6 +140,14 @@ export const Category = (): ReactElement => {
       )}
       <ul className={`${s.categorylist}`}>
         <CategoryMenu categories={categoriesData?.body.results} onCategoryClick={handleCategoryClick} />
+        {facetsLoading && <div className={s.loading}>Loading brands...</div>}
+        {(facetsError || brands.length === 0) && <div>We don't have any brands</div>}
+        <SelectInput
+          name={'brand'}
+          title={'Brand'}
+          options={brands.map((term) => term.term)}
+          onChange={handleBrandFilterChange}
+        />
       </ul>
       <div className={s.searchsort}>
         <InputComponent

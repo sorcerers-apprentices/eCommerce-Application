@@ -56,7 +56,7 @@ export const SortControlComponent = ({ fields, onSortChange }: SortControlProper
 
   return (
     <div className={s.sortcontainer}>
-      <button onClick={() => setSort(convertFieldsToSort(fields))} className={s.sortbutton}>
+      <button key={'default'} onClick={() => setSort(convertFieldsToSort(fields))} className={s.sortbutton}>
         Default
       </button>
       {fields.map((field) => {
@@ -71,7 +71,7 @@ export const SortControlComponent = ({ fields, onSortChange }: SortControlProper
           })
         }
         return (
-          <button onClick={handler} className={s.btn}>
+          <button key={field.name} onClick={handler} className={s.btn}>
             {optionName}
           </button>
         )

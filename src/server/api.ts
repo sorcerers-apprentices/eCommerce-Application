@@ -25,6 +25,18 @@ export const api = {
     fetchMe: async (): Promise<ClientResponse<Customer> | Error> => builder().me().get().execute(),
   },
   product: {
+    fetchFacets: async (): Promise<ClientResponse<ProductProjectionPagedSearchResponse> | Error> => {
+      return builder()
+        .productProjections()
+        .search()
+        .get({
+          queryArgs: {
+            limit: 0, // only return aggregated (facets) data without any actual product data
+            facet: ['variants.attributes.brand'],
+          },
+        })
+        .execute()
+    },
     fetchProducts: async (
       filter: CategoryFilter
     ): Promise<ClientResponse<ProductProjectionPagedSearchResponse> | Error> => {
@@ -47,7 +59,10 @@ export const api = {
                 ? `categories.id:${filter.categoryIds.map((categoryId) => `subtree("${categoryId}")`).join(',')}`
                 : [],
             ].flat(),
-            'filter.query': [filter.sale ? 'variants.prices.discounted:exists' : []].flat(),
+            'filter.query': [
+              filter.sale ? 'variants.prices.discounted:exists' : [],
+              filter.brand ? [`variants.attributes.brand:"${filter.brand}"`] : [],
+            ].flat(),
             ...(filter.text
               ? {
                   'text.en-US': `*${filter.text}*`,
@@ -89,4 +104,5 @@ export type CategoryFilter = {
   limit: number
   text?: string
   sort: Sort
+  brand: string
 }
