@@ -73,7 +73,13 @@ export const Category = (): ReactElement => {
 
   useEffect((): void => {
     const search = searchParams.get('search') ?? ''
-    setFilter((prev) => ({ ...prev, text: search, offset: 0 }))
+    const brand = searchParams.get('brand') ?? ''
+    setFilter((prev) => ({
+      ...prev,
+      text: search,
+      brand,
+      offset: 0,
+    }))
   }, [searchParams])
 
   const handleCategoryClick = (categoryId: string): void => {
@@ -96,7 +102,17 @@ export const Category = (): ReactElement => {
   }
 
   const handleBrandFilterChange = (event: ChangeEvent<HTMLSelectElement>): void => {
-    setFilter((prev) => ({ ...prev, brand: event.target.value }))
+    const brand = event.target.value
+    setFilter((prev) => ({ ...prev, brand }))
+
+    const params = new URLSearchParams(searchParams.toString())
+    if (brand) {
+      params.set('brand', brand)
+    } else {
+      params.delete('brand')
+    }
+
+    setSearchParams(params)
   }
 
   const handlePriceChange =
