@@ -16,7 +16,12 @@ import { SortControlComponent } from '@/components/Category/SortComponent/SortCo
 import { type ChangeEvent, type ReactElement, useCallback, useEffect, useMemo, useState } from 'react'
 
 const ITEMS_PER_PAGE = 6
+
 const CENTS_IN_DOLLAR = 100
+const DEFAULT_PRICE_FROM_EUR = 1
+const DEFAULT_PRICE_TO_EUR = 1000
+const DEFAULT_PRICE_FROM_CENTS = DEFAULT_PRICE_FROM_EUR * CENTS_IN_DOLLAR
+const DEFAULT_PRICE_TO_CENTS = DEFAULT_PRICE_TO_EUR * CENTS_IN_DOLLAR
 
 export const Category = (): ReactElement => {
   const [searchParams, setSearchParams] = useSearchParams()
@@ -32,7 +37,7 @@ export const Category = (): ReactElement => {
     sort: {},
     text: searchParams.get('search') ?? '',
     brand: '',
-    priceRange: { from: 100, to: 100000 },
+    priceRange: { from: DEFAULT_PRICE_FROM_CENTS, to: DEFAULT_PRICE_TO_CENTS },
   })
 
   const currentPage = useMemo(() => filter.offset / ITEMS_PER_PAGE, [filter])
@@ -74,10 +79,21 @@ export const Category = (): ReactElement => {
   useEffect((): void => {
     const search = searchParams.get('search') ?? ''
     const brand = searchParams.get('brand') ?? ''
+
+    const priceFromParam = parseInt(searchParams.get('priceFrom') ?? '', 10)
+    const priceToParam = parseInt(searchParams.get('priceTo') ?? '', 10)
+
+    const priceFrom = Number.isNaN(priceFromParam) ? DEFAULT_PRICE_FROM_CENTS : priceFromParam * CENTS_IN_DOLLAR
+    const priceTo = Number.isNaN(priceToParam) ? DEFAULT_PRICE_TO_CENTS : priceToParam * CENTS_IN_DOLLAR
+
     setFilter((prev) => ({
       ...prev,
       text: search,
       brand,
+      priceRange: {
+        from: priceFrom,
+        to: priceTo,
+      },
       offset: 0,
     }))
   }, [searchParams])
@@ -118,8 +134,25 @@ export const Category = (): ReactElement => {
   const handlePriceChange =
     (field: 'from' | 'to') =>
     (event: ChangeEvent<HTMLInputElement>): void => {
-      const value = +event.target.value * CENTS_IN_DOLLAR
-      setFilter((prev) => ({ ...prev, priceRange: { ...prev.priceRange, [field]: value } }))
+      const euroValue = +event.target.value
+      const value = euroValue * CENTS_IN_DOLLAR
+
+      setFilter((prev) => ({
+        ...prev,
+        priceRange: { ...prev.priceRange, [field]: value },
+      }))
+
+      const params = new URLSearchParams(searchParams.toString())
+
+      if (field === 'from') {
+        if (euroValue) params.set('priceFrom', euroValue.toString())
+        else params.delete('priceFrom')
+      } else {
+        if (euroValue) params.set('priceTo', euroValue.toString())
+        else params.delete('priceTo')
+      }
+
+      setSearchParams(params)
     }
 
   const handlePageChange = (page: number): void => {
@@ -160,6 +193,7 @@ export const Category = (): ReactElement => {
         <SelectInput
           name="brand"
           title="Brand"
+          value={filter.brand}
           options={brands.map((term) => term.term)}
           onChange={handleBrandFilterChange}
         />
