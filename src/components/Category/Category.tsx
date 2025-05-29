@@ -17,11 +17,9 @@ import { type ChangeEvent, type ReactElement, useCallback, useEffect, useMemo, u
 
 const ITEMS_PER_PAGE = 6
 
-const CENTS_IN_DOLLAR = 100
+const CENTS_IN_EURO = 100
 const DEFAULT_PRICE_FROM_EUR = 1
 const DEFAULT_PRICE_TO_EUR = 1000
-const DEFAULT_PRICE_FROM_CENTS = DEFAULT_PRICE_FROM_EUR * CENTS_IN_DOLLAR
-const DEFAULT_PRICE_TO_CENTS = DEFAULT_PRICE_TO_EUR * CENTS_IN_DOLLAR
 
 export const Category = (): ReactElement => {
   const [searchParams, setSearchParams] = useSearchParams()
@@ -37,7 +35,7 @@ export const Category = (): ReactElement => {
     sort: {},
     text: searchParams.get('search') ?? '',
     brand: '',
-    priceRange: { from: DEFAULT_PRICE_FROM_CENTS, to: DEFAULT_PRICE_TO_CENTS },
+    priceRange: { from: DEFAULT_PRICE_FROM_EUR * CENTS_IN_EURO, to: DEFAULT_PRICE_TO_EUR * CENTS_IN_EURO },
   })
 
   const currentPage = useMemo(() => filter.offset / ITEMS_PER_PAGE, [filter])
@@ -83,17 +81,17 @@ export const Category = (): ReactElement => {
     const priceFromParam = parseInt(searchParams.get('priceFrom') ?? '', 10)
     const priceToParam = parseInt(searchParams.get('priceTo') ?? '', 10)
 
-    const priceFrom = Number.isNaN(priceFromParam) ? DEFAULT_PRICE_FROM_CENTS : priceFromParam * CENTS_IN_DOLLAR
-    const priceTo = Number.isNaN(priceToParam) ? DEFAULT_PRICE_TO_CENTS : priceToParam * CENTS_IN_DOLLAR
+    const priceFrom = Number.isNaN(priceFromParam)
+      ? DEFAULT_PRICE_FROM_EUR * CENTS_IN_EURO
+      : priceFromParam * CENTS_IN_EURO
+
+    const priceTo = Number.isNaN(priceToParam) ? DEFAULT_PRICE_TO_EUR * CENTS_IN_EURO : priceToParam * CENTS_IN_EURO
 
     setFilter((prev) => ({
       ...prev,
       text: search,
       brand,
-      priceRange: {
-        from: priceFrom,
-        to: priceTo,
-      },
+      priceRange: { from: priceFrom, to: priceTo },
       offset: 0,
     }))
   }, [searchParams])
@@ -122,24 +120,21 @@ export const Category = (): ReactElement => {
     setFilter((prev) => ({ ...prev, brand }))
 
     const params = new URLSearchParams(searchParams.toString())
-    if (brand) {
-      params.set('brand', brand)
-    } else {
-      params.delete('brand')
-    }
+    if (brand) params.set('brand', brand)
+    else params.delete('brand')
 
     setSearchParams(params)
   }
 
   const handlePriceChange =
     (field: 'from' | 'to') =>
-    (event: ChangeEvent<HTMLInputElement>): void => {
-      const euroValue = +event.target.value
-      const value = euroValue * CENTS_IN_DOLLAR
+    (e: ChangeEvent<HTMLInputElement>): void => {
+      const euroValue = +e.target.value
+      const cents = euroValue * CENTS_IN_EURO
 
       setFilter((prev) => ({
         ...prev,
-        priceRange: { ...prev.priceRange, [field]: value },
+        priceRange: { ...prev.priceRange, [field]: cents },
       }))
 
       const params = new URLSearchParams(searchParams.toString())
@@ -166,7 +161,6 @@ export const Category = (): ReactElement => {
     }
     return []
   }, [facets])
-
   return (
     <section className={`section ${s.category}`}>
       <h2 className={s.title}>Category</h2>
@@ -201,8 +195,8 @@ export const Category = (): ReactElement => {
           name="from"
           title="From €"
           type="number"
-          value={filter.priceRange.from / CENTS_IN_DOLLAR}
-          min={1}
+          value={filter.priceRange.from / CENTS_IN_EURO}
+          min={DEFAULT_PRICE_FROM_EUR}
           step={1}
           onChange={handlePriceChange('from')}
         />
@@ -210,8 +204,8 @@ export const Category = (): ReactElement => {
           name="to"
           title="To €"
           type="number"
-          value={filter.priceRange.to / CENTS_IN_DOLLAR}
-          max={1000}
+          value={filter.priceRange.to / CENTS_IN_EURO}
+          max={DEFAULT_PRICE_TO_EUR}
           step={1}
           onChange={handlePriceChange('to')}
         />
