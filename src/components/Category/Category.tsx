@@ -23,6 +23,7 @@ const DEFAULT_PRICE_TO_EUR = 1000
 
 export const Category = (): ReactElement => {
   const [searchParams, setSearchParams] = useSearchParams()
+  const metaParam = searchParams.get('meta')
   const slugsParams: string[] = useMemo(
     () => [...searchParams.getAll('category'), ...searchParams.getAll('subcategory')],
     [searchParams]
@@ -35,6 +36,7 @@ export const Category = (): ReactElement => {
     sort: {},
     text: searchParams.get('search') ?? '',
     brand: '',
+    sale: metaParam === 'sale' ? true : undefined,
     priceRange: { from: DEFAULT_PRICE_FROM_EUR * CENTS_IN_EURO, to: DEFAULT_PRICE_TO_EUR * CENTS_IN_EURO },
   })
 
@@ -75,8 +77,21 @@ export const Category = (): ReactElement => {
   }, [currentPage])
 
   useEffect((): void => {
+    const params = new URLSearchParams(searchParams.toString())
+    if (filter.sale) {
+      params.set('meta', 'sale')
+    } else {
+      params.delete('meta')
+    }
+    setSearchParams(params, { replace: true })
+  }, [filter.sale, searchParams, setSearchParams])
+
+  useEffect((): void => {
     const search = searchParams.get('search') ?? ''
     const brand = searchParams.get('brand') ?? ''
+
+    const meta = searchParams.get('meta')
+    const saleValue = meta === 'sale' ? true : undefined
 
     const priceFromParam = parseInt(searchParams.get('priceFrom') ?? '', 10)
     const priceToParam = parseInt(searchParams.get('priceTo') ?? '', 10)
@@ -92,6 +107,7 @@ export const Category = (): ReactElement => {
       text: search,
       brand,
       priceRange: { from: priceFrom, to: priceTo },
+      sale: saleValue,
       offset: 0,
     }))
   }, [searchParams])
