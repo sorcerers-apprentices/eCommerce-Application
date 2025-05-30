@@ -35,9 +35,7 @@ export const Category = (): ReactElement => {
   })
   const currentPage = useMemo(() => filter.offset / ITEMS_PER_PAGE, [filter])
 
-  const productsFetcher = useCallback(() => {
-    return api.product.fetchProducts(filter)
-  }, [filter])
+  const productsFetcher = useCallback(() => api.product.fetchProducts(filter), [filter])
 
   const {
     data: products,
