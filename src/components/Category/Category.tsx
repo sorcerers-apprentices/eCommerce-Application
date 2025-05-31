@@ -177,6 +177,25 @@ export const Category = (): ReactElement => {
     }
     return []
   }, [facets])
+
+  const handleClearFilters = (): void => {
+    setFilter((prev) => ({
+      ...prev,
+      brand: '',
+      categoryIds: [],
+      priceRange: { from: DEFAULT_PRICE_FROM_EUR * CENTS_IN_EURO, to: DEFAULT_PRICE_TO_EUR * CENTS_IN_EURO },
+      offset: 0,
+    }))
+
+    const newParams = new URLSearchParams(searchParams.toString())
+    newParams.delete('brand')
+    newParams.delete('category')
+    newParams.delete('subcategory')
+    newParams.delete('priceFrom')
+    newParams.delete('priceTo')
+    setSearchParams(newParams, { replace: true })
+  }
+
   return (
     <section className={`section ${s.category}`}>
       <h2 className={s.title}>Category</h2>
@@ -225,6 +244,7 @@ export const Category = (): ReactElement => {
           step={1}
           onChange={handlePriceChange('to')}
         />
+        <button onClick={handleClearFilters}>Reset filters</button>
       </ul>
 
       <div className={s.searchsort}>
