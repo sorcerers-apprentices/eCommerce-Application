@@ -1,10 +1,9 @@
 import s from './Header.module.scss'
-import type { ReactElement } from 'react'
-
 import { Link } from 'react-router-dom'
-import { RoutePath } from '@/shared/config/routeConfig/routeConfig'
-import { NavigationBar } from './NavigationBar/NavigationBar'
+import type { ReactElement } from 'react'
 import { UserBar } from './UserBar/UserBar'
+import { NavigationBar } from './NavigationBar/NavigationBar'
+import { RoutePath } from '@/shared/config/routeConfig/routeConfig'
 
 export const Header = (): ReactElement => {
   return (
