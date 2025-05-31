@@ -1,4 +1,5 @@
 import s from './SortComponent.module.scss'
+import { useSearchParams } from 'react-router-dom'
 import { type ReactElement, useEffect, useState } from 'react'
 
 enum Direction {
@@ -19,14 +20,26 @@ type SortControlProperties = {
 }
 
 export const SortControlComponent = ({ fields, onSortChange }: SortControlProperties): ReactElement => {
-  const convertFieldsToSort = (fields: Array<FieldType>): SortType => {
+  const [searchParams, setSearchParams] = useSearchParams()
+
+  const getInitialSort = (): SortType => {
+    const field = searchParams.get('field')
+    const directionParam = searchParams.get('direction')
+    const direction = directionParam === Direction.ASC || directionParam === Direction.DESC ? directionParam : undefined
+
     const sort: SortType = {}
-    for (const field of fields) {
-      sort[field.name] = { locale: field.locale }
+
+    for (const fieldItem of fields) {
+      sort[fieldItem.name] = {
+        locale: fieldItem.locale,
+        direction: fieldItem.name === field ? direction : undefined,
+      }
     }
+
     return sort
   }
-  const [sort, setSort] = useState<SortType>(convertFieldsToSort(fields))
+
+  const [sort, setSort] = useState<SortType>(getInitialSort)
 
   useEffect(() => {
     onSortChange(sort)
@@ -53,16 +66,37 @@ export const SortControlComponent = ({ fields, onSortChange }: SortControlProper
     }
   }
 
+  const updateSortInUrl = (field: string, direction: Direction | undefined): void => {
+    const updatedParams = new URLSearchParams(searchParams.toString())
+
+    if (direction === undefined) {
+      updatedParams.delete('field')
+      updatedParams.delete('direction')
+    } else {
+      updatedParams.set('field', field)
+      updatedParams.set('direction', direction)
+    }
+
+    setSearchParams(updatedParams, { replace: true })
+  }
+
   const renderFieldSortButtons = (): Array<ReactElement> => {
     return fields.map((field) => {
       const optionName = field.name + toArrow(sort[field.name]?.direction)
       const handler = (): void => {
-        setSort((previous) => {
-          const nextSort = { ...previous }
-          const fieldSort = nextSort[field.name] ?? {}
-          nextSort[field.name] = { ...fieldSort }
-          nextSort[field.name].direction = flipDirection(fieldSort.direction)
-          return nextSort
+        setSort((prev) => {
+          const nextDirection = flipDirection(prev[field.name]?.direction)
+          const updatedSort: SortType = {}
+
+          for (const item of fields) {
+            updatedSort[item.name] = {
+              locale: item.locale,
+              direction: item.name === field.name ? nextDirection : undefined,
+            }
+          }
+
+          updateSortInUrl(field.name, nextDirection)
+          return updatedSort
         })
       }
 
@@ -74,9 +108,28 @@ export const SortControlComponent = ({ fields, onSortChange }: SortControlProper
     })
   }
 
+  const resetSort = (): void => {
+    const defaultSort: SortType = {}
+
+    for (const field of fields) {
+      defaultSort[field.name] = { locale: field.locale }
+    }
+
+    setSort(defaultSort)
+    setSearchParams(
+      (params) => {
+        const newParams = new URLSearchParams(params.toString())
+        newParams.delete('field')
+        newParams.delete('direction')
+        return newParams
+      },
+      { replace: true }
+    )
+  }
+
   return (
     <div className={s.sortcontainer}>
-      <button key={'default'} onClick={() => setSort(convertFieldsToSort(fields))} className={s.sortbutton}>
+      <button key={'default'} onClick={resetSort} className={s.sortbutton}>
         Default
       </button>
       {renderFieldSortButtons()}
