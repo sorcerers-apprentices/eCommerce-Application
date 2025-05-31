@@ -2,6 +2,7 @@ import type {
   CategoryPagedQueryResponse,
   ClientResponse,
   Customer,
+  ProductProjection,
   ProductProjectionPagedSearchResponse,
 } from '@commercetools/platform-sdk'
 import { builder } from '@/server/client.ts'
@@ -96,6 +97,9 @@ export const api = {
         })
         .execute()
         .catch((error: Error) => error)
+    },
+    fetchProduct: async (id: string): Promise<ClientResponse<ProductProjection>> => {
+      return builder().productProjections().withId({ ID: id }).get().execute()
     },
   },
 }

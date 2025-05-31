@@ -17,7 +17,7 @@ export enum RoutePath {
   ADDRESSES = '/profile/addresses',
   PASSWORD = '/profile/password',
   ABOUT = '/about',
-  PRODUCT = '/product/:sku',
+  PRODUCT = '/product/:id',
   CATALOG = '/catalog',
 }
 
