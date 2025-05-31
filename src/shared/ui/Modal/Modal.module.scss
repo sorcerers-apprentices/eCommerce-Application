@@ -1,0 +1,21 @@
+@use '@/styles/variables.scss' as vars;
+
+.backdrop {
+  position: fixed;
+  z-index: 1000;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgb(0 0 0 / 40%);
+}
+
+.modal {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+  padding: 2rem;
+  border-radius: 12px;
+  background: vars.$color-primary100;
+  box-shadow: 0 20px 40px rgb(0 0 0 / 20%);
+}

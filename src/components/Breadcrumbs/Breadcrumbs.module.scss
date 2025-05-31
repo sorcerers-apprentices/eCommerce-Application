@@ -1,0 +1,11 @@
+@use '@/styles/mixins' as mixins;
+
+.breadcrumb {
+  display: flex;
+  grid-column: 1 / span 2;
+  gap: 1%;
+}
+
+.link {
+  @include mixins.link;
+}

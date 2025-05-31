@@ -10,13 +10,13 @@
   justify-content: flex-end;
   height: 30rem;
   padding: 5rem;
-  background-color: vars.$color-primary100;
+  background-color: vars.$color-primary200;
   background-image: url('/images/cat-transparent-bg.png');
   background-repeat: no-repeat;
   background-position: bottom right;
   background-origin: border-box;
   background-size: contain; // contain - fully visible,cover - cover container
-  box-shadow: inset 0 0 40px 10px vars.$color-primary;
+  box-shadow: inset 0 0 6rem 1rem vars.$color-primary;
 
   @media (width <= 768px) {
     gap: 2rem;

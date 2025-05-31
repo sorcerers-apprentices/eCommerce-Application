@@ -24,19 +24,22 @@ export const UserMenu = ({ onClose }: IUserMenuProperties): ReactElement => {
           <Button onClick={handleLogout} className={s.button}>
             Logout
           </Button>
-          <Link to={RoutePath.REGISTRATION} className={s.button}>
+          <Link to={RoutePath.REGISTRATION} className={s.button} onClick={onClose}>
             Registration
           </Link>
-          <Link to={RoutePath.PROFILE} className={s.button}>
+          <Link to={RoutePath.PROFILE} className={s.button} onClick={onClose}>
             Profile
+          </Link>
+          <Link to={RoutePath.ADDRESSES} className={s.button} onClick={onClose}>
+            Addresses
           </Link>
         </>
       ) : (
         <>
-          <Link to={RoutePath.LOGIN} className={s.button}>
+          <Link to={RoutePath.LOGIN} className={s.button} onClick={onClose}>
             Login
           </Link>
-          <Link to={RoutePath.REGISTRATION} className={s.button}>
+          <Link to={RoutePath.REGISTRATION} className={s.button} onClick={onClose}>
             Registration
           </Link>
         </>
