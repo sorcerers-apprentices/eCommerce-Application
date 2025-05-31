@@ -71,7 +71,7 @@ export const ProductList = ({
     <section className={s.productssection}>
       <ul className={s.productlist}>
         {products?.map((product) => {
-          const id = product.masterVariant.key?.toLowerCase()
+          const id = product.id
           const centPrice = product.masterVariant.prices?.find((price) => price.country === 'ES')?.value.centAmount
           const discountPrice = product.masterVariant.prices?.find((price) => price.discounted)?.value.centAmount
           return (

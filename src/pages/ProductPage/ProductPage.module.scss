@@ -1,0 +1,64 @@
+@use '@/styles/variables' as vars;
+@use '@/styles/mixins' as mixins;
+
+.productcontainer {
+  display: grid;
+  grid-template-columns: 40% 60%;
+  grid-template-rows: 30px minmax(0, 430px) 1fr;
+  gap: 5%;
+  padding-top: 2%;
+}
+
+.breadcrumb {
+  display: flex;
+  grid-column: 1 / span 2;
+  gap: 1%;
+}
+
+.productimage {
+  grid-area: 2 / 1;
+}
+
+.productimagecontainer {
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-height: 430px;
+}
+
+.productimg {
+  cursor: zoom-in;
+  width: 100%;
+  max-height: 430px;
+  object-fit: fill;
+}
+
+.producinfo {
+  display: flex;
+  grid-area: 2 / 2;
+  flex-direction: column;
+  gap: 9%;
+}
+
+.producdescription {
+  grid-column: 1 / span 2;
+  max-width: 1440px;
+}
+
+.link {
+  @include mixins.link;
+}
+
+.pricecontainer {
+  display: flex;
+  gap: 1rem;
+}
+
+.productprice {
+  color: vars.$color-primary;
+}
+
+.onsale {
+  text-decoration: line-through;
+}
