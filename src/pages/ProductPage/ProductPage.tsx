@@ -1,17 +1,16 @@
-import { type ReactElement, useCallback, useMemo } from 'react'
-import { useParams } from 'react-router-dom'
-import { Header } from '@/components/Header/Header'
-import s from './ProductPage.module.scss'
-import { useFetch } from '@/shared/hooks/useFetch.tsx'
 import type {
   Category,
-  CategoryPagedQueryResponse,
   ClientResponse,
   ProductProjection,
+  CategoryPagedQueryResponse,
 } from '@commercetools/platform-sdk'
-import { api } from '@/server/api.ts'
-import { NavLink } from 'react-router'
-import { RoutePath } from '@/shared/config/routeConfig/routeConfig.tsx'
+import { api } from '@/server/api'
+import s from './ProductPage.module.scss'
+import { useParams } from 'react-router-dom'
+import { useFetch } from '@/shared/hooks/useFetch'
+import { Header } from '@/components/Header/Header'
+import Breadcrumbs from '@/components/Breadcrumbs/Breadcrumbs'
+import { type ReactElement, useCallback, useMemo } from 'react'
 
 const ProductPage = (): ReactElement => {
   const CENTS_IN_DOLLAR = 100
@@ -54,14 +53,9 @@ const ProductPage = (): ReactElement => {
   const weight: string | undefined = product?.body.masterVariant.attributes?.find(
     (attribute) => attribute.name === 'weight'
   )?.value
-  const category = categories?.body.results.find((data) => data.id === product?.body.categories?.[0].id)
-
-  const findCategoriesPath = (category: Category | undefined): Array<Category> => {
-    if (!category) {
-      return []
-    }
-    return [...findCategoriesPath(categories?.body.results.find((it) => it.id === category.parent?.id)), category]
-  }
+  const category: Category | undefined = product?.body.categories?.[0]?.id
+    ? categories?.body.results.find((category) => category.id === product.body.categories?.[0].id)
+    : undefined
 
   return (
     <>
@@ -69,24 +63,7 @@ const ProductPage = (): ReactElement => {
       <div className={s.productcontainer}>
         {categoriesLoading && <div>Loading information...</div>}
         {categoriesError && <div>No products found</div>}
-        <div className={s.breadcrumb}>
-          <NavLink to={RoutePath.MAIN} className={s.link}>
-            Main
-          </NavLink>
-          <span> &gt; </span>
-          <NavLink to={RoutePath.CATALOG} className={s.link}>
-            Catalog
-          </NavLink>
-          <span> &gt; </span>
-          {findCategoriesPath(category).map((breadCrumbCategory, i, array) => (
-            <>
-              <NavLink to={`${RoutePath.CATALOG}?category=${breadCrumbCategory?.id}`} className={s.link}>
-                {breadCrumbCategory.name['en']}
-              </NavLink>
-              {array.length > i + 1 && <span> &gt; </span>}
-            </>
-          ))}
-        </div>
+        <Breadcrumbs allCategories={categories?.body.results ?? []} currentCategory={category} />
         <div className={s.productimage}>
           <div className={s.productimagecontainer}>
             <img

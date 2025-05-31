@@ -9,12 +9,6 @@
   padding-top: 2%;
 }
 
-.breadcrumb {
-  display: flex;
-  grid-column: 1 / span 2;
-  gap: 1%;
-}
-
 .productimage {
   grid-area: 2 / 1;
 }
@@ -44,10 +38,6 @@
 .producdescription {
   grid-column: 1 / span 2;
   max-width: 1440px;
-}
-
-.link {
-  @include mixins.link;
 }
 
 .pricecontainer {
