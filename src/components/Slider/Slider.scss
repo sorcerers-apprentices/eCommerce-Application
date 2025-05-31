@@ -1,9 +1,9 @@
 @use '@/styles/variables.scss' as vars;
 
 .slider {
-  width: 40rem;
-  margin: 2rem auto;
-  padding: 2rem;
+  width: 33rem;
+  margin: 0 auto;
+  padding: 0.5rem;
   background-color: vars.$color-primary25;
 }
 
@@ -17,7 +17,7 @@
   align-items: center;
   justify-content: center;
   max-height: 100vh;
-  padding: 0 1rem;
+  padding: 0 0.5rem;
 }
 
 .dots {

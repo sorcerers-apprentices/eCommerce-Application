@@ -1,15 +1,24 @@
-import { useState, type ReactElement } from 'react'
+import React, { useState, type ReactElement } from 'react'
 import { useKeenSlider } from 'keen-slider/react'
 import 'keen-slider/keen-slider.min.css'
 import './Slider.scss' // Assuming you have a CSS file for styles, adjust the path as necessary
 
-export const Slider = (): ReactElement => {
-  const [currentSlide, setCurrentSlide] = useState(0)
+export type SliderImage = {
+  url: string
+  name: string | undefined
+}
+
+type SliderProperties = {
+  images: Array<SliderImage>
+}
+
+export const Slider = ({ images }: SliderProperties): ReactElement => {
+  const [sliderIndex, setSliderIndex] = useState(0)
   const [loaded, setLoaded] = useState(false)
   const [sliderReference, instanceReference] = useKeenSlider({
     initial: 0,
     slideChanged(slider) {
-      setCurrentSlide(slider.track.details.rel)
+      setSliderIndex(slider.track.details.rel)
     },
     created() {
       setLoaded(true)
@@ -20,15 +29,11 @@ export const Slider = (): ReactElement => {
     <div className="slider">
       <div className="navigation-wrapper">
         <div ref={sliderReference} className="keen-slider">
-          <div className="keen-slider__slide number-slide1">
-            <img src="/images/dog-brown-bg.jpg" alt="dog" />
-          </div>
-          <div className="keen-slider__slide number-slide2">
-            <img src="/images/dog-green-bg.jpg" alt="dog" />
-          </div>
-          <div className="keen-slider__slide number-slide3">
-            <img src="/images/cat-yellow-bg.jpeg" alt="cat" />
-          </div>
+          {images.map((img, index) => (
+            <div className={`keen-slider__slide number-slide${index + 1}`}>
+              <img src={img.url} alt={img.name} />
+            </div>
+          ))}
         </div>
         {loaded && instanceReference.current && (
           <>
@@ -38,7 +43,7 @@ export const Slider = (): ReactElement => {
                 event.stopPropagation()
                 instanceReference.current?.prev()
               }}
-              disabled={currentSlide === 0}
+              disabled={sliderIndex === 0}
             />
 
             <Arrow
@@ -46,7 +51,7 @@ export const Slider = (): ReactElement => {
                 event.stopPropagation()
                 instanceReference.current?.next()
               }}
-              disabled={currentSlide === instanceReference.current.track.details.slides.length - 1}
+              disabled={sliderIndex === instanceReference.current.track.details.slides.length - 1}
             />
           </>
         )}
@@ -61,7 +66,7 @@ export const Slider = (): ReactElement => {
                   event.preventDefault()
                   instanceReference.current?.moveToIdx(index)
                 }}
-                className={'dot' + (currentSlide === index ? ' active' : '')}
+                className={'dot' + (sliderIndex === index ? ' active' : '')}
               ></button>
             )
           })}

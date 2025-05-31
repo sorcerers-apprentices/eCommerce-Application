@@ -64,7 +64,9 @@ export const api = {
               filter.sale ? 'variants.prices.discounted:exists' : [],
               filter.brand ? [`variants.attributes.brand:"${filter.brand}"`] : [],
               filter.priceRange
-                ? [`variants.price.centAmount:range(${filter.priceRange.from} to ${filter.priceRange.to})`]
+                ? [
+                    `variants.scopedPrice.currentValue.centAmount:range(${filter.priceRange.from} to ${filter.priceRange.to})`,
+                  ]
                 : [],
             ].flat(),
             ...(filter.text
