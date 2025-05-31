@@ -11,6 +11,7 @@ import { useFetch } from '@/shared/hooks/useFetch'
 import { Header } from '@/components/Header/Header'
 import Breadcrumbs from '@/components/Breadcrumbs/Breadcrumbs'
 import { type ReactElement, useCallback, useMemo } from 'react'
+import { type SliderImage, Slider } from '@/components/Slider/Slider.tsx'
 
 const ProductPage = (): ReactElement => {
   const CENTS_IN_DOLLAR = 100
@@ -56,6 +57,12 @@ const ProductPage = (): ReactElement => {
   const category: Category | undefined = product?.body.categories?.[0]?.id
     ? categories?.body.results.find((category) => category.id === product.body.categories?.[0].id)
     : undefined
+  const images: Array<SliderImage> | undefined = product?.body.masterVariant.images?.map((img) => {
+    return {
+      url: img.url,
+      name: img.label,
+    }
+  })
 
   return (
     <>
@@ -64,15 +71,7 @@ const ProductPage = (): ReactElement => {
         {categoriesLoading && <div>Loading information...</div>}
         {categoriesError && <div>No products found</div>}
         <Breadcrumbs allCategories={categories?.body.results ?? []} currentCategory={category} />
-        <div className={s.productimage}>
-          <div className={s.productimagecontainer}>
-            <img
-              src={product?.body.masterVariant.images?.[0].url}
-              alt={product?.body.name?.['en-US'] || 'Product image'}
-              className={s.productimg}
-            />
-          </div>
-        </div>
+        <div className={s.productimage}>{images && <Slider images={images} />}</div>
         <div className={s.producinfo}>
           {productLoading && <div>Loading product...</div>}
           {productError && <div>No products found</div>}
