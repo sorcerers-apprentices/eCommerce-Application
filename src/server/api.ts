@@ -6,7 +6,7 @@ import type {
   ProductProjectionPagedSearchResponse,
 } from '@commercetools/platform-sdk'
 import { builder } from '@/server/client.ts'
-import type { Sort } from '@/components/Category/SortComponent/SortControlComponent.tsx'
+import type { SortType } from '@/components/Category/SortComponent/SortControlComponent.tsx'
 
 export enum ApiErrorCode {
   INVALID_CUSTOMER_ACCOUNT_CREDENTIALS = 'invalid_customer_account_credentials',
@@ -111,7 +111,7 @@ export type CategoryFilter = {
   offset: number
   limit: number
   text?: string
-  sort: Sort
+  sort: SortType
   brand: string
   priceRange: CentPriceRange
 }
