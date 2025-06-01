@@ -1,25 +1,20 @@
-import { IoCloseSharp } from 'react-icons/io5'
+import React, { type ReactElement } from 'react'
 import s from './Modal.module.scss'
 
-type TModalProps = {
+export type ModalProps = {
   isOpen: boolean
   onClose: () => void
   children: React.ReactNode
 }
 
-export const Modal: React.FC<TModalProps> = ({ isOpen, onClose, children }) => {
-  if (!isOpen) return null
-
-  const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>): void => {
-    e.stopPropagation()
-    onClose()
-  }
+export const Modal = ({ isOpen, onClose, children }: ModalProps): ReactElement | undefined => {
+  if (!isOpen) return
 
   return (
-    <div className={s.backdrop} onClick={handleBackdropClick}>
-      <div className={s.modal} onClick={(e) => e.stopPropagation()}>
-        <button className="icon" onClick={onClose} aria-label="Close modal">
-          <IoCloseSharp />
+    <div className={s.modaloverlay} onClick={onClose}>
+      <div className={s.modalcontent} onClick={(e) => e.stopPropagation()}>
+        <button className={s.modalclose} onClick={onClose}>
+          &times;
         </button>
         {children}
       </div>

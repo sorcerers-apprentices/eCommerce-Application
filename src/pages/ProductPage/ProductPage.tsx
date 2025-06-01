@@ -12,7 +12,7 @@ import { Header } from '@/components/Header/Header'
 import Breadcrumbs from '@/components/Breadcrumbs/Breadcrumbs'
 import { type ReactElement, useCallback, useMemo, useState } from 'react'
 import { type SliderImage, Slider } from '@/components/Slider/Slider.tsx'
-import { Modal } from '@/components/Modal/Modal.tsx'
+import { Modal } from '@/shared/ui/Modal/Modal.tsx'
 
 const ProductPage = (): ReactElement => {
   const CENTS_IN_DOLLAR = 100
