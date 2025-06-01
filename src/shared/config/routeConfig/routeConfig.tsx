@@ -6,8 +6,8 @@ import { ProfilePageAsync } from '@/pages/ProfilePage/ProfilePage.async'
 import { ProductPageAsync } from '@/pages/ProductPage/ProductPage.async'
 import { CatalogPageAsync } from '@/pages/CatalogPage/CatalogPage.async'
 import { RegistrationPageAsync } from '@/pages/RegistrationPage/RegistrationPage.async'
-import { AddressesPageAsync } from '@/pages/AddressesPage/AddressesPage.async'
 import { PasswordPageAsync } from '@/pages/PasswordPage/PasswordPage.async'
+import { AddressPageAsync } from '@/pages/AddressPage/AddressPage.async.tsx'
 
 export enum RoutePath {
   MAIN = '/',
@@ -58,7 +58,7 @@ export const privateRoutes: RouteProps[] = [
   },
   {
     path: RoutePath.ADDRESSES,
-    element: <AddressesPageAsync />,
+    element: <AddressPageAsync />,
   },
   {
     path: RoutePath.PASSWORD,
