@@ -3,19 +3,11 @@
 
 .category {
   display: grid;
-  grid-template: 2.5rem 5rem auto/ 1fr minmax(0, 940px);
+  grid-template: auto auto auto/ 1fr minmax(0, 940px);
   grid-template-areas:
     'title options'
     'category-list searchsort'
     'category-list products-list';
-
-  @media (width <= 1000px) {
-    grid-template: 2.5rem 7rem auto/ 1fr minmax(0, 940px);
-    grid-template-areas:
-      'title options'
-      'category-list searchsort'
-      'category-list products-list';
-  }
 }
 
 .searchsort {
@@ -35,6 +27,10 @@
 
 .title {
   grid-area: title;
+
+  @media (width <= 850px) {
+    font-size: 0.7rem;
+  }
 }
 
 .options {
@@ -50,6 +46,10 @@
   width: 100%;
   height: 100%;
   text-align: center;
+
+  @media (width <= 850px) {
+    font-size: 0.7rem;
+  }
 }
 
 .options > h2:hover {
@@ -90,6 +90,10 @@
   transition:
     color 0.3s,
     background-color 0.3s;
+
+  @media (width <= 850px) {
+    font-size: 0.7rem;
+  }
 }
 
 .empty {

@@ -74,8 +74,14 @@
   margin-top: 1.2rem;
   padding: 1.8rem 0;
 
-  @media (width <= 1000px) {
+  @media (width <= 1000px) and (width >= 851px) {
     padding: 0.8rem 0;
+  }
+
+  @media (width <= 850px) {
+    gap: 0.1rem;
+    margin-top: 0.8rem;
+    padding: 0.2rem 0;
   }
 }
 
@@ -97,8 +103,13 @@
     padding: 0.03rem 0.2rem;
   }
 
-  @media (width <= 915px) {
+  @media (width <= 915px) and (width >= 851px) {
     padding: 0.007rem 0.02rem;
+  }
+
+  @media (width <= 850px) {
+    padding: 0.002rem;
+    border-radius: 2px;
   }
 }
 
