@@ -4,7 +4,8 @@ import { Label } from '@/shared/ui/Label/Label.tsx'
 import s from './SelectInput.module.scss'
 
 type TSelectProperties = SelectHTMLAttributes<HTMLSelectElement> & {
-  options: string[]
+  options?: string[]
+  options2?: { text: string; value: string }[]
   title: string
   errors?: string | null
 }
@@ -13,6 +14,7 @@ export const SelectInput: FC<TSelectProperties> = ({
   name,
   title,
   options = [],
+  options2 = [],
   value,
   required = true,
   errors,
@@ -28,11 +30,18 @@ export const SelectInput: FC<TSelectProperties> = ({
         <option className={s.input} value="">
           Choose your {name}
         </option>
-        {options.map((option) => (
-          <option key={option} value={option}>
-            {option}
-          </option>
-        ))}
+        {options2.length &&
+          options2.map(({ text, value }) => (
+            <option key={value} value={value}>
+              {text}
+            </option>
+          ))}
+        {options.length &&
+          options.map((option) => (
+            <option key={option} value={option}>
+              {option}
+            </option>
+          ))}
       </select>
       <span className={s.error}>{errorInnerText}</span>
     </div>

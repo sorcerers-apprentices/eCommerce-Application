@@ -3,7 +3,6 @@ import { Button } from '@/shared/ui/Button/Button'
 import { Form } from '@/shared/ui/Form/Form'
 import s from './PasswordSection.module.scss'
 import { InputComponent } from '@/shared/ui/InputComponent/InputComponent'
-import { updatePasswordApi } from '@/server/updatePasswordApi'
 import { toast } from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom'
 import { RoutePath } from '@/shared/config/routeConfig/routeConfig'
@@ -11,7 +10,7 @@ import { userContext } from '@/app/providers/UserProvider/UserContext'
 import { useAuth } from '@/hooks/useAuth'
 import { validatePassword } from '@/shared/utilities/validation'
 import { useValidate } from '@/hooks/useValidate'
-//import { transformToValidationData, useValidate } from '@/hooks/useValidate'
+import { api } from '@/server/api.ts'
 
 export const PasswordSection = (): ReactElement => {
   const navigation = useNavigate()
@@ -60,10 +59,7 @@ export const PasswordSection = (): ReactElement => {
     }
 
     try {
-      await updatePasswordApi({
-        currentPassword: currentPassword.value,
-        newPassword: newPassword.value,
-      })
+      await api.user.updatePassword(currentPassword.value, newPassword.value)
       await logout()
       await login(email ?? '', newPassword.value)
       toast.success('Password has been changed successfully')

@@ -7,6 +7,7 @@ import type {
 } from '@commercetools/platform-sdk'
 import { builder } from '@/server/client.ts'
 import type { SortType } from '@/components/Category/SortComponent/SortControlComponent.tsx'
+import type { MyCustomerUpdateAction } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/me'
 
 export enum ApiErrorCode {
   INVALID_CUSTOMER_ACCOUNT_CREDENTIALS = 'invalid_customer_account_credentials',
@@ -23,7 +24,30 @@ const MAX_FUZZY_LEVEL = 2
 
 export const api = {
   user: {
-    fetchMe: async (): Promise<ClientResponse<Customer> | Error> => builder().me().get().execute(),
+    fetchMe: async (): Promise<ClientResponse<Customer>> => builder().me().get().execute(),
+    updateMe: async (actions: Array<MyCustomerUpdateAction>): Promise<ClientResponse<Customer>> =>
+      builder()
+        .me()
+        .post({
+          body: {
+            version: (await api.user.fetchMe()).body.version,
+            actions,
+          },
+        })
+        .execute(),
+    updatePassword: async (currentPassword: string, newPassword: string): Promise<ClientResponse<Customer>> => {
+      return await builder()
+        .me()
+        .password()
+        .post({
+          body: {
+            currentPassword,
+            newPassword,
+            version: (await api.user.fetchMe()).body.version,
+          },
+        })
+        .execute()
+    },
   },
   product: {
     fetchFacets: async (): Promise<ClientResponse<ProductProjectionPagedSearchResponse> | Error> => {

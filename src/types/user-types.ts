@@ -1,8 +1,3 @@
-export type TFormData = {
-  value: string
-  touched: boolean
-}
-
 export type TCustomerProfileForm<T> = {
   email: T
   firstName: T

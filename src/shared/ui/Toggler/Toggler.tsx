@@ -5,7 +5,7 @@ type TogglerProperties = {
   label: string
 } & InputHTMLAttributes<HTMLInputElement>
 
-export const Toggler: FC<TogglerProperties> = ({ label, onInput, ...rest }: TogglerProperties) => {
+export const Toggler: FC<TogglerProperties> = ({ name, label, onInput, ...rest }: TogglerProperties) => {
   const [isChecked, setIsChecked] = useState(false)
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>): void => {
@@ -17,7 +17,14 @@ export const Toggler: FC<TogglerProperties> = ({ label, onInput, ...rest }: Togg
 
   return (
     <label className="toggler">
-      <input type="checkbox" checked={isChecked} onChange={handleChange} className="toggler-input" {...rest} />
+      <input
+        name={name}
+        type="checkbox"
+        checked={isChecked}
+        onChange={handleChange}
+        className="toggler-input"
+        {...rest}
+      />
       <div className="toggler-state">
         <div className="toggler-control">
           <div className="toggler-switch"></div>
