@@ -12,7 +12,7 @@ import { FormButton } from '@/components/LoginForm/FormButton.tsx'
 import s from './AddressPage.module.scss'
 import { useValidate } from '@/hooks/useValidate.tsx'
 import {
-  createRegexValidator,
+  createRegexPostalCodeValidator,
   createSelectValidator,
   POSTAL_CODE_REGEX,
   validateCity,
@@ -21,13 +21,14 @@ import {
 
 type ModalState = {
   state?: 'editAddress' | 'addShippingAddress' | 'addBillingAddress'
-  address?: {
-    id?: string
-    country?: string
-    city?: string
-    streetName?: string
-    postalCode?: string
-  }
+  addressId?: string
+}
+
+type AddressFormData = {
+  country: { value: string; touched: boolean }
+  city: { value: string; touched: boolean }
+  postalCode: { value: string; touched: boolean }
+  streetName: { value: string; touched: boolean }
 }
 
 const AddressPage = (): ReactElement => {
@@ -40,17 +41,29 @@ const AddressPage = (): ReactElement => {
 
   const { data: meData, error: meError, refetch: refetchMe } = useFetch(api.user.fetchMe)
 
-  const [formData, setFormData] = useState({
-    country: { value: '', touched: false },
-    city: { value: '', touched: false },
-    postalCode: { value: '', touched: false },
-    streetName: { value: '', touched: false },
-  })
+  const createEmptyFormData = (): AddressFormData => {
+    return {
+      country: { value: '', touched: false },
+      city: { value: '', touched: false },
+      postalCode: { value: '', touched: false },
+      streetName: { value: '', touched: false },
+    }
+  }
+  const [formData, setFormData] = useState<AddressFormData>(createEmptyFormData())
 
-  const { errors, isValid } = useValidate(formData, {
+  const { errors, isValid, resetValidation } = useValidate(formData, {
     country: [createSelectValidator(['GB', 'PL', 'ES'])],
     city: [validateCity],
-    postalCode: [createRegexValidator([POSTAL_CODE_REGEX.GB, POSTAL_CODE_REGEX.ES, POSTAL_CODE_REGEX.PL])],
+    postalCode: [
+      createRegexPostalCodeValidator(
+        {
+          GB: POSTAL_CODE_REGEX.GB,
+          ES: POSTAL_CODE_REGEX.ES,
+          PL: POSTAL_CODE_REGEX.PL,
+        },
+        () => formData.country.value
+      ),
+    ],
     streetName: [validateStreet],
   })
 
@@ -63,7 +76,31 @@ const AddressPage = (): ReactElement => {
     return (
       <div className={s.addresscontainer}>
         <div className={s.buttoncontainer}>
-          <button onClick={() => setModal(() => ({ state: 'editAddress', address: { ...address } }))}>edit</button>
+          <button
+            onClick={() => {
+              setModal(() => ({ state: 'editAddress', addressId: address.id }))
+              setFormData({
+                country: {
+                  value: address.country,
+                  touched: false,
+                },
+                city: {
+                  value: address.city ?? '',
+                  touched: false,
+                },
+                streetName: {
+                  value: address.streetName ?? '',
+                  touched: false,
+                },
+                postalCode: {
+                  value: address.postalCode ?? '',
+                  touched: false,
+                },
+              })
+            }}
+          >
+            edit
+          </button>
           <button onClick={() => deleteAddress(address)}>delete</button>
         </div>
         <div className={s.buttonscontainer}>
@@ -242,16 +279,15 @@ const AddressPage = (): ReactElement => {
 
   const editAddress = async (event: FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault()
-    const formData = new FormData(event.currentTarget)
     await api.user.updateMe([
       {
         action: 'changeAddress',
-        addressId: modal.address?.id,
+        addressId: modal.addressId,
         address: {
-          country: assertString(formData.get('country')),
-          city: assertString(formData.get('city')),
-          postalCode: assertString(formData.get('postalCode')),
-          streetName: assertString(formData.get('streetName')),
+          country: assertString(formData.country.value),
+          city: assertString(formData.city.value),
+          postalCode: assertString(formData.postalCode.value),
+          streetName: assertString(formData.streetName.value),
         },
       },
     ])
@@ -259,7 +295,11 @@ const AddressPage = (): ReactElement => {
     closeModal()
   }
 
-  const closeModal = (): void => setModal(() => ({}))
+  const closeModal = (): void => {
+    setModal(() => ({}))
+    setFormData(createEmptyFormData())
+    resetValidation()
+  }
 
   return (
     <>
@@ -283,13 +323,8 @@ const AddressPage = (): ReactElement => {
               <div>
                 <InputComponent
                   name={'streetName'}
-                  value={modal.address?.streetName}
-                  onChange={(event) => {
-                    handleChange(event)
-                    setModal((previous: ModalState): ModalState => {
-                      return { ...previous, address: { ...previous.address, streetName: event.target.value } }
-                    })
-                  }}
+                  value={formData.streetName.value}
+                  onChange={handleChange}
                   title={'Address'}
                   type={'text'}
                   errors={errors.streetName}
@@ -297,13 +332,8 @@ const AddressPage = (): ReactElement => {
                 />
                 <InputComponent
                   name={'city'}
-                  value={modal.address?.city}
-                  onChange={(event) => {
-                    handleChange(event)
-                    setModal((previous: ModalState): ModalState => {
-                      return { ...previous, address: { ...previous.address, city: event.target.value } }
-                    })
-                  }}
+                  value={formData.city.value}
+                  onChange={handleChange}
                   title={'City'}
                   type={'text'}
                   errors={errors.city}
@@ -313,13 +343,8 @@ const AddressPage = (): ReactElement => {
               <div>
                 <SelectInput
                   name={'country'}
-                  value={modal.address?.country}
-                  onChange={(event) => {
-                    handleChange(event)
-                    setModal((previous: ModalState): ModalState => {
-                      return { ...previous, address: { ...previous.address, country: event.target.value } }
-                    })
-                  }}
+                  value={formData.country.value}
+                  onChange={handleChange}
                   title={'Country'}
                   errors={errors.country}
                   options2={[
@@ -330,13 +355,8 @@ const AddressPage = (): ReactElement => {
                 />
                 <InputComponent
                   name={'postalCode'}
-                  value={modal.address?.postalCode}
-                  onChange={(event) => {
-                    handleChange(event)
-                    setModal((previous: ModalState): ModalState => {
-                      return { ...previous, address: { ...previous.address, postalCode: event.target.value } }
-                    })
-                  }}
+                  value={formData.postalCode.value}
+                  onChange={handleChange}
                   errors={errors.postalCode}
                   title={'Postal code'}
                   type={'text'}

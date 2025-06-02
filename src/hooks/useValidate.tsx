@@ -20,6 +20,7 @@ export const useValidate = (
 ): {
   errors: ValidationErrors
   isValid: boolean
+  resetValidation: () => void
 } => {
   const [errors, setErrors] = useState<ValidationErrors>({})
   const [isValid, setIsValid] = useState(false)
@@ -43,12 +44,10 @@ export const useValidate = (
       const error = validator(value, state)
       if (error) {
         setErrors((previous) => ({ ...previous, [key]: error }))
-        setIsValid(false)
         return
       }
     }
     setErrors((previous) => {
-      setIsValid(isFormValid())
       return { ...previous, [key]: null }
     })
   }
@@ -61,10 +60,15 @@ export const useValidate = (
         validate(key)
       }
     }
+    setIsValid(isFormValid())
   }, [state])
 
   return {
     errors,
     isValid,
+    resetValidation: (): void => {
+      setIsValid(false)
+      setErrors({})
+    },
   }
 }

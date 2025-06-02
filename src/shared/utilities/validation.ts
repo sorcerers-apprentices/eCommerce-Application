@@ -114,14 +114,24 @@ export const createSelectValidator = (allowed: Array<string>): ((value: string) 
   }
 }
 
-export const createRegexValidator = (allowed: Array<RegExp>): ((value: string) => string | null) => {
+export const createRegexPostalCodeValidator = (
+  allowed: { [country: string]: RegExp },
+  getCountry: () => string | undefined
+): ((value: string) => string | null) => {
   return (value: string): string | null => {
-    for (const regex of allowed) {
+    const country = getCountry()
+    if (!country) {
+      return 'Choose your country'
+    } else if (!value.length) {
+      return 'Post code cannot be empty'
+    } else {
+      const regex = allowed[country]
       if (regex.test(value)) {
         return null
+      } else {
+        return 'Invalid post code value'
       }
     }
-    return 'Invalid value'
   }
 }
 
