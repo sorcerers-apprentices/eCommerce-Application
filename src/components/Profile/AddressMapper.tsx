@@ -12,7 +12,7 @@ export type TAddressMapped = {
   billing: boolean
 }
 
-const countryCodeToName: Record<string, string> = {
+export const countryCodeToName: Record<string, string> = {
   UK: 'United Kingdom',
   PL: 'Poland',
   ES: 'Spain',

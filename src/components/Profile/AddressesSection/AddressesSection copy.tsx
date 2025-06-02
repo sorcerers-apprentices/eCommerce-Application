@@ -30,7 +30,7 @@ export const AddressesSection = (): ReactElement => {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault()
     try {
-      await updateAddressApi(userData)
+      await updateAddressApi(userAddresses)
       refetch()
       setEdition(false)
       dispatch({ type: UserActionType.UPDATE, payload: { email: userData.email } })

@@ -5,7 +5,7 @@ import { Checkbox } from '../Checkbox/Checkbox'
 import { InputComponent } from '../InputComponent/InputComponent'
 import { MdDeleteForever } from 'react-icons/md'
 type TAddressCardFormProperties = {
-  index: number
+  index?: number
   addressData: TAddressMapped
   onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>, id: string) => void
   onToggleDefault: (type: 'defaultShipping' | 'defaultBilling', id: string) => void
@@ -13,6 +13,7 @@ type TAddressCardFormProperties = {
   //onEdit: (id: string) => void
   onDelete: (id: string) => void
   disabled?: boolean
+  modal?: boolean
 }
 
 export const AddressCardForm: React.FC<TAddressCardFormProperties> = ({
@@ -28,7 +29,7 @@ export const AddressCardForm: React.FC<TAddressCardFormProperties> = ({
   const { id, country, city, postalCode, street, defaultShipping, shipping, defaultBilling, billing } = addressData
   return (
     <fieldset className={s.fieldset}>
-      <legend>Address {index + 1}</legend>
+      <legend>Address {typeof index === 'number' ? index + 1 : ''}</legend>
       <div className={s.content}>
         <div>
           <Checkbox

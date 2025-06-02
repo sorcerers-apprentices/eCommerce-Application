@@ -1,6 +1,6 @@
-import type { TCustomerProfileForm } from '@/types/user-types'
 import type { Customer, MyCustomerUpdateAction } from '@commercetools/platform-sdk'
 import { builder } from './client'
+import type { TAddressMapped } from '@/components/Profile/AddressMapper'
 
 const convertCountryToCode = (country: string): string => {
   switch (country) {
@@ -14,56 +14,54 @@ const convertCountryToCode = (country: string): string => {
       return ''
   }
 }
-export const updateAddressApi = async (userData: TCustomerProfileForm<string>): Promise<Customer> => {
+export const updateAddressApi = async (updatedAddresses: TAddressMapped[]): Promise<Customer> => {
   const me = await builder().me().get().execute()
   const actions: MyCustomerUpdateAction[] = []
 
-  if (userData.shippingID) {
+  updatedAddresses.forEach((address) => {
     actions.push({
       action: 'changeAddress',
-      addressId: userData.shippingID,
+      addressId: address.id,
       address: {
-        streetName: userData.shippingStreet,
-        postalCode: userData.shippingPostalCode,
-        city: userData.shippingCity,
-        country: convertCountryToCode(userData.shippingCountry),
+        streetName: address.street,
+        postalCode: address.postalCode,
+        city: address.city,
+        country: convertCountryToCode(address.country),
       },
     })
-  }
+  })
 
-  if (userData.billingID) {
+  const shippingIds = updatedAddresses.filter((addresses) => addresses.shipping).map((address) => address.id)
+  const billingIds = updatedAddresses.filter((addresses) => addresses.billing).map((address) => address.id)
+
+  shippingIds.forEach((id) => {
     actions.push({
-      action: 'changeAddress',
-      addressId: userData.billingID,
-      address: {
-        streetName: userData.billingStreet,
-        postalCode: userData.billingPostalCode,
-        city: userData.billingCity,
-        country: convertCountryToCode(userData.billingCountry),
-      },
+      action: 'addShippingAddressId',
+      addressId: id,
     })
-  }
-  if (userData.defaultShipping) {
+  })
+
+  billingIds.forEach((id) => {
+    actions.push({
+      action: 'addBillingAddressId',
+      addressId: id,
+    })
+  })
+
+  const defaultShipping = updatedAddresses.find((a) => a.defaultShipping)
+  const defaultBilling = updatedAddresses.find((a) => a.defaultBilling)
+
+  if (defaultShipping) {
     actions.push({
       action: 'setDefaultShippingAddress',
-      ...(userData.defaultShipping ? { addressId: userData.defaultShipping } : {}),
-    })
-  } else {
-    actions.push({
-      action: 'removeShippingAddressId',
-      addressId: userData.shippingID,
+      addressId: defaultShipping.id,
     })
   }
 
-  if (userData.defaultBilling) {
+  if (defaultBilling) {
     actions.push({
       action: 'setDefaultBillingAddress',
-      ...(userData.defaultBilling ? { addressId: userData.defaultBilling } : {}),
-    })
-  } else {
-    actions.push({
-      action: 'removeBillingAddressId',
-      addressId: userData.billingID,
+      addressId: defaultBilling.id,
     })
   }
 

@@ -54,7 +54,7 @@ export const PasswordSection = (): ReactElement => {
 
     const { currentPassword, newPassword, confirmPassword } = passwords
 
-    if (newPassword !== confirmPassword) {
+    if (newPassword.value !== confirmPassword.value) {
       console.error('Passwords do not match')
       return
     }

@@ -11,6 +11,8 @@ import { TbHomeEdit } from 'react-icons/tb'
 import { Form } from '@/shared/ui/Form/Form'
 import { Button } from '@/shared/ui/Button/Button'
 import { Modal } from '@/shared/ui/Modal/Modal'
+import { updateAddressApi } from '@/server/updateAddressApi'
+import toast from 'react-hot-toast'
 
 export const AddressesSection = (): ReactElement => {
   const [isEditing, setIsEditing] = useState(false)
@@ -75,12 +77,12 @@ export const AddressesSection = (): ReactElement => {
       <Modal isOpen={isModalOpen} onClose={() => handleModalClose()}>
         <AddressCardForm
           addressData={emptyAddress}
-          index={1}
           onDelete={handleDelete}
           onToggleDefault={handleToggleDefault}
           onToggleFlag={handleToggleFlag}
           onChange={handleChange}
           disabled={false}
+          modal={true}
         />
       </Modal>
       <section className={s.section}>
@@ -107,7 +109,18 @@ export const AddressesSection = (): ReactElement => {
           {loading && <Loader />}
           {error && <div>{error.message}</div>}
           {data && userAddresses.length > 0 && (
-            <Form onSubmit={(e) => e.preventDefault()}>
+            <Form
+              onSubmit={async (e) => {
+                e.preventDefault()
+                try {
+                  await updateAddressApi(userAddresses)
+                  setIsEditing(false)
+                  toast.success('Address has been updated')
+                } catch (error) {
+                  toast.error(`${error} Address has not been updated`)
+                }
+              }}
+            >
               {userAddresses.map((address, index) => (
                 <AddressCardForm
                   key={address.id}
