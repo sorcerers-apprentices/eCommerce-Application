@@ -11,6 +11,14 @@
   gap: 2rem;
   align-items: flex-start;
   justify-content: space-between;
+
+  @media (width <= 650px) {
+    gap: 0;
+
+    .image {
+      display: none;
+    }
+  }
 }
 
 .image {
@@ -21,6 +29,9 @@
   background-position: center;
   background-origin: border-box;
   background-size: cover; // contain - fully visible,cover - cover container
+  // @media (width <= 300px) {
+  //   display: none;
+  // }
 }
 
 .content {
@@ -46,6 +57,11 @@
 }
 
 .address {
+  width: 2rem;
+  height: 2rem;
+}
+
+.links {
   width: 2rem;
   height: 2rem;
 }
