@@ -254,6 +254,7 @@ export const Category = (): ReactElement => {
           title="Search"
           value={filter.text}
           isPassword={false}
+          newClass={'search'}
           onInput={handleSearchInput}
         />
         <SortControlComponent

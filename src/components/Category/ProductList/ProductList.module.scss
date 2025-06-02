@@ -12,6 +12,18 @@
   flex-wrap: wrap;
   gap: 4rem;
   list-style: none;
+
+  @media (width <= 1424px) and (width >= 1393px) {
+    gap: 3rem;
+  }
+
+  @media (width <= 1392px) and (width >= 1329px) {
+    gap: 1rem;
+  }
+
+  @media (width <= 1328px) {
+    justify-content: center;
+  }
 }
 
 .pricecontainer {
@@ -57,19 +69,37 @@
 
 .pagination {
   display: flex;
-  gap: 8px;
+  gap: 0.5rem;
   justify-content: center;
-  margin-top: 20px;
-  padding: 20px 0;
+  margin-top: 1.2rem;
+  padding: 1.8rem 0;
+
+  @media (width <= 1000px) {
+    padding: 0.8rem 0;
+  }
 }
 
 .paginationbutton {
   cursor: pointer;
-  padding: 1.1% 2.2%;
+  padding: 0.4rem 0.8rem;
   border: 1px solid vars.$color-dark-grey;
   border-radius: 4px;
-  font-size: 14px;
+
+  @include mixins.text-m;
+
   background-color: vars.$color-white;
+
+  @media (width <= 1170px) and (width >= 1001px) {
+    padding: 0.2rem 0.4rem;
+  }
+
+  @media (width <= 1000px) and (width >= 916px) {
+    padding: 0.03rem 0.2rem;
+  }
+
+  @media (width <= 915px) {
+    padding: 0.007rem 0.02rem;
+  }
 }
 
 .paginationbutton:disabled {

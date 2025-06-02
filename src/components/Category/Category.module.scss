@@ -3,11 +3,19 @@
 
 .category {
   display: grid;
-  grid-template: 40px 80px auto/ 1fr minmax(0, 940px);
+  grid-template: 2.5rem 5rem auto/ 1fr minmax(0, 940px);
   grid-template-areas:
     'title options'
     'category-list searchsort'
     'category-list products-list';
+
+  @media (width <= 1000px) {
+    grid-template: 2.5rem 7rem auto/ 1fr minmax(0, 940px);
+    grid-template-areas:
+      'title options'
+      'category-list searchsort'
+      'category-list products-list';
+  }
 }
 
 .searchsort {
@@ -15,20 +23,14 @@
   grid-area: searchsort;
   gap: 1%;
   align-items: center;
+  justify-content: space-between;
   padding-left: 0.5%;
-}
 
-.search {
-  align-self: flex-end;
-  width: 70%;
-}
-
-.search > div {
-  width: 100%;
-}
-
-.search > div > input {
-  width: 100%;
+  @media (width <= 1000px) {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
 }
 
 .title {
@@ -68,8 +70,7 @@
   grid-area: category-list;
   grid-row: 2 / span 3;
   flex-direction: column;
-  padding-top: 8px;
-  padding-left: 10px;
+  padding: 0.3rem 0.5rem;
   border-radius: 4px;
   list-style-type: none;
   background-color: vars.$color-primary50;
@@ -87,8 +88,8 @@
   width: 100%;
   padding: 3%;
   transition:
-    color 0.2s,
-    background-color 0.2s;
+    color 0.3s,
+    background-color 0.3s;
 }
 
 .empty {
