@@ -1,5 +1,5 @@
 import { Header } from '@/components/Header/Header'
-import { type FormEvent, type ReactElement, useState } from 'react'
+import { type ChangeEvent, type FormEvent, type ReactElement, useState } from 'react'
 import { useFetch } from '@/shared/hooks/useFetch.tsx'
 import { api } from '@/server/api.ts'
 import type { Address } from '@commercetools/platform-sdk'
@@ -10,6 +10,14 @@ import { Toggler } from '@/shared/ui/Toggler/Toggler.tsx'
 import { Modal } from '@/shared/ui/Modal/Modal.tsx'
 import { FormButton } from '@/components/LoginForm/FormButton.tsx'
 import s from './AddressPage.module.scss'
+import { useValidate } from '@/hooks/useValidate.tsx'
+import {
+  createRegexValidator,
+  createSelectValidator,
+  POSTAL_CODE_REGEX,
+  validateCity,
+  validateStreet,
+} from '@/shared/utilities/validation.ts'
 
 type ModalState = {
   state?: 'editAddress' | 'addShippingAddress' | 'addBillingAddress'
@@ -31,6 +39,25 @@ const AddressPage = (): ReactElement => {
   }
 
   const { data: meData, error: meError, refetch: refetchMe } = useFetch(api.user.fetchMe)
+
+  const [formData, setFormData] = useState({
+    country: { value: '', touched: false },
+    city: { value: '', touched: false },
+    postalCode: { value: '', touched: false },
+    streetName: { value: '', touched: false },
+  })
+
+  const { errors, isValid } = useValidate(formData, {
+    country: [createSelectValidator(['GB', 'PL', 'ES'])],
+    city: [validateCity],
+    postalCode: [createRegexValidator([POSTAL_CODE_REGEX.GB, POSTAL_CODE_REGEX.ES, POSTAL_CODE_REGEX.PL])],
+    streetName: [validateStreet],
+  })
+
+  const handleChange = (event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>): void => {
+    const { name, value } = event.target
+    setFormData((previous) => ({ ...previous, [name]: { value, touched: true } }))
+  }
 
   const createAddressSection = (address: Address): ReactElement => {
     return (
@@ -256,24 +283,28 @@ const AddressPage = (): ReactElement => {
                   name={'streetName'}
                   value={modal.address?.streetName}
                   onChange={(event) => {
+                    handleChange(event)
                     setModal((previous: ModalState): ModalState => {
                       return { ...previous, address: { ...previous.address, streetName: event.target.value } }
                     })
                   }}
                   title={'Address'}
                   type={'text'}
+                  errors={errors.streetName}
                   placeholder={'221B Baker Street'}
                 />
                 <InputComponent
                   name={'city'}
                   value={modal.address?.city}
                   onChange={(event) => {
+                    handleChange(event)
                     setModal((previous: ModalState): ModalState => {
                       return { ...previous, address: { ...previous.address, city: event.target.value } }
                     })
                   }}
                   title={'City'}
                   type={'text'}
+                  errors={errors.city}
                   placeholder={'London'}
                 />
               </div>
@@ -282,11 +313,13 @@ const AddressPage = (): ReactElement => {
                   name={'country'}
                   value={modal.address?.country}
                   onChange={(event) => {
+                    handleChange(event)
                     setModal((previous: ModalState): ModalState => {
                       return { ...previous, address: { ...previous.address, country: event.target.value } }
                     })
                   }}
                   title={'Country'}
+                  errors={errors.country}
                   options2={[
                     { text: 'United Kingdom', value: 'GB' },
                     { text: 'Poland', value: 'PL' },
@@ -297,10 +330,12 @@ const AddressPage = (): ReactElement => {
                   name={'postalCode'}
                   value={modal.address?.postalCode}
                   onChange={(event) => {
+                    handleChange(event)
                     setModal((previous: ModalState): ModalState => {
                       return { ...previous, address: { ...previous.address, postalCode: event.target.value } }
                     })
                   }}
+                  errors={errors.postalCode}
                   title={'Postal code'}
                   type={'text'}
                   placeholder={'221B'}
@@ -314,7 +349,7 @@ const AddressPage = (): ReactElement => {
               <button onClick={closeModal} className={s.cancel}>
                 Cancel
               </button>
-              <FormButton value={'Save address'} disabled={false} />
+              <FormButton value={'Save address'} disabled={!isValid} />
             </Form>
           </Modal>
         </div>
