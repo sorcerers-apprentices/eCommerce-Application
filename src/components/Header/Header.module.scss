@@ -6,6 +6,14 @@
   height: 5rem;
 
   @include mixins.flex-row;
+
+  @media (width <=630px) {
+    gap: 1rem;
+
+    .wrapper {
+      display: none;
+    }
+  }
 }
 
 .wrapper {

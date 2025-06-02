@@ -121,7 +121,6 @@ export const ProfileSection = (): ReactElement => {
                     onValidationChange={setIsFormValid}
                     serverErrors={serverErrors}
                   />
-
                   <div className={s.buttons}>
                     <Button
                       type="button"

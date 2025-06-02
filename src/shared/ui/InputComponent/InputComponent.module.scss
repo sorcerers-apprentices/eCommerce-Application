@@ -10,6 +10,14 @@
 
 .row {
   position: relative;
+
+  @media (width <=250px) {
+    gap: 0;
+
+    .input {
+      width: auto;
+    }
+  }
 }
 
 .label {

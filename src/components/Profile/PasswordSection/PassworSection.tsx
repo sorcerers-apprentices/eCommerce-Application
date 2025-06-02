@@ -28,7 +28,6 @@ export const PasswordSection = (): ReactElement => {
       touched: false,
     },
   })
-  //const validationData = useMemo(() => transformToValidationData(passwords), [passwords])
   const { errors, isValid } = useValidate(passwords, {
     currentPassword: [validatePassword],
     newPassword: [validatePassword],
@@ -53,8 +52,8 @@ export const PasswordSection = (): ReactElement => {
 
     const { currentPassword, newPassword, confirmPassword } = passwords
 
-    if (newPassword !== confirmPassword) {
-      console.error('Passwords do not match')
+    if (newPassword.value !== confirmPassword.value) {
+      toast.error('Passwords do not match')
       return
     }
 
