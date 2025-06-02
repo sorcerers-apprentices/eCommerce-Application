@@ -5,14 +5,14 @@ export type ModalProps = {
   isOpen: boolean
   onClose: () => void
   children: React.ReactNode
+  className?: string
 }
-
-export const Modal = ({ isOpen, onClose, children }: ModalProps): ReactElement | undefined => {
+export const Modal = ({ isOpen, onClose, children, className }: ModalProps): ReactElement | undefined => {
   if (!isOpen) return
 
   return (
     <div className={s.modaloverlay} onClick={onClose}>
-      <div className={s.modalcontent} onClick={(e) => e.stopPropagation()}>
+      <div className={[s.modalcontent, className].join(' ')} onClick={(e) => e.stopPropagation()}>
         <button className={s.modalclose} onClick={onClose}>
           &times;
         </button>

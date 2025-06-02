@@ -77,15 +77,15 @@ const ProductPage = (): ReactElement => {
   return (
     <>
       <Header />
-      <div className={s.productcontainer}>
+      <div className={`section ${s.container}`}>
         {categoriesLoading && <div>Loading information...</div>}
         {categoriesError && <div>No products found</div>}
         <Breadcrumbs allCategories={categories?.body.results ?? []} currentCategory={category} />
         <div className={s.productimage} onClick={handleOpenModal}>
           {images && <Slider images={images} />}
         </div>
-        <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
-          {images && <Slider images={images} />}
+        <Modal className={s.modal} isOpen={isModalOpen} onClose={handleCloseModal}>
+          {images && <Slider className={s.modalslider} images={images} />}
         </Modal>
         <div className={s.producinfo}>
           {productLoading && <div>Loading product...</div>}

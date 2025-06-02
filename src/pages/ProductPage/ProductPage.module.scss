@@ -1,6 +1,14 @@
 @use '@/styles/variables' as vars;
 @use '@/styles/mixins' as mixins;
 
+.modal {
+  height: 100vh;
+}
+
+.modalslider {
+  max-height: 50%;
+}
+
 .productcontainer {
   display: grid;
   grid-template-columns: 40% 60%;

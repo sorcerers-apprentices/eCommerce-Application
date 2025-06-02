@@ -2,6 +2,7 @@ import React, { useState, type ReactElement } from 'react'
 import { useKeenSlider } from 'keen-slider/react'
 import 'keen-slider/keen-slider.min.css'
 import './Slider.scss' // Assuming you have a CSS file for styles, adjust the path as necessary
+//import { a } from 'vitest/dist/chunks/suite.d.FvehnV49.js'
 
 export type SliderImage = {
   url: string
@@ -10,9 +11,10 @@ export type SliderImage = {
 
 type SliderProperties = {
   images: Array<SliderImage>
+  className?: string
 }
 
-export const Slider = ({ images }: SliderProperties): ReactElement => {
+export const Slider = ({ images, className }: SliderProperties): ReactElement => {
   const [sliderIndex, setSliderIndex] = useState(0)
   const [loaded, setLoaded] = useState(false)
   const [sliderReference, instanceReference] = useKeenSlider({
@@ -26,7 +28,7 @@ export const Slider = ({ images }: SliderProperties): ReactElement => {
   })
 
   return (
-    <div className="slider">
+    <div className={['slider', className].join(' ')}>
       <div className="navigation-wrapper">
         <div ref={sliderReference} className="keen-slider">
           {images.map((img, index) => (
