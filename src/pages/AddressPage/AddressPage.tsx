@@ -18,6 +18,7 @@ import {
   validateCity,
   validateStreet,
 } from '@/shared/utilities/validation.ts'
+import { toast } from 'react-hot-toast'
 
 type ModalState = {
   state?: 'editAddress' | 'addShippingAddress' | 'addBillingAddress'
@@ -107,13 +108,19 @@ const AddressPage = (): ReactElement => {
           <div className={s.buttoncontainer}>
             <button
               className={`${s.button} ${isBilling(address) ? s.active : s.inactive}`}
-              onClick={() => updateBillingFlag(address)}
+              onClick={() => {
+                updateBillingFlag(address)
+                toast.success('Billing address is update')
+              }}
             >
               billing address
             </button>
             <button
               className={`${s.button} ${isShipping(address) ? s.active : s.inactive}`}
-              onClick={() => updateShippingFlag(address)}
+              onClick={() => {
+                updateShippingFlag(address)
+                toast.success('Shipping address is update')
+              }}
             >
               shipping address
             </button>
@@ -137,13 +144,19 @@ const AddressPage = (): ReactElement => {
           <div className={s.buttoncontainer}>
             <button
               className={`${s.button} ${isDefaultBilling(address) ? s.active : s.inactive}`}
-              onClick={() => updateDefaultBillingFlag(address)}
+              onClick={() => {
+                updateDefaultBillingFlag(address)
+                toast.success('Default Billing address is update')
+              }}
             >
               default billing
             </button>
             <button
               className={`${s.button} ${isDefaultShipping(address) ? s.active : s.inactive}`}
-              onClick={() => updateDefaultShippingFlag(address)}
+              onClick={() => {
+                updateDefaultShippingFlag(address)
+                toast.success('Default Shipping address is update')
+              }}
             >
               default shipping
             </button>

@@ -30,7 +30,7 @@ export const Slider = ({ images }: SliderProperties): ReactElement => {
       <div className="navigation-wrapper">
         <div ref={sliderReference} className="keen-slider">
           {images.map((img, index) => (
-            <div className={`keen-slider__slide number-slide${index + 1}`}>
+            <div key={img.url} className={`keen-slider__slide number-slide${index + 1}`}>
               <img src={img.url} alt={img.name} />
             </div>
           ))}
