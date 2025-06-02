@@ -1,7 +1,8 @@
 import type { ReactElement } from 'react'
+import Footer from '@/components/Footer/Footer'
 import { Header } from '@/components/Header/Header'
-import { HeroSection } from '@/components/HeroSection/HeroSection'
 import { Slider } from '@/components/Slider/Slider'
+import { HeroSection } from '@/components/HeroSection/HeroSection'
 
 const MainPage = (): ReactElement => {
   return (
@@ -15,6 +16,7 @@ const MainPage = (): ReactElement => {
           { url: '/images/cat-yellow-bg.jpeg', name: 'cat' },
         ]}
       />
+      <Footer />
     </>
   )
 }

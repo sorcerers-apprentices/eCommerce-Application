@@ -1,0 +1,114 @@
+@use '@/styles/fonts.scss' as fonts;
+@use '@/styles/mixins.scss' as mixins;
+@use '@/styles/variables.scss' as vars;
+
+.footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding-top: 3rem;
+  color: vars.$color-white;
+  background-color: vars.$color-primary;
+}
+
+.container {
+  @include mixins.flex-row(2rem);
+
+  flex-wrap: wrap;
+  align-items: flex-start;
+  width: 100%;
+  max-width: 75rem;
+  margin-bottom: 2rem;
+  padding: 0 1.5rem;
+}
+
+.column {
+  display: flex;
+  flex: 1 1 10rem;
+  flex-direction: column;
+  gap: 1.25rem;
+  margin-bottom: 2rem;
+}
+
+.logo {
+  @include mixins.headline-1(vars.$color-white, 1.75rem);
+}
+
+.address {
+  @include mixins.body-l(rgba(vars.$color-white, 0.8));
+
+  line-height: 1.6;
+
+  p {
+    margin: 0.25rem 0;
+
+    @include mixins.body-s(rgba(vars.$color-white, 0.8));
+  }
+}
+
+.heading {
+  @include mixins.headline-3(vars.$color-white);
+}
+
+.linklist {
+  li {
+    margin-bottom: 0.75rem;
+
+    a {
+      @include mixins.body-m(vars.$color-white);
+
+      border-bottom: 2px solid transparent;
+      transition: all 0.3s ease-in-out;
+
+      &:hover {
+        border-bottom: 2px solid vars.$color-primary700;
+        color: vars.$color-primary900;
+      }
+    }
+  }
+}
+
+.socialicons {
+  display: flex;
+  flex-direction: row;
+  gap: 0.4rem;
+  justify-content: flex-start;
+}
+
+.iconlink {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+  transition: background-color 0.3s ease-in-out;
+
+  @media (hover: hover) {
+    cursor: pointer;
+
+    &:hover {
+      background-color: vars.$color-primary700;
+    }
+  }
+}
+
+.separator {
+  width: 100%;
+  height: 1px;
+  background-color: (rgba(vars.$color-white, 0.2));
+}
+
+.bottom {
+  @include mixins.flex-row(0);
+
+  justify-content: center;
+  width: 100%;
+  height: 3rem;
+  background-color: vars.$color-primary;
+}
+
+.copyright {
+  @include mixins.body-s(rgba(vars.$color-white, 0.6));
+}
