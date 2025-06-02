@@ -25,7 +25,7 @@ type ModalState = {
 const AddressPage = (): ReactElement => {
   const [modal, setModal] = useState<ModalState>({})
   const modalName = {
-    editAddress: 'Address',
+    editAddress: 'New Address',
     addShippingAddress: 'Shipping address',
     addBillingAddress: 'Billing address',
   }
@@ -35,36 +35,24 @@ const AddressPage = (): ReactElement => {
   const createAddressSection = (address: Address): ReactElement => {
     return (
       <div className={s.addresscontainer}>
+        <div className={s.buttoncontainer}>
+          <button onClick={() => setModal(() => ({ state: 'editAddress', address: { ...address } }))}>edit</button>
+          <button onClick={() => deleteAddress(address)}>delete</button>
+        </div>
         <div className={s.buttonscontainer}>
-          <div>
+          <div className={s.buttoncontainer}>
             <button
-              style={{ backgroundColor: isBilling(address) ? 'red' : 'blue' }}
+              className={`${s.button} ${isBilling(address) ? s.active : s.inactive}`}
               onClick={() => updateBillingFlag(address)}
             >
-              billing
+              billing address
             </button>
             <button
-              style={{ backgroundColor: isShipping(address) ? 'red' : 'blue' }}
+              className={`${s.button} ${isShipping(address) ? s.active : s.inactive}`}
               onClick={() => updateShippingFlag(address)}
             >
-              shipping
+              shipping address
             </button>
-            <button
-              style={{ backgroundColor: isDefaultBilling(address) ? 'red' : 'blue' }}
-              onClick={() => updateDefaultBillingFlag(address)}
-            >
-              default billing
-            </button>
-            <button
-              style={{ backgroundColor: isDefaultShipping(address) ? 'red' : 'blue' }}
-              onClick={() => updateDefaultShippingFlag(address)}
-            >
-              default shipping
-            </button>
-          </div>
-          <div>
-            <button onClick={() => setModal(() => ({ state: 'editAddress', address: { ...address } }))}>edit</button>
-            <button onClick={() => deleteAddress(address)}>delete</button>
           </div>
         </div>
         <div className={s.infocontainer}>
@@ -80,6 +68,22 @@ const AddressPage = (): ReactElement => {
           <span>
             Postal code: <span>{address.postalCode}</span>
           </span>
+        </div>
+        <div className={s.buttonscontainer}>
+          <div className={s.buttoncontainer}>
+            <button
+              className={`${s.button} ${isDefaultBilling(address) ? s.active : s.inactive}`}
+              onClick={() => updateDefaultBillingFlag(address)}
+            >
+              default billing
+            </button>
+            <button
+              className={`${s.button} ${isDefaultShipping(address) ? s.active : s.inactive}`}
+              onClick={() => updateDefaultShippingFlag(address)}
+            >
+              default shipping
+            </button>
+          </div>
         </div>
       </div>
     )
@@ -235,7 +239,7 @@ const AddressPage = (): ReactElement => {
       <Header />
       {meError && 'Ooops'}
       {meData && (
-        <div className={s.container}>
+        <div className={`section`}>
           <div className={s.topbuttonscontainer}>
             <button onClick={() => setModal(() => ({ state: 'addBillingAddress' }))} className={s.button}>
               Add billing address
@@ -244,12 +248,10 @@ const AddressPage = (): ReactElement => {
               Add shipping address
             </button>
           </div>
-          <div className={s.addresscontainer}>
-            {meData.body.addresses.map((address) => createAddressSection(address))}
-          </div>
+          <div className={s.container}>{meData.body.addresses.map((address) => createAddressSection(address))}</div>
 
           <Modal isOpen={!!modal.state} onClose={closeModal}>
-            <Form onSubmit={modal.state === 'editAddress' ? editAddress : addAddress}>
+            <Form className={[s.form]} onSubmit={modal.state === 'editAddress' ? editAddress : addAddress}>
               <div>{modal.state && modalName[modal.state]}</div>
               <div>
                 <InputComponent
@@ -311,7 +313,7 @@ const AddressPage = (): ReactElement => {
                   <Toggler name={'default'} label={'Use as default'} />
                 </div>
               )}
-              <button onClick={closeModal} className={s.cancel}>
+              <button onClick={closeModal} className={(s.cancel, s.button)}>
                 Cancel
               </button>
               <FormButton value={'Save address'} disabled={false} />
