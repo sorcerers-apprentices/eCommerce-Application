@@ -14,6 +14,7 @@ import { ProductList } from '@/components/Category/ProductList/ProductList'
 import { CategoryMenu } from '@/components/Category/RenderCategory/CategoryMenu'
 import { SortControlComponent } from '@/components/Category/SortComponent/SortControlComponent'
 import { type ChangeEvent, type ReactElement, useCallback, useEffect, useMemo, useState } from 'react'
+import { TbSearch } from 'react-icons/tb'
 
 const ITEMS_PER_PAGE = 6
 
@@ -197,88 +198,97 @@ export const Category = (): ReactElement => {
   }
 
   return (
-    <section className={`section ${s.category}`}>
-      <h2 className={s.title}>Category</h2>
-
-      <div className={s.options}>
-        <h2
-          onClick={() => setFilter((prev) => ({ ...prev, sale: undefined }))}
-          className={!filter.sale ? s.activelink : ''}
-        >
-          All PRODUCTS
-        </h2>
-        <h2 onClick={() => setFilter((prev) => ({ ...prev, sale: true }))} className={filter.sale ? s.activelink : ''}>
-          SALE
-        </h2>
+    <section className={`section ${s.catalog}`}>
+      <div className={s.asside}>
+        {' '}
+        <h2 className={s.title}>Category</h2>
+        {categoriesLoading && <div className={s.loading}>Loading categories...</div>}
+        {(categoriesError || !categoriesData) && <div className={s.empty}>No categories found</div>}
+        <ul className={s.categorylist}>
+          <CategoryMenu categories={categoriesData?.body.results} onCategoryClick={handleCategoryClick} />
+          {facetsLoading && <div className={s.loading}>Loading brands...</div>}
+          {(facetsError || brands.length === 0) && <div>We don't have any brands</div>}
+          <SelectInput
+            name="brand"
+            title="Brand"
+            value={filter.brand}
+            options={brands.map((term) => term.term)}
+            onChange={handleBrandFilterChange}
+          />
+          <InputComponent
+            name="from"
+            title="From €"
+            type="number"
+            value={filter.priceRange.from / CENTS_IN_EURO}
+            min={DEFAULT_PRICE_FROM_EUR}
+            step={1}
+            onChange={handlePriceChange('from')}
+          />
+          <InputComponent
+            name="to"
+            title="To €"
+            type="number"
+            value={filter.priceRange.to / CENTS_IN_EURO}
+            max={DEFAULT_PRICE_TO_EUR}
+            step={1}
+            onChange={handlePriceChange('to')}
+          />
+          <button onClick={handleClearFilters}>Reset filters</button>
+        </ul>
       </div>
 
-      {categoriesLoading && <div className={s.loading}>Loading categories...</div>}
-      {(categoriesError || !categoriesData) && <div className={s.empty}>No categories found</div>}
-
-      <ul className={s.categorylist}>
-        <CategoryMenu categories={categoriesData?.body.results} onCategoryClick={handleCategoryClick} />
-        {facetsLoading && <div className={s.loading}>Loading brands...</div>}
-        {(facetsError || brands.length === 0) && <div>We don't have any brands</div>}
-        <SelectInput
-          name="brand"
-          title="Brand"
-          value={filter.brand}
-          options={brands.map((term) => term.term)}
-          onChange={handleBrandFilterChange}
-        />
-        <InputComponent
-          name="from"
-          title="From €"
-          type="number"
-          value={filter.priceRange.from / CENTS_IN_EURO}
-          min={DEFAULT_PRICE_FROM_EUR}
-          step={1}
-          onChange={handlePriceChange('from')}
-        />
-        <InputComponent
-          name="to"
-          title="To €"
-          type="number"
-          value={filter.priceRange.to / CENTS_IN_EURO}
-          max={DEFAULT_PRICE_TO_EUR}
-          step={1}
-          onChange={handlePriceChange('to')}
-        />
-        <button onClick={handleClearFilters}>Reset filters</button>
-      </ul>
-
-      <div className={s.searchsort}>
-        <InputComponent
-          type="text"
-          placeholder="Search"
-          title="Search"
-          value={filter.text}
-          isPassword={false}
-          onInput={handleSearchInput}
-        />
-        <SortControlComponent
-          fields={[{ name: 'name', locale: 'en-US' }, { name: 'price' }]}
-          onSortChange={(sort) => setFilter((prev) => ({ ...prev, sort }))}
-        />
-      </div>
-
-      {productsLoading && <div className={s.loading}>Loading products...</div>}
-      {(productsError || products?.body.results?.length === 0) && !productsLoading && (
-        <div className={s.empty}>
-          <img src="/images/no-products.jpg" alt="no products" />
-          No products found for this category
+      <div className={s.content}>
+        <div className={s.options}>
+          <h2
+            onClick={() => setFilter((prev) => ({ ...prev, sale: undefined }))}
+            className={!filter.sale ? s.activelink : ''}
+          >
+            All PRODUCTS
+          </h2>
+          <h2
+            onClick={() => setFilter((prev) => ({ ...prev, sale: true }))}
+            className={filter.sale ? s.activelink : ''}
+          >
+            SALE
+          </h2>
         </div>
-      )}
+        <div className={s.wrapper}>
+          <div className={s.searchpanel}>
+            <div className={s.search}>
+              <input
+                className={s.searchinput}
+                type="text"
+                placeholder="Search"
+                value={filter.text}
+                onInput={handleSearchInput}
+              />
+              <TbSearch className={s.searchicon} />
+            </div>
+            <SortControlComponent
+              fields={[{ name: 'name', locale: 'en-US' }, { name: 'price' }]}
+              onSortChange={(sort) => setFilter((prev) => ({ ...prev, sort }))}
+            />
+          </div>
 
-      {products?.body.results?.length ? (
-        <ProductList
-          products={products.body.results}
-          currentPage={currentPage}
-          pageSize={ITEMS_PER_PAGE}
-          total={products.body.total}
-          onPageChange={handlePageChange}
-        />
-      ) : null}
+          {productsLoading && <div className={s.loading}>Loading products...</div>}
+          {(productsError || products?.body.results?.length === 0) && !productsLoading && (
+            <div className={s.empty}>
+              <img src="/images/no-products.jpg" alt="no products" />
+              No products found for this category
+            </div>
+          )}
+
+          {products?.body.results?.length ? (
+            <ProductList
+              products={products.body.results}
+              currentPage={currentPage}
+              pageSize={ITEMS_PER_PAGE}
+              total={products.body.total}
+              onPageChange={handlePageChange}
+            />
+          ) : null}
+        </div>
+      </div>
     </section>
   )
 }

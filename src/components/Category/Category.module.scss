@@ -1,99 +1,200 @@
 @use '@/styles/variables.scss' as vars;
 @use '@/styles/mixins.scss' as mixins;
 
-.category {
-  display: grid;
-  grid-template: 40px 80px auto/ 1fr minmax(0, 940px);
-  grid-template-areas:
-    'title options'
-    'category-list searchsort'
-    'category-list products-list';
-}
-
-.searchsort {
+.catalog {
   display: flex;
-  grid-area: searchsort;
-  gap: 1%;
-  align-items: center;
-  padding-left: 0.5%;
+  flex-direction: row;
+  gap: 1rem;
 }
 
-.search {
-  align-self: flex-end;
-  width: 70%;
+.asside {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 15rem;
 }
 
-.search > div {
-  width: 100%;
-}
-
-.search > div > input {
-  width: 100%;
-}
-
-.title {
-  grid-area: title;
+.content {
+  background-color: vars.$color-primary25;
 }
 
 .options {
-  cursor: pointer;
   display: flex;
-  grid-area: options;
-  align-items: center;
-  justify-content: space-around;
-  border-bottom: 1px solid vars.$color-primary900;
-}
+  flex-direction: row;
 
-.options > h2 {
-  width: 100%;
-  height: 100%;
-  text-align: center;
-}
+  & > * {
+    width: 50%;
+    padding: 1rem;
+    border-bottom: solid 3px vars.$color-primary100;
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.4;
+    color: vars.$color-primary100;
+    text-align: center;
+    text-transform: capitalize;
+    background-color: vars.$color-white;
+    transition: all 0.3s ease-in-out;
 
-.options > h2:hover {
-  border-bottom: solid 1px vars.$color-primary;
-  color: vars.$color-primary;
-  background-color: vars.$neutral-grayf9f9f9;
+    @media (hover: hover) {
+      &:hover {
+        cursor: pointer;
+        border-bottom: solid 3px vars.$color-primary;
+        color: vars.$color-primary;
+      }
+    }
+  }
 }
 
 .activelink {
-  border-bottom: solid 1px vars.$color-primary;
-  color: vars.$color-primary;
-  background-color: vars.$neutral-grayf9f9f9;
+  border-bottom: solid 3px vars.$color-primary900;
+  color: vars.$color-primary900;
 }
 
-.categorylist {
-  cursor: pointer;
-  display: flex;
-  grid-area: category-list;
-  grid-row: 2 / span 3;
-  flex-direction: column;
-  padding-top: 8px;
-  padding-left: 10px;
-  border-radius: 4px;
-  list-style-type: none;
-  background-color: vars.$color-primary50;
+.wrapper {
+  padding: 1rem;
 }
 
-.categorylist ul {
+.searchpanel {
   display: flex;
-  flex-direction: column;
+  flex-flow: row wrap;
+  gap: 1rem;
   align-items: center;
-  justify-content: flex-start;
-  padding-left: 10px;
+  justify-content: space-between;
 }
 
-.categorylist ul li {
-  width: 100%;
-  padding: 3%;
-  transition:
-    color 0.2s,
-    background-color 0.2s;
-}
-
-.empty {
+.search {
+  position: relative;
   display: flex;
-  grid-area: products-list;
-  flex-direction: column;
-  text-align: center;
 }
+
+.searchinput {
+  width: 20rem;
+  height: 2.5rem;
+  padding: 0 1rem;
+  border: 1px solid vars.$color-primary;
+
+  &::placeholder {
+    color: vars.$neutral-gray606060;
+
+    @include mixins.body-xs(vars.$neutral-gray606060);
+
+    text-transform: none;
+  }
+
+  &:focus {
+    border-color: vars.$color-primary200;
+    outline: none;
+    box-shadow: 0 0 0 1px vars.$color-primary200;
+  }
+}
+
+.searchicon {
+  position: absolute;
+  top: 50%;
+  right: 0.5rem;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  padding: 0.25rem;
+  border: none;
+  color: vars.$neutral-gray606060;
+}
+
+// .category {
+//   display: grid;
+//   grid-template: 40px 80px auto/ 1fr minmax(0, 940px);
+//   grid-template-areas:
+//     'title options'
+//     'category-list searchsort'
+//     'category-list products-list';
+// }
+
+// .searchsort {
+//   display: flex;
+//   grid-area: searchsort;
+//   gap: 1%;
+//   align-items: center;
+//   padding-left: 0.5%;
+// }
+
+// .search {
+//   align-self: flex-end;
+//   width: 70%;
+// }
+
+// .search > div {
+//   width: 100%;
+// }
+
+// .search > div > input {
+//   width: 100%;
+// }
+
+// .title {
+//   grid-area: title;
+// }
+
+// .options {
+//   cursor: pointer;
+//   display: flex;
+//   grid-area: options;
+//   align-items: center;
+//   justify-content: space-around;
+//   border-bottom: 1px solid vars.$color-primary900;
+// }
+
+// .options > h2 {
+//   width: 100%;
+//   height: 100%;
+//   text-align: center;
+// }
+
+// .options > h2:hover {
+//   border-bottom: solid 1px vars.$color-primary;
+//   color: vars.$color-primary;
+//   background-color: vars.$neutral-grayf9f9f9;
+// }
+
+// .activelink {
+//   border-bottom: solid 1px vars.$color-primary;
+//   color: vars.$color-primary;
+//   background-color: vars.$neutral-grayf9f9f9;
+// }
+
+// .categorylist {
+//   cursor: pointer;
+//   display: flex;
+//   grid-area: category-list;
+//   grid-row: 2 / span 3;
+//   flex-direction: column;
+//   padding-top: 8px;
+//   padding-left: 10px;
+//   border-radius: 4px;
+//   list-style-type: none;
+//   background-color: vars.$color-primary50;
+// }
+
+// .categorylist ul {
+//   display: flex;
+//   flex-direction: column;
+//   align-items: center;
+//   justify-content: flex-start;
+//   padding-left: 10px;
+// }
+
+// .categorylist ul li {
+//   width: 100%;
+//   padding: 3%;
+//   transition:
+//     color 0.2s,
+//     background-color 0.2s;
+// }
+
+// .empty {
+//   display: flex;
+//   grid-area: products-list;
+//   flex-direction: column;
+//   text-align: center;
+// }

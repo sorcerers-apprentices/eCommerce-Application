@@ -1,9 +1,15 @@
+@use '@/styles/variables' as vars;
+@use '@/styles/mixins' as mixins;
+
 .sortcontainer {
   display: flex;
-  justify-content: space-around;
-  width: 30%;
+  gap: 1rem;
+}
+
+.btn {
+  @include mixins.btn(8rem);
 }
 
 .sortbutton {
-  cursor: pointer;
+  background-color: vars.$color-primary600;
 }

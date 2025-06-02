@@ -129,7 +129,7 @@ export const SortControlComponent = ({ fields, onSortChange }: SortControlProper
 
   return (
     <div className={s.sortcontainer}>
-      <button key={'default'} onClick={resetSort} className={s.sortbutton}>
+      <button key={'default'} onClick={resetSort} className={s.btn}>
         Default
       </button>
       {renderFieldSortButtons()}
