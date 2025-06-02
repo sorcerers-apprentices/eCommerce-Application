@@ -10,9 +10,10 @@ export type SliderImage = {
 
 type SliderProperties = {
   images: Array<SliderImage>
+  className?: string
 }
 
-export const Slider = ({ images }: SliderProperties): ReactElement => {
+export const Slider = ({ images, className }: SliderProperties): ReactElement => {
   const [sliderIndex, setSliderIndex] = useState(0)
   const [loaded, setLoaded] = useState(false)
   const [sliderReference, instanceReference] = useKeenSlider({
@@ -26,7 +27,7 @@ export const Slider = ({ images }: SliderProperties): ReactElement => {
   })
 
   return (
-    <div className="slider">
+    <div className={`slider ${className}`}>
       <div className="navigation-wrapper">
         <div ref={sliderReference} className="keen-slider">
           {images.map((img, index) => (

@@ -85,7 +85,7 @@ const ProductPage = (): ReactElement => {
           {images && <Slider images={images} />}
         </div>
         <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
-          {images && <Slider images={images} />}
+          {images && <Slider images={images} className={'slidermodal'} />}
         </Modal>
         <div className={s.producinfo}>
           {productLoading && <div>Loading product...</div>}
