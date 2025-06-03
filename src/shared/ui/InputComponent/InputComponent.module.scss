@@ -47,6 +47,10 @@
   &:disabled {
     border-color: vars.$neutral-gray606060;
   }
+
+  @media (width <=850px) {
+    width: 14rem;
+  }
 }
 
 .msg {

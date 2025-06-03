@@ -39,12 +39,17 @@
   justify-content: space-between;
   width: 260px;
   height: 400px;
-  padding: 10px;
+  padding: 0.5rem;
   border: 1px solid vars.$color-dark-grey;
   border-radius: 4px;
   transition:
     outline 0.2s,
     transform 0.2s;
+
+  @media (width <=850px) {
+    width: 200px;
+    height: 350px;
+  }
 }
 
 .salenumber {
