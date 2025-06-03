@@ -4,8 +4,7 @@
   width: 20rem;
   height: 20rem;
   margin: 0 auto;
-  padding: 0.9rem;
-  background-color: vars.$color-primary25;
+  padding: 2rem;
 }
 
 .navigation-wrapper {
@@ -62,11 +61,11 @@
 }
 
 .arrow-left {
-  left: 2rem;
+  left: -2rem;
 }
 
 .arrow-right {
-  right: 2rem;
+  right: -2rem;
   left: auto;
 }
 

@@ -77,7 +77,7 @@ const ProductPage = (): ReactElement => {
   return (
     <>
       <Header />
-      <div className={s.productcontainer}>
+      <div className={`section ${s.productcontainer}`}>
         {categoriesLoading && <div>Loading information...</div>}
         {categoriesError && <div>No products found</div>}
         <Breadcrumbs allCategories={categories?.body.results ?? []} currentCategory={category} />
