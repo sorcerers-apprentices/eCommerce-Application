@@ -3,7 +3,7 @@
 
 .category {
   display: grid;
-  grid-template: auto auto auto / 1fr 2fr;
+  grid-template: auto auto auto/ 2fr 5fr;
   grid-template-areas:
     'title options'
     'category-list searchsort'
@@ -14,13 +14,14 @@
   display: flex;
   grid-area: searchsort;
   flex-direction: row;
+  gap: 0.5rem;
   align-items: center;
   justify-content: space-between;
   padding: 0.5rem;
 
-  @media (width <= 1000px) {
+  @media (width <= 850px) {
     flex-direction: column;
-    align-items: center;
+    align-items: flex-end;
     justify-content: center;
   }
 }
@@ -31,17 +32,16 @@
 }
 
 .searchinput {
-  width: 20rem;
+  width: 15rem;
   height: 2.5rem;
   padding: 0 1rem;
   border: 1px solid vars.$color-primary;
 
   &::placeholder {
     color: vars.$neutral-gray606060;
+    text-transform: none;
 
     @include mixins.body-xs(vars.$neutral-gray606060);
-
-    text-transform: none;
   }
 
   &:focus {
@@ -141,9 +141,7 @@
   cursor: pointer;
   width: 100%;
   padding: 2% 0 2% 5%;
-  transition:
-    color 0.3s,
-    background-color 0.3s;
+  transition: all 0.3s ease-in-out;
 }
 
 .empty {
@@ -151,4 +149,150 @@
   grid-area: products-list;
   flex-direction: column;
   text-align: center;
+}
+
+.productssection {
+  grid-area: products-list;
+  padding: 1rem;
+  background-color: vars.$color-primary25;
+}
+
+.productlist {
+  display: flex;
+  flex-flow: row wrap;
+  gap: 1rem;
+  justify-content: center;
+
+  & > * {
+    width: calc(100% / 3 - 1rem);
+
+    @media (width <= 1000px) {
+      width: calc(100% / 2 - 1rem);
+    }
+
+    @media (width <= 750px) {
+      width: calc(100% - 1rem);
+    }
+  }
+}
+
+.pricecontainer {
+  display: flex;
+  gap: 1rem;
+}
+
+.productitem {
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  min-height: 25rem;
+  padding: 0.5rem;
+  background-color: vars.$color-white;
+  transition: all 0.3s ease-in-out;
+
+  & > img {
+    max-height: 50%;
+
+    @media (width <= 1000px) {
+      max-width: 60%;
+    }
+  }
+
+  & > p {
+    text-align: center;
+  }
+
+  @media (width <= 1000px) {
+    min-height: 20rem;
+  }
+
+  @media (width <= 700px) {
+    min-height: 0;
+  }
+}
+
+.salenumber {
+  height: 1.5rem;
+  color: vars.$state-color-error;
+}
+
+.productname {
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
+.productprice {
+  color: vars.$color-primary;
+}
+
+.onsale {
+  text-decoration: line-through;
+}
+
+.productitem:hover {
+  transform: scale(1.05);
+  outline: 0.1rem solid vars.$color-primary;
+}
+
+.pagination {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  width: 100%;
+  margin: 2rem auto 0;
+
+  @media (width <= 700px) {
+    gap: 0.3rem;
+  }
+}
+
+.paginationbutton {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1 / 1;
+  height: 2rem;
+  border: none;
+  font-size: small;
+  background-color: vars.$color-white;
+
+  @media (width <= 700px) {
+    height: 1.5rem;
+    font-size: x-small;
+  }
+
+  @media (width <= 700px) {
+    height: 1rem;
+    font-size: xx-small;
+  }
+
+  @media (width <= 450px) {
+    font-size: 5px;
+  }
+}
+
+.paginationbutton:disabled {
+  cursor: default;
+  opacity: 0.8;
+}
+
+.paginationbutton.active {
+  border-color: vars.$color-primary;
+  color: vars.$color-white;
+  background-color: vars.$color-primary;
+}
+
+.sortcontainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  justify-content: space-between;
+}
+
+.btn {
+  @include mixins.btn;
 }

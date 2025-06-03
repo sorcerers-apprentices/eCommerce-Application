@@ -4,18 +4,10 @@
   html {
     font-size: 14px;
   }
-
-  .section {
-    padding: 1rem 3rem;
-  }
 }
 
 @media (width <= 390px) {
   html {
     font-size: 10px;
-  }
-
-  .section {
-    padding: 0.5rem 1rem;
   }
 }

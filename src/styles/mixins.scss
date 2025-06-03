@@ -191,6 +191,10 @@
       background-color: vars.$color-primary700;
     }
   }
+
+  @media (width <= 750px) {
+    padding: 0.5rem 1rem;
+  }
 }
 
 @mixin link {

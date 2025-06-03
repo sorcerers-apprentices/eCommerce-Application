@@ -1,4 +1,4 @@
-import s from './SortComponent.module.scss'
+import s from '../Category.module.scss'
 import { useSearchParams } from 'react-router-dom'
 import { type ReactElement, useEffect, useState } from 'react'
 
