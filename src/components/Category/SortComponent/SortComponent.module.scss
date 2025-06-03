@@ -1,9 +1,11 @@
+@use '@/styles/mixins' as mixins;
+
 .sortcontainer {
   display: flex;
   gap: 0.8rem;
-  justify-content: space-around;
+  justify-content: space-between;
 }
 
-.sortbutton {
-  cursor: pointer;
+.btn {
+  @include mixins.btn;
 }

@@ -81,7 +81,7 @@ export const CategoryMenu = ({ categories, onCategoryClick }: CategoryMenuProper
         onClick={handleCategoryClick(category)}
         key={category.id}
         style={{
-          backgroundColor: selectedCategoryIds.includes(category.id) ? '#839980' : 'transparent',
+          color: selectedCategoryIds.includes(category.id) ? 'black' : 'white',
         }}
       >
         {category.name['en']}

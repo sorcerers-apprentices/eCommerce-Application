@@ -8,6 +8,7 @@ type TSelectProperties = SelectHTMLAttributes<HTMLSelectElement> & {
   options2?: { text: string; value: string }[]
   title: string
   errors?: string | null
+  className?: string
 }
 
 export const SelectInput: FC<TSelectProperties> = ({
@@ -18,17 +19,18 @@ export const SelectInput: FC<TSelectProperties> = ({
   value,
   required = true,
   errors,
+  className,
   ...rest
 }) => {
   const errorInnerText = errors ? errors : '\u00A0'
   return (
-    <div className={s.element}>
+    <div className={s.element + ' ' + className}>
       <Label htmlFor={name} className={s.label}>
         {title}
       </Label>
       <select {...rest} id={name} name={name} value={value} className={s.input} required={required}>
         <option className={s.input} value="">
-          Choose your {name}
+          Choose {name}
         </option>
         {options2.length &&
           options2.map(({ text, value }) => (
