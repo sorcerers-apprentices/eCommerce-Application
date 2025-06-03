@@ -70,7 +70,16 @@ const AddressPage = (): ReactElement => {
 
   const handleChange = (event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>): void => {
     const { name, value } = event.target
-    setFormData((previous) => ({ ...previous, [name]: { value, touched: true } }))
+    setFormData((previous) => {
+      return {
+        ...previous,
+        [name]: {
+          value,
+          touched: true,
+        },
+        ...(name === 'country' ? { postalCode: { value: previous.postalCode.value, touched: true } } : {}),
+      }
+    })
   }
 
   const createAddressSection = (address: Address): ReactElement => {
