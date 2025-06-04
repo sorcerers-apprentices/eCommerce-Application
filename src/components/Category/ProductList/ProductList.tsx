@@ -1,5 +1,5 @@
 import type { ProductProjection } from '@commercetools/platform-sdk'
-import s from './ProductList.module.scss'
+import s from '../Category.module.scss'
 import type { ReactElement } from 'react'
 import { Link } from 'react-router-dom'
 
@@ -19,7 +19,7 @@ export const ProductList = ({
   products,
 }: ProductListProperties): ReactElement => {
   const CENTS_IN_DOLLAR = 100
-  const MAX_PAGE_BUTTONS = 10
+  const MAX_PAGE_BUTTONS = 4
 
   const totalProducts = total || 0
   const totalPages = Math.ceil(totalProducts / pageSize)
@@ -83,7 +83,7 @@ export const ProductList = ({
                   alt={product.name?.['en-US'] || 'Product image'}
                   className={s.productImage}
                 />
-                {product.name?.['en-US'] && <p>{product.name['en-US']}</p>}
+                {product.name?.['en-US'] && <p className={s.productname}>{product.name['en-US']}</p>}
                 <div className={s.pricecontainer}>
                   {centPrice && (
                     <p className={`${s.productprice} ${discountPrice ? s.onsale : ''}`}>

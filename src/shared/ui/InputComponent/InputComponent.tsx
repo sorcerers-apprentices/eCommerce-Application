@@ -7,7 +7,7 @@ import s from './InputComponent.module.scss'
 
 type InputComponentProperties = InputHTMLAttributes<HTMLInputElement> & {
   allowWhitespaces?: boolean
-  title: string
+  title?: string
   errors?: string | null
   isPassword?: boolean
   newClass?: string

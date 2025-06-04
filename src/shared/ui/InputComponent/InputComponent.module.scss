@@ -10,6 +10,14 @@
 
 .row {
   position: relative;
+
+  @media (width <=250px) {
+    gap: 0;
+
+    .input {
+      width: auto;
+    }
+  }
 }
 
 .label {
@@ -38,6 +46,10 @@
 
   &:disabled {
     border-color: vars.$neutral-gray606060;
+  }
+
+  @media (width <=850px) {
+    width: 14rem;
   }
 }
 

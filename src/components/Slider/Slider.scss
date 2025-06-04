@@ -1,10 +1,10 @@
 @use '@/styles/variables.scss' as vars;
 
 .slider {
-  width: 33rem;
+  width: 20rem;
+  height: 20rem;
   margin: 0 auto;
-  padding: 0.5rem;
-  background-color: vars.$color-primary25;
+  padding: 2rem;
 }
 
 .navigation-wrapper {
@@ -16,7 +16,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  max-height: 100vh;
+  max-width: 100%;
+  max-height: 100%;
   padding: 0 0.5rem;
 }
 
@@ -24,6 +25,10 @@
   display: flex;
   justify-content: center;
   padding: 10px 0;
+
+  @media (width <= 390px) {
+    padding: 5px 0;
+  }
 }
 
 .dot {
@@ -56,14 +61,29 @@
 }
 
 .arrow-left {
-  left: 2rem;
+  left: -2rem;
 }
 
 .arrow-right {
-  right: 2rem;
+  right: -2rem;
   left: auto;
 }
 
 .arrow-disabled {
   fill: vars.$color-primary100;
+}
+
+.slidermodal {
+  width: 40rem;
+  height: 40rem;
+
+  @media (width <= 630px) {
+    width: 30rem;
+    height: 30rem;
+  }
+
+  @media (width <= 480px) {
+    width: 20rem;
+    height: 20rem;
+  }
 }

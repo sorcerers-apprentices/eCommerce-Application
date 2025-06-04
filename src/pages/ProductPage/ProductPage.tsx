@@ -77,7 +77,7 @@ const ProductPage = (): ReactElement => {
   return (
     <>
       <Header />
-      <div className={s.productcontainer}>
+      <div className={`section ${s.productcontainer}`}>
         {categoriesLoading && <div>Loading information...</div>}
         {categoriesError && <div>No products found</div>}
         <Breadcrumbs allCategories={categories?.body.results ?? []} currentCategory={category} />
@@ -85,7 +85,7 @@ const ProductPage = (): ReactElement => {
           {images && <Slider images={images} />}
         </div>
         <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
-          {images && <Slider images={images} />}
+          {images && <Slider images={images} className={'slidermodal'} />}
         </Modal>
         <div className={s.producinfo}>
           {productLoading && <div>Loading product...</div>}

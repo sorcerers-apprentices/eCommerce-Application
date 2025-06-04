@@ -14,6 +14,7 @@ import { ProductList } from '@/components/Category/ProductList/ProductList'
 import { CategoryMenu } from '@/components/Category/RenderCategory/CategoryMenu'
 import { SortControlComponent } from '@/components/Category/SortComponent/SortControlComponent'
 import { type ChangeEvent, type ReactElement, useCallback, useEffect, useMemo, useState } from 'react'
+import { TbSearch } from 'react-icons/tb'
 
 const ITEMS_PER_PAGE = 6
 
@@ -198,7 +199,7 @@ export const Category = (): ReactElement => {
 
   return (
     <section className={`section ${s.category}`}>
-      <h2 className={s.title}>Category</h2>
+      <h2 className={`title ${s.title}`}>Category</h2>
 
       <div className={s.options}>
         <h2
@@ -220,6 +221,7 @@ export const Category = (): ReactElement => {
         {facetsLoading && <div className={s.loading}>Loading brands...</div>}
         {(facetsError || brands.length === 0) && <div>We don't have any brands</div>}
         <SelectInput
+          className={s.input}
           name="brand"
           title="Brand"
           value={filter.brand}
@@ -227,6 +229,7 @@ export const Category = (): ReactElement => {
           onChange={handleBrandFilterChange}
         />
         <InputComponent
+          newClass={s.input}
           name="from"
           title="From €"
           type="number"
@@ -236,6 +239,7 @@ export const Category = (): ReactElement => {
           onChange={handlePriceChange('from')}
         />
         <InputComponent
+          newClass={s.input}
           name="to"
           title="To €"
           type="number"
@@ -244,18 +248,22 @@ export const Category = (): ReactElement => {
           step={1}
           onChange={handlePriceChange('to')}
         />
-        <button onClick={handleClearFilters}>Reset filters</button>
+        <button className={s.button} onClick={handleClearFilters}>
+          Reset filters
+        </button>
       </ul>
 
       <div className={s.searchsort}>
-        <InputComponent
-          type="text"
-          placeholder="Search"
-          title="Search"
-          value={filter.text}
-          isPassword={false}
-          onInput={handleSearchInput}
-        />
+        <div className={s.search}>
+          <input
+            className={s.searchinput}
+            type="text"
+            placeholder="Search"
+            value={filter.text}
+            onInput={handleSearchInput}
+          />
+          <TbSearch className={s.searchicon} />
+        </div>
         <SortControlComponent
           fields={[{ name: 'name', locale: 'en-US' }, { name: 'price' }]}
           onSortChange={(sort) => setFilter((prev) => ({ ...prev, sort }))}

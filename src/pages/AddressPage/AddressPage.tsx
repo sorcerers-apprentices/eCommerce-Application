@@ -1,5 +1,5 @@
 import { Header } from '@/components/Header/Header'
-import { type FormEvent, type ReactElement, useState } from 'react'
+import { type ChangeEvent, type FormEvent, type ReactElement, useState } from 'react'
 import { useFetch } from '@/shared/hooks/useFetch.tsx'
 import { api } from '@/server/api.ts'
 import type { Address } from '@commercetools/platform-sdk'
@@ -10,61 +10,129 @@ import { Toggler } from '@/shared/ui/Toggler/Toggler.tsx'
 import { Modal } from '@/shared/ui/Modal/Modal.tsx'
 import { FormButton } from '@/components/LoginForm/FormButton.tsx'
 import s from './AddressPage.module.scss'
+import { useValidate } from '@/hooks/useValidate.tsx'
+import {
+  createRegexPostalCodeValidator,
+  createSelectValidator,
+  POSTAL_CODE_REGEX,
+  validateCity,
+  validateStreet,
+} from '@/shared/utilities/validation.ts'
+import { toast } from 'react-hot-toast'
 
 type ModalState = {
   state?: 'editAddress' | 'addShippingAddress' | 'addBillingAddress'
-  address?: {
-    id?: string
-    country?: string
-    city?: string
-    streetName?: string
-    postalCode?: string
-  }
+  addressId?: string
+}
+
+type AddressFormData = {
+  country: { value: string; touched: boolean }
+  city: { value: string; touched: boolean }
+  postalCode: { value: string; touched: boolean }
+  streetName: { value: string; touched: boolean }
 }
 
 const AddressPage = (): ReactElement => {
   const [modal, setModal] = useState<ModalState>({})
   const modalName = {
-    editAddress: 'Address',
+    editAddress: 'New Address',
     addShippingAddress: 'Shipping address',
     addBillingAddress: 'Billing address',
   }
 
   const { data: meData, error: meError, refetch: refetchMe } = useFetch(api.user.fetchMe)
 
+  const createEmptyFormData = (): AddressFormData => {
+    return {
+      country: { value: '', touched: false },
+      city: { value: '', touched: false },
+      postalCode: { value: '', touched: false },
+      streetName: { value: '', touched: false },
+    }
+  }
+  const [formData, setFormData] = useState<AddressFormData>(createEmptyFormData())
+
+  const { errors, isValid, resetValidation } = useValidate(formData, {
+    country: [createSelectValidator(['GB', 'PL', 'ES'])],
+    city: [validateCity],
+    postalCode: [
+      createRegexPostalCodeValidator(
+        {
+          GB: POSTAL_CODE_REGEX.GB,
+          ES: POSTAL_CODE_REGEX.ES,
+          PL: POSTAL_CODE_REGEX.PL,
+        },
+        () => formData.country.value
+      ),
+    ],
+    streetName: [validateStreet],
+  })
+
+  const handleChange = (event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLSelectElement>): void => {
+    const { name, value } = event.target
+    setFormData((previous) => {
+      return {
+        ...previous,
+        [name]: {
+          value,
+          touched: true,
+        },
+        ...(name === 'country' ? { postalCode: { value: previous.postalCode.value, touched: true } } : {}),
+      }
+    })
+  }
+
   const createAddressSection = (address: Address): ReactElement => {
     return (
       <div className={s.addresscontainer}>
+        <div className={s.buttoncontainer}>
+          <button
+            onClick={() => {
+              setModal(() => ({ state: 'editAddress', addressId: address.id }))
+              setFormData({
+                country: {
+                  value: address.country,
+                  touched: false,
+                },
+                city: {
+                  value: address.city ?? '',
+                  touched: false,
+                },
+                streetName: {
+                  value: address.streetName ?? '',
+                  touched: false,
+                },
+                postalCode: {
+                  value: address.postalCode ?? '',
+                  touched: false,
+                },
+              })
+            }}
+          >
+            edit
+          </button>
+          <button onClick={() => deleteAddress(address)}>delete</button>
+        </div>
         <div className={s.buttonscontainer}>
-          <div>
+          <div className={s.buttoncontainer}>
             <button
-              style={{ backgroundColor: isBilling(address) ? 'red' : 'blue' }}
-              onClick={() => updateBillingFlag(address)}
+              className={`${s.button} ${isBilling(address) ? s.active : s.inactive}`}
+              onClick={() => {
+                updateBillingFlag(address)
+                toast.success('Billing address is update')
+              }}
             >
-              billing
+              billing address
             </button>
             <button
-              style={{ backgroundColor: isShipping(address) ? 'red' : 'blue' }}
-              onClick={() => updateShippingFlag(address)}
+              className={`${s.button} ${isShipping(address) ? s.active : s.inactive}`}
+              onClick={() => {
+                updateShippingFlag(address)
+                toast.success('Shipping address is update')
+              }}
             >
-              shipping
+              shipping address
             </button>
-            <button
-              style={{ backgroundColor: isDefaultBilling(address) ? 'red' : 'blue' }}
-              onClick={() => updateDefaultBillingFlag(address)}
-            >
-              default billing
-            </button>
-            <button
-              style={{ backgroundColor: isDefaultShipping(address) ? 'red' : 'blue' }}
-              onClick={() => updateDefaultShippingFlag(address)}
-            >
-              default shipping
-            </button>
-          </div>
-          <div>
-            <button onClick={() => setModal(() => ({ state: 'editAddress', address: { ...address } }))}>edit</button>
-            <button onClick={() => deleteAddress(address)}>delete</button>
           </div>
         </div>
         <div className={s.infocontainer}>
@@ -80,6 +148,28 @@ const AddressPage = (): ReactElement => {
           <span>
             Postal code: <span>{address.postalCode}</span>
           </span>
+        </div>
+        <div className={s.buttonscontainer}>
+          <div className={s.buttoncontainer}>
+            <button
+              className={`${s.button} ${isDefaultBilling(address) ? s.active : s.inactive}`}
+              onClick={() => {
+                updateDefaultBillingFlag(address)
+                toast.success('Default Billing address is update')
+              }}
+            >
+              default billing
+            </button>
+            <button
+              className={`${s.button} ${isDefaultShipping(address) ? s.active : s.inactive}`}
+              onClick={() => {
+                updateDefaultShippingFlag(address)
+                toast.success('Default Shipping address is update')
+              }}
+            >
+              default shipping
+            </button>
+          </div>
         </div>
       </div>
     )
@@ -211,16 +301,15 @@ const AddressPage = (): ReactElement => {
 
   const editAddress = async (event: FormEvent<HTMLFormElement>): Promise<void> => {
     event.preventDefault()
-    const formData = new FormData(event.currentTarget)
     await api.user.updateMe([
       {
         action: 'changeAddress',
-        addressId: modal.address?.id,
+        addressId: modal.addressId,
         address: {
-          country: assertString(formData.get('country')),
-          city: assertString(formData.get('city')),
-          postalCode: assertString(formData.get('postalCode')),
-          streetName: assertString(formData.get('streetName')),
+          country: assertString(formData.country.value),
+          city: assertString(formData.city.value),
+          postalCode: assertString(formData.postalCode.value),
+          streetName: assertString(formData.streetName.value),
         },
       },
     ])
@@ -228,14 +317,18 @@ const AddressPage = (): ReactElement => {
     closeModal()
   }
 
-  const closeModal = (): void => setModal(() => ({}))
+  const closeModal = (): void => {
+    setModal(() => ({}))
+    setFormData(createEmptyFormData())
+    resetValidation()
+  }
 
   return (
     <>
       <Header />
       {meError && 'Ooops'}
       {meData && (
-        <div className={s.container}>
+        <div className={`section`}>
           <div className={s.topbuttonscontainer}>
             <button onClick={() => setModal(() => ({ state: 'addBillingAddress' }))} className={s.button}>
               Add billing address
@@ -244,49 +337,38 @@ const AddressPage = (): ReactElement => {
               Add shipping address
             </button>
           </div>
-          <div className={s.addresscontainer}>
-            {meData.body.addresses.map((address) => createAddressSection(address))}
-          </div>
+          <div className={s.container}>{meData.body.addresses.map((address) => createAddressSection(address))}</div>
 
           <Modal isOpen={!!modal.state} onClose={closeModal}>
-            <Form onSubmit={modal.state === 'editAddress' ? editAddress : addAddress}>
+            <Form className={[s.form]} onSubmit={modal.state === 'editAddress' ? editAddress : addAddress}>
               <div>{modal.state && modalName[modal.state]}</div>
               <div>
                 <InputComponent
                   name={'streetName'}
-                  value={modal.address?.streetName}
-                  onChange={(event) => {
-                    setModal((previous: ModalState): ModalState => {
-                      return { ...previous, address: { ...previous.address, streetName: event.target.value } }
-                    })
-                  }}
+                  value={formData.streetName.value}
+                  onChange={handleChange}
                   title={'Address'}
                   type={'text'}
+                  errors={errors.streetName}
                   placeholder={'221B Baker Street'}
                 />
                 <InputComponent
                   name={'city'}
-                  value={modal.address?.city}
-                  onChange={(event) => {
-                    setModal((previous: ModalState): ModalState => {
-                      return { ...previous, address: { ...previous.address, city: event.target.value } }
-                    })
-                  }}
+                  value={formData.city.value}
+                  onChange={handleChange}
                   title={'City'}
                   type={'text'}
+                  errors={errors.city}
                   placeholder={'London'}
                 />
               </div>
               <div>
                 <SelectInput
                   name={'country'}
-                  value={modal.address?.country}
-                  onChange={(event) => {
-                    setModal((previous: ModalState): ModalState => {
-                      return { ...previous, address: { ...previous.address, country: event.target.value } }
-                    })
-                  }}
+                  value={formData.country.value}
+                  onChange={handleChange}
                   title={'Country'}
+                  errors={errors.country}
                   options2={[
                     { text: 'United Kingdom', value: 'GB' },
                     { text: 'Poland', value: 'PL' },
@@ -295,12 +377,9 @@ const AddressPage = (): ReactElement => {
                 />
                 <InputComponent
                   name={'postalCode'}
-                  value={modal.address?.postalCode}
-                  onChange={(event) => {
-                    setModal((previous: ModalState): ModalState => {
-                      return { ...previous, address: { ...previous.address, postalCode: event.target.value } }
-                    })
-                  }}
+                  value={formData.postalCode.value}
+                  onChange={handleChange}
+                  errors={errors.postalCode}
                   title={'Postal code'}
                   type={'text'}
                   placeholder={'221B'}
@@ -311,10 +390,10 @@ const AddressPage = (): ReactElement => {
                   <Toggler name={'default'} label={'Use as default'} />
                 </div>
               )}
-              <button onClick={closeModal} className={s.cancel}>
+              <button onClick={closeModal} className={(s.cancel, s.button)}>
                 Cancel
               </button>
-              <FormButton value={'Save address'} disabled={false} />
+              <FormButton value={'Save address'} disabled={!isValid} />
             </Form>
           </Modal>
         </div>

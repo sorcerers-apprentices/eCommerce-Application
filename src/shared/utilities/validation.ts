@@ -1,5 +1,11 @@
 import type { ValidationData } from '@/hooks/useValidate.tsx'
 
+export const POSTAL_CODE_REGEX = {
+  GB: /^(GIR\s?0AA|[A-Z]{1,2}\d{1,2}[A-Z]?\s?\d[A-Z]{2})$/,
+  PL: /^\d{2}-\d{3}$/,
+  ES: /^(?:0[1-9]|[1-4]\d|5[0-2])\d{3}$/,
+}
+
 export const validateEmail = (email: string): string | null => {
   const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
   if (/\s/.test(email)) {
@@ -95,6 +101,37 @@ export const validateCountry = (country: string): string | null => {
     return 'Country must from a predefined list'
   } else {
     return null
+  }
+}
+
+export const createSelectValidator = (allowed: Array<string>): ((value: string) => string | null) => {
+  return (value: string): string | null => {
+    if (!allowed.includes(value)) {
+      return 'Country must from a predefined list'
+    } else {
+      return null
+    }
+  }
+}
+
+export const createRegexPostalCodeValidator = (
+  allowed: { [country: string]: RegExp },
+  getCountry: () => string | undefined
+): ((value: string) => string | null) => {
+  return (value: string): string | null => {
+    const country = getCountry()
+    if (!country) {
+      return 'Choose your country'
+    } else if (!value.length) {
+      return 'Post code cannot be empty'
+    } else {
+      const regex = allowed[country]
+      if (regex.test(value)) {
+        return null
+      } else {
+        return 'Invalid post code value'
+      }
+    }
   }
 }
 
