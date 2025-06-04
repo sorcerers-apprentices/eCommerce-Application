@@ -23,7 +23,7 @@ html {
 }
 
 .section {
-  padding: 1rem 5rem;
+  padding: 1rem;
 
   &-dog {
     @include mixins.caption(2.5rem);

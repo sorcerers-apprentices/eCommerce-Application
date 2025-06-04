@@ -1,4 +1,4 @@
-import s from './SortComponent.module.scss'
+import s from '../Category.module.scss'
 import { useSearchParams } from 'react-router-dom'
 import { type ReactElement, useEffect, useState } from 'react'
 
@@ -129,7 +129,7 @@ export const SortControlComponent = ({ fields, onSortChange }: SortControlProper
 
   return (
     <div className={s.sortcontainer}>
-      <button key={'default'} onClick={resetSort} className={s.sortbutton}>
+      <button key={'default'} onClick={resetSort} className={s.btn}>
         Default
       </button>
       {renderFieldSortButtons()}
