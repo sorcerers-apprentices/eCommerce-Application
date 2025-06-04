@@ -3,7 +3,7 @@
 
 .category {
   display: grid;
-  grid-template: auto auto auto/ 2fr 5fr;
+  grid-template: auto auto 1fr/ 2fr 5fr;
   grid-template-areas:
     'title options'
     'category-list searchsort'
@@ -167,7 +167,7 @@
   display: flex;
   flex-flow: row wrap;
   gap: 1rem;
-  justify-content: center;
+  justify-content: flex-start;
 
   & > * {
     width: calc(100% / 3 - 1rem);
