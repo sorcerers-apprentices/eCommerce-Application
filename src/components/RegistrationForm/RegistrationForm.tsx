@@ -179,10 +179,15 @@ export const RegistrationForm = (): JSX.Element => {
   const handleSameAddress = (sameAddressEnabled: boolean): void => {
     setSameAddress(sameAddressEnabled)
     if (sameAddressEnabled) {
-      formData.billingCountry.value = formData.shippingCountry.value
-      formData.billingCity.value = formData.shippingCity.value
-      formData.billingPostalCode.value = formData.shippingPostalCode.value
-      formData.billingStreet.value = formData.shippingStreet.value
+      setFormData((previous) => {
+        return {
+          ...previous,
+          billingCountry: { ...previous.shippingCountry },
+          billingCity: { ...previous.shippingCity },
+          billingPostalCode: { ...previous.shippingPostalCode },
+          billingStreet: { ...previous.shippingStreet },
+        }
+      })
     }
   }
 

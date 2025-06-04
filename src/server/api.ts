@@ -1,4 +1,5 @@
 import type {
+  Cart,
   CategoryPagedQueryResponse,
   ClientResponse,
   Customer,
@@ -127,6 +128,13 @@ export const api = {
     fetchProduct: async (id: string): Promise<ClientResponse<ProductProjection>> => {
       return builder().productProjections().withId({ ID: id }).get().execute()
     },
+  },
+  createCart: async (): Promise<ClientResponse<Cart>> => {
+    return builder()
+      .me()
+      .carts()
+      .post({ body: { currency: 'EUR' } })
+      .execute()
   },
 }
 
