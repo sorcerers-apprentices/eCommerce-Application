@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-type FetchParameters<T> = {
+export type FetchParameters<T> = {
   enabled?: boolean
   defaultValue?: T
   onSuccess?: (data: T) => void
