@@ -16,7 +16,7 @@
   width: 20rem;
   height: 2.5rem;
   padding: 0 1rem;
-  border: 1px solid vars.$neutral-gray606060;
+  border: 1px solid vars.$color-primary;
 
   &::placeholder {
     color: vars.$neutral-gray606060;
@@ -30,6 +30,10 @@
     border-color: vars.$color-primary;
     outline: none;
     box-shadow: 0 0 0 1px vars.$color-primary200;
+  }
+
+  @media (width <=850px) {
+    width: 14rem;
   }
 }
 

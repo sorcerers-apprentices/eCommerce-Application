@@ -1,0 +1,70 @@
+@use '@/styles/mixins.scss' as mixins;
+@use '@/styles/variables.scss' as vars;
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+}
+
+.addresscontainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 1.5rem;
+  background-color: vars.$color-primary25;
+}
+
+.topbuttonscontainer {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.button {
+  @include mixins.btn;
+}
+
+.active {
+  background-color: vars.$color-primary600;
+}
+
+.inactive {
+  background-color: vars.$color-primary200;
+}
+
+.buttoncontainer {
+  display: flex;
+  flex-flow: row wrap;
+  gap: 0.5rem;
+  align-self: flex-end;
+}
+
+.buttonscontainer {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  align-self: flex-start;
+}
+
+.infocontainer {
+  display: flex;
+  flex-direction: column;
+  align-self: start;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.cancel {
+  width: 100%;
+}

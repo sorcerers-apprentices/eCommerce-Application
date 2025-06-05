@@ -16,13 +16,14 @@ html {
 }
 
 .container {
+  overflow: hidden;
   max-width: 1440px;
   min-height: 100vh;
   margin: 0 auto;
 }
 
 .section {
-  padding: 1rem 5rem;
+  padding: 1rem;
 
   &-dog {
     @include mixins.caption(2.5rem);
@@ -38,8 +39,6 @@ html {
 }
 
 .title {
-  padding: 1rem;
-
   @include mixins.caption(2rem);
   @include mixins.center;
 }

@@ -1,0 +1,89 @@
+@use '@/styles/variables.scss' as vars;
+
+.slider {
+  width: 20rem;
+  height: 20rem;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.navigation-wrapper {
+  position: relative;
+}
+
+[class^='number-slide'],
+[class*=' number-slide'] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 100%;
+  max-height: 100%;
+  padding: 0 0.5rem;
+}
+
+.dots {
+  display: flex;
+  justify-content: center;
+  padding: 10px 0;
+
+  @media (width <= 390px) {
+    padding: 5px 0;
+  }
+}
+
+.dot {
+  cursor: pointer;
+  width: 10px;
+  height: 10px;
+  margin: 0 5px;
+  padding: 5px;
+  border: none;
+  border-radius: 50%;
+  background: vars.$color-primary100;
+}
+
+.dot:focus {
+  outline: none;
+}
+
+.dot.active {
+  background: vars.$color-primary700;
+}
+
+.arrow {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 30px;
+  height: 30px;
+  fill: vars.$color-primary700;
+}
+
+.arrow-left {
+  left: -2rem;
+}
+
+.arrow-right {
+  right: -2rem;
+  left: auto;
+}
+
+.arrow-disabled {
+  fill: vars.$color-primary100;
+}
+
+.slidermodal {
+  width: 40rem;
+  height: 40rem;
+
+  @media (width <= 630px) {
+    width: 30rem;
+    height: 30rem;
+  }
+
+  @media (width <= 480px) {
+    width: 20rem;
+    height: 20rem;
+  }
+}

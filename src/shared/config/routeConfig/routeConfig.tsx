@@ -1,18 +1,24 @@
 import type { RouteProps } from 'react-router-dom'
-import NotFoundPage from '@/pages/NotFoundPage/NotFoundPage'
 import { MainPageAsync } from '@/pages/MainPage/MainPage.async'
 import { LoginPageAsync } from '@/pages/LoginPage/LoginPage.async'
 import { AboutPageAsync } from '@/pages/AboutPage/AboutPage.async'
 import { ProfilePageAsync } from '@/pages/ProfilePage/ProfilePage.async'
+import { ProductPageAsync } from '@/pages/ProductPage/ProductPage.async'
+import { CatalogPageAsync } from '@/pages/CatalogPage/CatalogPage.async'
 import { RegistrationPageAsync } from '@/pages/RegistrationPage/RegistrationPage.async'
+import { PasswordPageAsync } from '@/pages/PasswordPage/PasswordPage.async'
+import { AddressPageAsync } from '@/pages/AddressPage/AddressPage.async.tsx'
 
 export enum RoutePath {
   MAIN = '/',
   LOGIN = '/login',
   REGISTRATION = '/registration',
   PROFILE = '/profile',
+  ADDRESSES = '/profile/addresses',
+  PASSWORD = '/profile/password',
   ABOUT = '/about',
-  NOT_FOUND = '*',
+  PRODUCT = '/product/:id',
+  CATALOG = '/catalog',
 }
 
 export const publicRoutes: RouteProps[] = [
@@ -29,8 +35,12 @@ export const publicRoutes: RouteProps[] = [
     element: <AboutPageAsync />,
   },
   {
-    path: RoutePath.NOT_FOUND,
-    element: <NotFoundPage />,
+    path: RoutePath.PRODUCT,
+    element: <ProductPageAsync />,
+  },
+  {
+    path: RoutePath.CATALOG,
+    element: <CatalogPageAsync />,
   },
 ]
 
@@ -45,5 +55,13 @@ export const privateRoutes: RouteProps[] = [
   {
     path: RoutePath.PROFILE,
     element: <ProfilePageAsync />,
+  },
+  {
+    path: RoutePath.ADDRESSES,
+    element: <AddressPageAsync />,
+  },
+  {
+    path: RoutePath.PASSWORD,
+    element: <PasswordPageAsync />,
   },
 ]

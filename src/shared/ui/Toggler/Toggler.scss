@@ -18,6 +18,7 @@
 }
 
 .toggler-control {
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -55,9 +56,11 @@
 }
 
 .toggler-input:disabled ~ .toggler-state .toggler-control {
-  background-color: vars.$neutral-gray868686;
+  cursor: default;
+  background-color: vars.$neutral-grayadadad;
 }
 
 .toggler-input:disabled ~ .toggler-state .toggler-control .toggler-switch {
+  cursor: default;
   background-color: vars.$neutral-gray606060;
 }
