@@ -243,55 +243,6 @@
   outline: 0.1rem solid vars.$color-primary;
 }
 
-.pagination {
-  display: flex;
-  gap: 0.5rem;
-  justify-content: center;
-  width: 100%;
-  margin: 2rem auto 0;
-
-  @media (width <= 700px) {
-    gap: 0.3rem;
-  }
-}
-
-.paginationbutton {
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  aspect-ratio: 1 / 1;
-  height: 2rem;
-  border: none;
-  font-size: small;
-  background-color: vars.$color-white;
-
-  @media (width <= 700px) {
-    height: 1.5rem;
-    font-size: x-small;
-  }
-
-  @media (width <= 700px) {
-    height: 1rem;
-    font-size: xx-small;
-  }
-
-  @media (width <= 450px) {
-    font-size: 5px;
-  }
-}
-
-.paginationbutton:disabled {
-  cursor: default;
-  opacity: 0.8;
-}
-
-.paginationbutton.active {
-  border-color: vars.$color-primary;
-  color: vars.$color-white;
-  background-color: vars.$color-primary;
-}
-
 .sortcontainer {
   display: flex;
   flex-wrap: wrap;
