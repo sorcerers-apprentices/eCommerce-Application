@@ -8,7 +8,10 @@ import type {
 } from '@commercetools/platform-sdk'
 import { builder } from '@/server/client.ts'
 import type { SortType } from '@/components/Category/SortComponent/SortControlComponent.tsx'
-import type { MyCustomerUpdateAction } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/me'
+import type {
+  MyCartAddLineItemAction,
+  MyCustomerUpdateAction,
+} from '@commercetools/platform-sdk/dist/declarations/src/generated/models/me'
 
 export enum ApiErrorCode {
   INVALID_CUSTOMER_ACCOUNT_CREDENTIALS = 'invalid_customer_account_credentials',
@@ -129,12 +132,30 @@ export const api = {
       return builder().productProjections().withId({ ID: id }).get().execute()
     },
   },
-  createCart: async (): Promise<ClientResponse<Cart>> => {
-    return builder()
-      .me()
-      .carts()
-      .post({ body: { currency: 'EUR' } })
-      .execute()
+  cart: {
+    fetchActiveCart: async (): Promise<ClientResponse<Cart>> => {
+      return builder().me().activeCart().get().execute()
+    },
+    createCart: async (): Promise<ClientResponse<Cart>> => {
+      return builder()
+        .me()
+        .carts()
+        .post({ body: { currency: 'EUR' } })
+        .execute()
+    },
+    addProductToCart: async (cartId: string, productId: string, quantity: number): Promise<ClientResponse<Cart>> => {
+      const updateAction: MyCartAddLineItemAction = {
+        action: 'addLineItem',
+        productId,
+        quantity,
+      }
+      return builder()
+        .me()
+        .carts()
+        .withId({ ID: cartId })
+        .post({ body: { version: (await api.user.fetchMe()).body.version, actions: [updateAction] } })
+        .execute()
+    },
   },
 }
 

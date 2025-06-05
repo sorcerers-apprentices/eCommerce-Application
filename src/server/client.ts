@@ -60,7 +60,7 @@ const createAnonymousClient = (): Client => {
   return new ClientBuilder()
     .withProjectKey(environment.PROJECT_KEY)
     .withHttpMiddleware(httpMiddlewareOptions)
-    .withClientCredentialsFlow(authMiddlewareOptions)
+    .withAnonymousSessionFlow(authMiddlewareOptions)
     .build()
 }
 
