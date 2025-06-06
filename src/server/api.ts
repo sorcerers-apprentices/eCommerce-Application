@@ -1,10 +1,10 @@
-import type {
-  Cart,
-  CategoryPagedQueryResponse,
-  ClientResponse,
-  Customer,
-  ProductProjection,
-  ProductProjectionPagedSearchResponse,
+import {
+  type Cart,
+  type CategoryPagedQueryResponse,
+  type ClientResponse,
+  type Customer,
+  type ProductProjection,
+  type ProductProjectionPagedSearchResponse,
 } from '@commercetools/platform-sdk'
 import { builder } from '@/server/client.ts'
 import type { SortType } from '@/components/Category/SortComponent/SortControlComponent.tsx'
@@ -111,7 +111,6 @@ export const api = {
               : {}),
             sort,
             priceCurrency: 'EUR',
-            priceCountry: 'ES',
           },
         })
         .execute()
@@ -153,8 +152,11 @@ export const api = {
         .me()
         .carts()
         .withId({ ID: cartId })
-        .post({ body: { version: (await api.user.fetchMe()).body.version, actions: [updateAction] } })
+        .post({ body: { version: (await api.cart.fetchActiveCart()).body.version, actions: [updateAction] } })
         .execute()
+    },
+    receiveCartWithProducts: async (cartId: string): Promise<ClientResponse<Cart>> => {
+      return builder().me().carts().withId({ ID: cartId }).get().execute()
     },
   },
 }

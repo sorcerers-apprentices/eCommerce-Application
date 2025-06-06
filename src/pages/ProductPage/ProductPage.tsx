@@ -13,9 +13,9 @@ import Breadcrumbs from '@/components/Breadcrumbs/Breadcrumbs'
 import { type ReactElement, useCallback, useMemo, useState } from 'react'
 import { type SliderImage, Slider } from '@/components/Slider/Slider.tsx'
 import { Modal } from '@/shared/ui/Modal/Modal.tsx'
+import { CENTS_IN_DOLLAR } from '@/shared/utilities/price.ts'
 
 const ProductPage = (): ReactElement => {
-  const CENTS_IN_DOLLAR = 100
   const { id } = useParams()
   const [isModalOpen, setIsModalOpen] = useState(false)
 
