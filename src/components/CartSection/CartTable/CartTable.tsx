@@ -5,13 +5,7 @@ import { useFetch } from '@/shared/hooks/useFetch'
 import { api } from '@/server/api'
 import type { Cart, ClientResponse } from '@commercetools/platform-sdk'
 import Loader from '@/shared/ui/Loader/Loader'
-import { CartMapper } from '../cartMapper'
-
-// const cartItemData = [
-//   { id: '1', name: 'Product 1', image: '/images/cat-yellow-bg.jpeg', price: 100, quantity: 1, total: 100 },
-
-//   { id: '2', name: 'Product 2', image: '/images/dog-green-bg.jpg', price: 200, quantity: 2, total: 400 },
-// ]
+import { CartMapper } from '../CartMapper'
 
 export const CartTable = (): JSX.Element => {
   const { data, error, loading } = useFetch<ClientResponse<Cart>>(api.cart.fetchActiveCart)

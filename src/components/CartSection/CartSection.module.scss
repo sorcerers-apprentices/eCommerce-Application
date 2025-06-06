@@ -1,30 +1,14 @@
 @use '@/styles/variables' as vars;
 @use '@/styles/mixins' as mixins;
 
-.section {
-  padding: 2rem;
-  background-color: vars.$color-primary25;
-}
+.image {
+  display: inline-block;
+  width: 6rem;
+  height: 6rem;
 
-.links {
-  cursor: default;
-  display: flex;
-  flex-direction: row;
-  gap: 1rem;
-  align-items: center;
-  justify-content: center;
-}
-
-.disabled {
-  font-weight: 600;
-}
-
-.or {
-  width: 0.1rem;
-  height: 1rem;
-  background-color: black;
-}
-
-.link {
-  @include mixins.link;
+  & img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
 }
