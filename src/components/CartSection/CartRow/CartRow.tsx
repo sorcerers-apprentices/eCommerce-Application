@@ -11,7 +11,9 @@ export const CartRow = ({ cartItemData, productLink }: TProperties): JSX.Element
   return (
     <tr>
       <td>
-        <Link to={productLink}>{cartItemData.image}</Link>
+        <Link to={productLink}>
+          <img src={cartItemData.image} alt={cartItemData.name} />
+        </Link>
         <Link to={productLink}>{cartItemData.name}</Link>
       </td>
       <td>{cartItemData.price}</td>
