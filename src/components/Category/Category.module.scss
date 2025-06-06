@@ -190,6 +190,7 @@
 
 .productitem {
   cursor: pointer;
+  z-index: 100;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -273,5 +274,21 @@
 
   &:hover > svg {
     color: vars.$color-primary;
+  }
+
+  &:disabled {
+    cursor: auto;
+    opacity: 0.5;
+    background-color: vars.$color-primary50;
+  }
+
+  &:disabled:hover {
+    border-color: vars.$color-primary50;
+    background-color: vars.$color-primary50;
+  }
+
+  &:disabled:hover > svg {
+    cursor: auto;
+    color: vars.$color-black;
   }
 }

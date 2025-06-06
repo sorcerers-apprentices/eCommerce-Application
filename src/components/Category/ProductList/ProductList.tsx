@@ -1,12 +1,15 @@
 import type { ProductProjection } from '@commercetools/platform-sdk'
 import s from '../Category.module.scss'
-import { type ReactElement, useContext } from 'react'
+import { type ReactElement, useContext, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Pagination } from '@/components/Pagination/Pagination.tsx'
 import { HiOutlineShoppingCart } from 'react-icons/hi'
 import { CENTS_IN_DOLLAR } from '@/shared/utilities/price.ts'
 import { CartContext } from '@/app/providers/CartProvider/CartContext.ts'
 import { api } from '@/server/api.ts'
+import { useFetch } from '@/shared/hooks/useFetch.tsx'
+import { toast } from 'react-hot-toast'
+import Loader from '@/shared/ui/Loader/Loader.tsx'
 
 type ProductListProperties = {
   currentPage: number
@@ -27,10 +30,39 @@ export const ProductList = ({
   const totalPages = Math.ceil(totalProducts / pageSize)
   const { state } = useContext(CartContext)
 
-  const addProductToCart = async (id: string): Promise<void> => {
+  useFetch(
+    api.cart.fetchActiveCart,
+    useMemo(
+      () => ({
+        onSuccess: (response): void => {
+          const productIds = response.body.lineItems.map((lineItem) => lineItem.productId)
+          setProductsInCart((previous) => [...previous, ...productIds])
+        },
+        onFailure: (): void => {
+          toast.error('Cannot find product cart')
+        },
+      }),
+      []
+    )
+  )
+
+  const [productsInCart, setProductsInCart] = useState<Array<string>>([])
+  const [loadingProductIds, setLoadingProductIds] = useState<Array<string>>([])
+
+  const addProductToCart = async (productId: string): Promise<void> => {
     if (state.id) {
-      const response = await api.cart.addProductToCart(state.id, id, 1)
-      console.log(response)
+      setProductsInCart((previous) => [...previous, productId])
+      try {
+        setLoadingProductIds((previous) => [...previous, productId])
+        const response = await api.cart.addProductToCart(state.id, productId, 1)
+        setLoadingProductIds((previous) => [...previous.filter((it) => it !== productId)])
+        toast.success(`${products?.find((product) => product.id === productId)?.name['en-US'] ?? ''} add to cart`)
+        console.log(response.body)
+      } catch (err) {
+        if (err instanceof Error) {
+          throw new Error('Error adding cart to cart')
+        }
+      }
     }
   }
 
@@ -39,14 +71,19 @@ export const ProductList = ({
       <ul className={s.productlist}>
         {products?.map((product) => {
           const id = product.id
-          const centPrice = product.masterVariant.prices?.find((price) => price.country === 'ES')?.value.centAmount
+          const centPrice = product.masterVariant.scopedPrice?.value.centAmount
           const discountPrice = product.masterVariant.prices?.find((price) => price.discounted)?.value.centAmount
           return (
             <li key={product.id}>
-              <button className={s.iconcontainer} onClick={async () => await addProductToCart(id)}>
+              <button
+                className={s.iconcontainer}
+                onClick={async () => await addProductToCart(id)}
+                disabled={productsInCart.includes(product.id)}
+              >
                 <HiOutlineShoppingCart className="icon" />
               </button>
               <Link to={`/product/${id}`} className={s.productitem}>
+                {loadingProductIds.includes(id) && <Loader />}
                 {discountPrice && <span className={s.salenumber}>15% OFF</span>}
                 <img
                   src={product.masterVariant.images?.[0].url}

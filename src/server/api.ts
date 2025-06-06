@@ -111,7 +111,6 @@ export const api = {
               : {}),
             sort,
             priceCurrency: 'EUR',
-            priceCountry: 'ES',
           },
         })
         .execute()

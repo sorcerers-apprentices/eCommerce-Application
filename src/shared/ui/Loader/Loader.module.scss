@@ -5,6 +5,7 @@
 
 .lds {
   position: relative;
+  z-index: 20000;
   display: inline-block;
   width: 80px;
   height: 80px;
