@@ -1,7 +1,15 @@
 import type { ProductProjection } from '@commercetools/platform-sdk'
 import s from '../Category.module.scss'
-import type { ReactElement } from 'react'
+import { type ReactElement, useContext, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { Pagination } from '@/components/Pagination/Pagination.tsx'
+import { HiOutlineShoppingCart } from 'react-icons/hi'
+import { CENTS_IN_DOLLAR } from '@/shared/utilities/price.ts'
+import { CartContext } from '@/app/providers/CartProvider/CartContext.ts'
+import { api } from '@/server/api.ts'
+import { useFetch } from '@/shared/hooks/useFetch.tsx'
+import { toast } from 'react-hot-toast'
+import Loader from '@/shared/ui/Loader/Loader.tsx'
 
 type ProductListProperties = {
   currentPage: number
@@ -18,53 +26,44 @@ export const ProductList = ({
   onPageChange,
   products,
 }: ProductListProperties): ReactElement => {
-  const CENTS_IN_DOLLAR = 100
-  const MAX_PAGE_BUTTONS = 4
-
   const totalProducts = total || 0
   const totalPages = Math.ceil(totalProducts / pageSize)
+  const { state } = useContext(CartContext)
 
-  const getPaginationButtons = (): (number | string)[] => {
-    const buttons: (number | string)[] = []
+  useFetch(
+    api.cart.fetchActiveCart,
+    useMemo(
+      () => ({
+        onSuccess: (response): void => {
+          const productIds = response.body.lineItems.map((lineItem) => lineItem.productId)
+          setProductsInCart((previous) => [...previous, ...productIds])
+        },
+        onFailure: (): void => {
+          toast.error('Cannot find product cart')
+        },
+      }),
+      []
+    )
+  )
 
-    if (totalPages <= MAX_PAGE_BUTTONS) {
-      return Array.from({ length: totalPages }, (_, pageIndex) => pageIndex)
-    }
+  const [productsInCart, setProductsInCart] = useState<Array<string>>([])
+  const [loadingProductIds, setLoadingProductIds] = useState<Array<string>>([])
 
-    const sideButtons = 2
-    const aroundCurrent = 2
-    buttons.push(0)
-
-    let start = Math.max(sideButtons, currentPage - aroundCurrent)
-    let end = Math.min(totalPages - sideButtons, currentPage + aroundCurrent)
-
-    const buttonsNeeded = MAX_PAGE_BUTTONS - sideButtons
-    if (end - start + 1 < buttonsNeeded) {
-      if (currentPage < totalPages / sideButtons) {
-        end = Math.min(totalPages - 1, start + buttonsNeeded - 1)
-      } else {
-        start = Math.max(sideButtons, end - buttonsNeeded + 1)
+  const addProductToCart = async (productId: string): Promise<void> => {
+    if (state.id) {
+      setProductsInCart((previous) => [...previous, productId])
+      try {
+        setLoadingProductIds((previous) => [...previous, productId])
+        const response = await api.cart.addProductToCart(state.id, productId, 1)
+        setLoadingProductIds((previous) => [...previous.filter((it) => it !== productId)])
+        toast.success(`${products?.find((product) => product.id === productId)?.name['en-US'] ?? ''} add to cart`)
+        console.log(response.body)
+      } catch (err) {
+        if (err instanceof Error) {
+          throw new Error('Error adding cart to cart')
+        }
       }
     }
-
-    if (start > sideButtons) {
-      buttons.push('...')
-    }
-
-    for (let index = start - 1; index <= end; index++) {
-      buttons.push(index)
-    }
-
-    if (end < totalPages - sideButtons) {
-      buttons.push('...')
-    }
-
-    buttons.push(totalPages - 1)
-    return buttons
-  }
-
-  const goToPage = (page: number): void => {
-    onPageChange(Math.max(0, Math.min(page, totalPages - 1)))
   }
 
   return (
@@ -72,11 +71,19 @@ export const ProductList = ({
       <ul className={s.productlist}>
         {products?.map((product) => {
           const id = product.id
-          const centPrice = product.masterVariant.prices?.find((price) => price.country === 'ES')?.value.centAmount
+          const centPrice = product.masterVariant.scopedPrice?.value.centAmount
           const discountPrice = product.masterVariant.prices?.find((price) => price.discounted)?.value.centAmount
           return (
             <li key={product.id}>
+              <button
+                className={s.iconcontainer}
+                onClick={async () => await addProductToCart(id)}
+                disabled={productsInCart.includes(product.id)}
+              >
+                <HiOutlineShoppingCart className="icon" />
+              </button>
               <Link to={`/product/${id}`} className={s.productitem}>
+                {loadingProductIds.includes(id) && <Loader />}
                 {discountPrice && <span className={s.salenumber}>15% OFF</span>}
                 <img
                   src={product.masterVariant.images?.[0].url}
@@ -99,33 +106,7 @@ export const ProductList = ({
         })}
       </ul>
       {totalPages > 1 && (
-        <div className={s.pagination}>
-          <button onClick={() => goToPage(currentPage - 1)} disabled={currentPage === 0} className={s.paginationbutton}>
-            Previous
-          </button>
-          {getPaginationButtons().map((pageIndex, index) =>
-            typeof pageIndex === 'string' ? (
-              <span key={`ellipsis-${index}`} className={s.ellipsis}>
-                {pageIndex}
-              </span>
-            ) : (
-              <button
-                key={pageIndex}
-                onClick={() => goToPage(pageIndex)}
-                className={`${s.paginationbutton} ${currentPage === pageIndex ? s.active : ''}`}
-              >
-                {pageIndex + 1}
-              </button>
-            )
-          )}
-          <button
-            onClick={() => goToPage(currentPage + 1)}
-            disabled={currentPage === totalPages - 1}
-            className={s.paginationbutton}
-          >
-            Next
-          </button>
-        </div>
+        <Pagination totalPages={totalPages} currentPage={currentPage} onPageChange={onPageChange}></Pagination>
       )}
     </section>
   )
