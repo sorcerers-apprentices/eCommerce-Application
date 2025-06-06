@@ -1,8 +1,12 @@
 import type { ProductProjection } from '@commercetools/platform-sdk'
 import s from '../Category.module.scss'
-import type { ReactElement } from 'react'
+import { type ReactElement, useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { Pagination } from '@/components/Pagination/Pagination.tsx'
+import { HiOutlineShoppingCart } from 'react-icons/hi'
+import { CENTS_IN_DOLLAR } from '@/shared/utilities/price.ts'
+import { CartContext } from '@/app/providers/CartProvider/CartContext.ts'
+import { api } from '@/server/api.ts'
 
 type ProductListProperties = {
   currentPage: number
@@ -19,10 +23,16 @@ export const ProductList = ({
   onPageChange,
   products,
 }: ProductListProperties): ReactElement => {
-  const CENTS_IN_DOLLAR = 100
-
   const totalProducts = total || 0
   const totalPages = Math.ceil(totalProducts / pageSize)
+  const { state } = useContext(CartContext)
+
+  const addProductToCart = async (id: string): Promise<void> => {
+    if (state.id) {
+      const response = await api.cart.addProductToCart(state.id, id, 1)
+      console.log(response)
+    }
+  }
 
   return (
     <section className={s.productssection}>
@@ -33,6 +43,9 @@ export const ProductList = ({
           const discountPrice = product.masterVariant.prices?.find((price) => price.discounted)?.value.centAmount
           return (
             <li key={product.id}>
+              <button className={s.iconcontainer} onClick={async () => await addProductToCart(id)}>
+                <HiOutlineShoppingCart className="icon" />
+              </button>
               <Link to={`/product/${id}`} className={s.productitem}>
                 {discountPrice && <span className={s.salenumber}>15% OFF</span>}
                 <img

@@ -170,6 +170,7 @@
   justify-content: flex-start;
 
   & > * {
+    position: relative;
     width: calc(100% / 3 - 1rem);
 
     @media (width <= 1000px) {
@@ -252,4 +253,25 @@
 
 .btn {
   @include mixins.btn;
+}
+
+.iconcontainer {
+  cursor: pointer;
+  position: absolute;
+  z-index: 100;
+  top: 3%;
+  left: 85%;
+  width: 10%;
+  padding: 0.5rem;
+  border: 1px solid vars.$color-black;
+  border-radius: 0.2rem;
+  background-color: transparent;
+
+  &:hover {
+    border-color: vars.$color-primary;
+  }
+
+  &:hover > svg {
+    color: vars.$color-primary;
+  }
 }
