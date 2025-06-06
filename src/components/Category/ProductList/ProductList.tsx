@@ -58,10 +58,8 @@ export const ProductList = ({
         setLoadingProductIds((previous) => [...previous.filter((it) => it !== productId)])
         toast.success(`${products?.find((product) => product.id === productId)?.name['en-US'] ?? ''} add to cart`)
         console.log(response.body)
-      } catch (err) {
-        if (err instanceof Error) {
-          throw new Error('Error adding cart to cart')
-        }
+      } catch {
+        toast.error('Error adding product to cart')
       }
     }
   }
