@@ -51,7 +51,7 @@ const ProductPage = (): ReactElement => {
   } = useFetch<ClientResponse<CategoryPagedQueryResponse>>(api.product.fetchCategories)
 
   const discountPrice = product?.body.masterVariant.prices?.find((price) => price.discounted)?.value.centAmount
-  const centPrice = product?.body.masterVariant.prices?.find((price) => price.country === 'ES')?.value.centAmount
+  const centPrice = (product?.body.masterVariant?.prices ?? [])[0]?.value.centAmount
   const brand: string | undefined = product?.body.masterVariant.attributes?.find(
     (attribute) => attribute.name === 'brand'
   )?.value
