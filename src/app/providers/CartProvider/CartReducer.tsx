@@ -1,16 +1,21 @@
-import type { CartState } from '@/app/providers/CartProvider/CartContext.ts'
+import type { CartState } from './CartContext'
 
-export type CartContextAction = SetCartId
-
-export enum CartActionType {
+export enum CartAction {
   SET_CART_ID = 'SET_CART_ID',
+  SET_COUNT = 'SET_COUNT',
 }
 
-type SetCartId = {
-  type: CartActionType.SET_CART_ID
-  payload: { id?: string }
-}
+export type CartActionType =
+  | { type: CartAction.SET_CART_ID; payload: { id?: string } }
+  | { type: CartAction.SET_COUNT; payload: { countProducts: number } }
 
-export const cartReducer = (state: CartState, action: CartContextAction): CartState => {
-  return { ...state, ...action.payload }
+export const cartReducer = (state: CartState, action: CartActionType): CartState => {
+  switch (action.type) {
+    case CartAction.SET_CART_ID:
+      return { ...state, ...action.payload }
+    case CartAction.SET_COUNT:
+      return { ...state, countProducts: action.payload.countProducts }
+    default:
+      return state
+  }
 }

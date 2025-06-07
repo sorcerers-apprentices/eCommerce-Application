@@ -1,5 +1,5 @@
+import type { CartActionType } from './CartReducer'
 import { createContext, type Dispatch } from 'react'
-import type { CartContextAction } from '@/app/providers/CartProvider/CartReducer'
 
 export type CartState = {
   id?: string
@@ -8,7 +8,7 @@ export type CartState = {
 
 export type CartContext = {
   state: CartState
-  dispatch: Dispatch<CartContextAction>
+  dispatch: Dispatch<CartActionType>
   loading: boolean
 }
 
