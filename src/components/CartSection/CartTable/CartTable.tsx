@@ -8,7 +8,7 @@ import Loader from '@/shared/ui/Loader/Loader'
 import { CartMapper } from '../CartMapper'
 
 export const CartTable = (): JSX.Element => {
-  const { data, error, loading } = useFetch<ClientResponse<Cart>>(api.cart.fetchActiveCart)
+  const { data, error, loading, refetch } = useFetch<ClientResponse<Cart>>(api.cart.fetchActiveCart)
   return (
     <>
       {loading && <Loader />}
@@ -22,13 +22,23 @@ export const CartTable = (): JSX.Element => {
               <th>Quantity</th>
               <th>Total</th>
               <th>
-                <button>Clear all</button>
+                <button
+                  type="button"
+                  onClick={async () => {
+                    if (data?.body.id) {
+                      await api.cart.clearCart(data.body.id)
+                      refetch()
+                    }
+                  }}
+                >
+                  Clear all
+                </button>
               </th>
             </tr>
           </thead>
           <tbody>
             {CartMapper.toCartView(data.body).map((product) => (
-              <CartRow key={product.id} cartItemData={product} productLink={RoutePath.MAIN} />
+              <CartRow key={product.id} cartItemData={product} productLink={RoutePath.MAIN} refetch={refetch} />
             ))}
           </tbody>
         </table>
