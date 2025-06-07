@@ -190,7 +190,7 @@
 
 .productitem {
   cursor: pointer;
-  z-index: 100;
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -259,7 +259,7 @@
 .iconcontainer {
   cursor: pointer;
   position: absolute;
-  z-index: 100;
+  z-index: 5;
   top: 3%;
   left: 85%;
   width: 10%;

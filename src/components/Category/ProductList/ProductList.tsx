@@ -58,10 +58,8 @@ export const ProductList = ({
         setLoadingProductIds((previous) => [...previous.filter((it) => it !== productId)])
         toast.success(`${products?.find((product) => product.id === productId)?.name['en-US'] ?? ''} add to cart`)
         console.log(response.body)
-      } catch (err) {
-        if (err instanceof Error) {
-          throw new Error('Error adding cart to cart')
-        }
+      } catch {
+        toast.error('Error adding product to cart')
       }
     }
   }
@@ -71,8 +69,9 @@ export const ProductList = ({
       <ul className={s.productlist}>
         {products?.map((product) => {
           const id = product.id
-          const centPrice = product.masterVariant.scopedPrice?.value.centAmount
-          const discountPrice = product.masterVariant.prices?.find((price) => price.discounted)?.value.centAmount
+          const centPrice = product.masterVariant.scopedPrice?.value.centAmount ?? 0
+          const discountPrice = product.masterVariant.scopedPrice?.discounted?.value.centAmount
+          const discount = discountPrice && CENTS_IN_DOLLAR - (discountPrice / centPrice) * CENTS_IN_DOLLAR
           return (
             <li key={product.id}>
               <button
@@ -84,7 +83,7 @@ export const ProductList = ({
               </button>
               <Link to={`/product/${id}`} className={s.productitem}>
                 {loadingProductIds.includes(id) && <Loader />}
-                {discountPrice && <span className={s.salenumber}>15% OFF</span>}
+                {discount && <span className={s.salenumber}>{discount}% OFF</span>}
                 <img
                   src={product.masterVariant.images?.[0].url}
                   alt={product.name?.['en-US'] || 'Product image'}
