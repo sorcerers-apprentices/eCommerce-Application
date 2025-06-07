@@ -7,11 +7,12 @@
     "module": "ESNext",
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
+    "types": ["@testing-library/jest-dom"],
 
     /* Paths */
-    "baseUrl": "./src",
+    "baseUrl": ".",
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["src/*"]
     },
 
     /* Source maps */
@@ -36,7 +37,8 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true
+    "noUncheckedSideEffectImports": true,
+    "allowSyntheticDefaultImports": true
   },
   "include": ["src"]
 }

@@ -15,17 +15,6 @@ import type {
   TokenCache,
 } from '@commercetools/sdk-client-v2/dist/declarations/src/types/sdk'
 
-const anonymousTokenCacheKey = 'COMMERCE_TOOLS_ANONYMOUS_TOKEN_CACHE_KEY'
-const anonymousTokenCache: TokenCache = {
-  get(): TokenStore {
-    const tokenStoreJson = localStorage.getItem(anonymousTokenCacheKey)!
-    return JSON.parse(tokenStoreJson)
-  },
-  set(cache: TokenStore): void {
-    localStorage.setItem(anonymousTokenCacheKey, JSON.stringify(cache))
-  },
-}
-
 const tokenCacheKey = 'COMMERCE_TOOLS_TOKEN_CACHE_KEY'
 const tokenCache: TokenCache = {
   get(): TokenStore {
@@ -52,7 +41,7 @@ const createAnonymousClient = (): Client => {
       clientSecret: environment.CLIENT_SECRET,
       anonymousId: crypto.randomUUID(),
     },
-    tokenCache: anonymousTokenCache,
+    tokenCache: tokenCache,
     scopes: environment.SCOPES,
     fetch,
   }
@@ -95,7 +84,6 @@ export const builder = (): ByProjectKeyRequestBuilder => {
 export const resetClients = (): void => {
   localStorage.removeItem(tokenCacheKey)
   refreshBuilder = undefined
-  localStorage.removeItem(anonymousTokenCacheKey)
   anonymousBuilder = createAnonymousRequestBuilder()
 }
 

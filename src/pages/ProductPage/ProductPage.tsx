@@ -3,6 +3,7 @@ import type {
   ClientResponse,
   ProductProjection,
   CategoryPagedQueryResponse,
+  Price,
 } from '@commercetools/platform-sdk'
 import { api } from '@/server/api'
 import s from './ProductPage.module.scss'
@@ -13,9 +14,9 @@ import Breadcrumbs from '@/components/Breadcrumbs/Breadcrumbs'
 import { type ReactElement, useCallback, useMemo, useState } from 'react'
 import { type SliderImage, Slider } from '@/components/Slider/Slider.tsx'
 import { Modal } from '@/shared/ui/Modal/Modal.tsx'
+import { CENTS_IN_DOLLAR } from '@/shared/utilities/price.ts'
 
 const ProductPage = (): ReactElement => {
-  const CENTS_IN_DOLLAR = 100
   const { id } = useParams()
   const [isModalOpen, setIsModalOpen] = useState(false)
 
@@ -50,8 +51,9 @@ const ProductPage = (): ReactElement => {
     loading: categoriesLoading,
   } = useFetch<ClientResponse<CategoryPagedQueryResponse>>(api.product.fetchCategories)
 
-  const discountPrice = product?.body.masterVariant.prices?.find((price) => price.discounted)?.value.centAmount
-  const centPrice = product?.body.masterVariant.prices?.find((price) => price.country === 'ES')?.value.centAmount
+  const price: Price | undefined = (product?.body.masterVariant?.prices ?? [])[0]
+  const discountPrice = price?.discounted?.value.centAmount
+  const centPrice = price?.value.centAmount
   const brand: string | undefined = product?.body.masterVariant.attributes?.find(
     (attribute) => attribute.name === 'brand'
   )?.value
