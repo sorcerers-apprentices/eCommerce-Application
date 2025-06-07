@@ -1,4 +1,5 @@
 import {
+  builder,
   createPasswordRequestBuilder,
   createRegistrationRequestBuilder,
   getRefreshToken,
@@ -65,13 +66,30 @@ export const authApi = {
     return authApi.authenticate(parameters.email, parameters.password)
   },
   authenticate: async (email: string, password: string): Promise<ClientResponse<CustomerSignInResult>> => {
+    // use anonymous builder to merge carts
+    await builder()
+      .me()
+      .login()
+      .post({
+        body: {
+          email,
+          password,
+          activeCartSignInMode: 'MergeWithExistingCustomerCart',
+        },
+      })
+      .execute()
+
     resetClients()
+    // fetch me to trigger authentication to get authenticated token
     const passwordBuilder = createPasswordRequestBuilder(email, password)
     return await passwordBuilder
       .me()
       .login()
       .post({
-        body: { email, password },
+        body: {
+          email,
+          password,
+        },
       })
       .execute()
   },
