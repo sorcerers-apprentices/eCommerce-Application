@@ -17,7 +17,7 @@ export const CartSection = (): JSX.Element => {
       <div>
         {loading && <Loader />}
         {error && <div>{error.message}</div>}
-        {data && <pre style={{ textAlign: 'left' }}>{JSON.stringify(data.body, REPLACER, SPACE)}</pre>}
+        {data && <pre style={{ textAlign: 'left' }}>{JSON.stringify(data.body.lineItems, REPLACER, SPACE)}</pre>}
       </div>
     </div>
   )
