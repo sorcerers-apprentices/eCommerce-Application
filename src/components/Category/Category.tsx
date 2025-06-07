@@ -5,6 +5,7 @@ import type {
   ProductProjectionPagedSearchResponse,
 } from '@commercetools/platform-sdk'
 import s from './Category.module.scss'
+import { TbSearch } from 'react-icons/tb'
 import { useFetch } from '@/shared/hooks/useFetch'
 import { useSearchParams } from 'react-router-dom'
 import { api, type CategoryFilter } from '@/server/api'
@@ -14,7 +15,6 @@ import { ProductList } from '@/components/Category/ProductList/ProductList'
 import { CategoryMenu } from '@/components/Category/RenderCategory/CategoryMenu'
 import { SortControlComponent } from '@/components/Category/SortComponent/SortControlComponent'
 import { type ChangeEvent, type ReactElement, useCallback, useEffect, useMemo, useState } from 'react'
-import { TbSearch } from 'react-icons/tb'
 
 const ITEMS_PER_PAGE = 6
 
