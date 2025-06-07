@@ -10,6 +10,7 @@ import { builder } from '@/server/client.ts'
 import type { SortType } from '@/components/Category/SortComponent/SortControlComponent.tsx'
 import type {
   MyCartAddLineItemAction,
+  MyCartUpdateAction,
   MyCustomerUpdateAction,
 } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/me'
 
@@ -153,6 +154,83 @@ export const api = {
         .carts()
         .withId({ ID: cartId })
         .post({ body: { version: (await api.cart.fetchActiveCart()).body.version, actions: [updateAction] } })
+        .execute()
+    },
+    decrementProductInCart: async (cartId: string, productId: string): Promise<ClientResponse<Cart>> => {
+      const activeCart = await api.cart.fetchActiveCart()
+      const version = activeCart.body.version
+      const item = activeCart.body.lineItems.find((i) => i.productId === productId)
+      if (!item) {
+        throw new Error('Product not found in cart')
+      }
+      const newQuantity = item.quantity - 1
+      const action: MyCartUpdateAction =
+        newQuantity > 0
+          ? {
+              action: 'changeLineItemQuantity',
+              lineItemId: item.id,
+              quantity: newQuantity,
+            }
+          : {
+              action: 'removeLineItem',
+              lineItemId: item.id,
+            }
+      return builder()
+        .me()
+        .carts()
+        .withId({ ID: cartId })
+        .post({
+          body: {
+            version,
+            actions: [action],
+          },
+        })
+        .execute()
+    },
+    removeProductFromCart: async (cartId: string, productId: string): Promise<ClientResponse<Cart>> => {
+      const activeCart = await api.cart.fetchActiveCart()
+      const version = activeCart.body.version
+      const actions: MyCartUpdateAction[] = activeCart.body.lineItems
+        .filter((item) => item.productId === productId)
+        .map((item) => ({
+          action: 'removeLineItem',
+          lineItemId: item.id,
+        }))
+      if (actions.length === 0) {
+        throw new Error('Product not found in cart')
+      }
+      return builder()
+        .me()
+        .carts()
+        .withId({ ID: cartId })
+        .post({
+          body: {
+            version,
+            actions,
+          },
+        })
+        .execute()
+    },
+    clearCart: async (cartId: string): Promise<ClientResponse<Cart>> => {
+      const activeCart = await api.cart.fetchActiveCart()
+      const version = activeCart.body.version
+      const lineItems = activeCart.body.lineItems
+
+      const actions: MyCartUpdateAction[] = lineItems.map((item) => ({
+        action: 'removeLineItem',
+        lineItemId: item.id,
+      }))
+
+      return builder()
+        .me()
+        .carts()
+        .withId({ ID: cartId })
+        .post({
+          body: {
+            version,
+            actions,
+          },
+        })
         .execute()
     },
     receiveCartWithProducts: async (cartId: string): Promise<ClientResponse<Cart>> => {
