@@ -1,0 +1,14 @@
+@use '@/styles/variables' as vars;
+@use '@/styles/mixins' as mixins;
+
+.image {
+  display: inline-block;
+  width: 6rem;
+  height: 6rem;
+
+  & img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+}

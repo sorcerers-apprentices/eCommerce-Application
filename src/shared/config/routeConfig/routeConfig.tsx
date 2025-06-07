@@ -8,6 +8,7 @@ import { CatalogPageAsync } from '@/pages/CatalogPage/CatalogPage.async'
 import { RegistrationPageAsync } from '@/pages/RegistrationPage/RegistrationPage.async'
 import { PasswordPageAsync } from '@/pages/PasswordPage/PasswordPage.async'
 import { AddressPageAsync } from '@/pages/AddressPage/AddressPage.async.tsx'
+import { CartPageAsync } from '@/pages/CartPage/CartPage.async'
 
 export enum RoutePath {
   MAIN = '/',
@@ -19,6 +20,7 @@ export enum RoutePath {
   ABOUT = '/about',
   PRODUCT = '/product/:id',
   CATALOG = '/catalog',
+  CART = '/cart',
 }
 
 export const publicRoutes: RouteProps[] = [
@@ -41,6 +43,10 @@ export const publicRoutes: RouteProps[] = [
   {
     path: RoutePath.CATALOG,
     element: <CatalogPageAsync />,
+  },
+  {
+    path: RoutePath.CART,
+    element: <CartPageAsync />,
   },
 ]
 

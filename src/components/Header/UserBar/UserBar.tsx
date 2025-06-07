@@ -13,7 +13,7 @@ export const UserBar = (): ReactElement => {
       <NavLink to={RoutePath.MAIN} className={s.icon}>
         <MdFavoriteBorder className="icon" />
       </NavLink>
-      <NavLink to={RoutePath.MAIN} className={s.icon}>
+      <NavLink to={RoutePath.CART} className={s.icon}>
         <HiOutlineShoppingCart className="icon" />
       </NavLink>
       <UserButton />
