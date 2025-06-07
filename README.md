@@ -15,6 +15,7 @@ The project uses the following technologies:
 #### Stack for testing:
 
 - Vitest
+- React Testing Library
 
 ## Setup and Running
 
