@@ -19,7 +19,7 @@ export const CartMapper = {
       const quantity = item.quantity
       const total = +(item.totalPrice.centAmount / DECIMAL_BASE ** fractionDigits).toFixed(fractionDigits)
       return {
-        id: item.id,
+        id: item.productId,
         name,
         image,
         price,
