@@ -1,0 +1,20 @@
+@use '@/styles/variables.scss' as vars;
+
+.cartcount {
+  position: absolute;
+  top: -0.8rem;
+  right: -0.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1rem;
+  height: 1rem;
+  padding: 0.2rem;
+  border-radius: 50%;
+  background: vars.$color-primary;
+}
+
+.count {
+  font-size: 0.7rem;
+  color: vars.$color-white;
+}

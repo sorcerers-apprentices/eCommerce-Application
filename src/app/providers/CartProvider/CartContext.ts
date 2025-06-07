@@ -1,8 +1,9 @@
 import { createContext, type Dispatch } from 'react'
-import type { CartContextAction } from '@/app/providers/CartProvider/CartReducer.tsx'
+import type { CartContextAction } from '@/app/providers/CartProvider/CartReducer'
 
 export type CartState = {
   id?: string
+  countProducts?: number
 }
 
 export type CartContext = {
