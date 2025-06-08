@@ -2,18 +2,15 @@ import { type ReactElement } from 'react'
 import { Toaster } from 'react-hot-toast'
 import AppRouter from '@/app/providers/AppRouter/AppRouter'
 import { UserProvider } from '@/app/providers/UserProvider/UserProvider'
-import { ProductsProvider } from '@/app/providers/ProductsProvider/ProductsProvider'
-import { CartProvider } from '@/app/providers/CartProvider/CartProvider.tsx'
+import { CartProvider } from '@/app/providers/CartProvider/CartProvider'
 
 function App(): ReactElement {
   return (
     <div className="container">
       <UserProvider>
         <CartProvider>
-          <ProductsProvider>
-            <AppRouter />
-            <Toaster position="top-center" />
-          </ProductsProvider>
+          <AppRouter />
+          <Toaster position="top-center" />
         </CartProvider>
       </UserProvider>
     </div>
