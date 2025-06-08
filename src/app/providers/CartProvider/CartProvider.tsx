@@ -36,7 +36,7 @@ export const CartProvider = ({ children }: Partial<ProviderProps<UserState>>): J
     })
     if (response.body.totalLineItemQuantity) {
       dispatch({
-        type: CartAction.SET_COUNT,
+        type: CartAction.SET_COUNTER,
         payload: { countProducts: response.body.totalLineItemQuantity },
       })
     }
