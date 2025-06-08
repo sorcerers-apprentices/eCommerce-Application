@@ -11,9 +11,6 @@ export enum CartAction {
 export type CartActionType =
   | { type: CartAction.SET_CART_ID; payload: { id?: string } }
   | { type: CartAction.SET_COUNTER; payload: { countProducts: number } }
-  | { type: CartAction.ADD_COUNT; payload: { countProducts: number } }
-  | { type: CartAction.REMOVE_COUNT; payload: { countProducts: number } }
-  | { type: CartAction.CLEAR_COUNTER }
 
 export const cartReducer = (state: CartState, action: CartActionType): CartState => {
   switch (action.type) {
@@ -21,12 +18,6 @@ export const cartReducer = (state: CartState, action: CartActionType): CartState
       return { ...state, ...action.payload }
     case CartAction.SET_COUNTER:
       return { ...state, countProducts: action.payload.countProducts }
-    case CartAction.ADD_COUNT:
-      return { ...state, countProducts: (state.countProducts || 0) + action.payload.countProducts }
-    case CartAction.REMOVE_COUNT:
-      return { ...state, countProducts: (state.countProducts || 0) - action.payload.countProducts }
-    case CartAction.CLEAR_COUNTER:
-      return { ...state, countProducts: 0 }
     default:
       return state
   }

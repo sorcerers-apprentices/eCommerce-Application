@@ -10,6 +10,7 @@ import { api } from '@/server/api.ts'
 import { useFetch } from '@/shared/hooks/useFetch.tsx'
 import { toast } from 'react-hot-toast'
 import Loader from '@/shared/ui/Loader/Loader.tsx'
+import { useCart } from '@/hooks/useCart'
 
 type ProductListProperties = {
   currentPage: number
@@ -29,6 +30,7 @@ export const ProductList = ({
   const totalProducts = total || 0
   const totalPages = Math.ceil(totalProducts / pageSize)
   const { state } = useContext(CartContext)
+  const { addProductToCart } = useCart()
 
   useFetch(
     api.cart.fetchActiveCart,
@@ -49,19 +51,12 @@ export const ProductList = ({
   const [productsInCart, setProductsInCart] = useState<Array<string>>([])
   const [loadingProductIds, setLoadingProductIds] = useState<Array<string>>([])
 
-  const addProductToCart = async (productId: string): Promise<void> => {
-    if (state.id) {
-      setProductsInCart((previous) => [...previous, productId])
-      try {
-        setLoadingProductIds((previous) => [...previous, productId])
-        const response = await api.cart.addProductToCart(state.id, productId, 1)
-        setLoadingProductIds((previous) => [...previous.filter((it) => it !== productId)])
-        toast.success(`${products?.find((product) => product.id === productId)?.name['en-US'] ?? ''} add to cart`)
-        console.log(response.body)
-      } catch {
-        toast.error('Error adding product to cart')
-      }
-    }
+  const addToCart = async (productId: string): Promise<void> => {
+    if (!state.id) return
+    setLoadingProductIds((prev) => [...prev, productId])
+    setProductsInCart((prev) => [...prev, productId])
+    await addProductToCart(productId, 1)
+    setLoadingProductIds((prev) => prev.filter((id) => id !== productId))
   }
 
   return (
@@ -76,7 +71,7 @@ export const ProductList = ({
             <li key={product.id}>
               <button
                 className={s.iconcontainer}
-                onClick={async () => await addProductToCart(id)}
+                onClick={async () => await addToCart(id)}
                 disabled={productsInCart.includes(product.id)}
               >
                 <HiOutlineShoppingCart className="icon" />
