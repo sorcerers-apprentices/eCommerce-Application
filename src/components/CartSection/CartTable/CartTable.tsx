@@ -6,9 +6,11 @@ import { api } from '@/server/api'
 import type { Cart, ClientResponse } from '@commercetools/platform-sdk'
 import Loader from '@/shared/ui/Loader/Loader'
 import { CartMapper } from '../CartMapper'
+import { useCart } from '@/hooks/useCart'
 
 export const CartTable = (): JSX.Element => {
   const { data, error, loading, refetch } = useFetch<ClientResponse<Cart>>(api.cart.fetchActiveCart)
+  const { clearCart } = useCart()
   return (
     <>
       {loading && <Loader />}
@@ -26,7 +28,7 @@ export const CartTable = (): JSX.Element => {
                   type="button"
                   onClick={async () => {
                     if (data?.body.id) {
-                      await api.cart.clearCart(data.body.id)
+                      await clearCart()
                       refetch()
                     }
                   }}

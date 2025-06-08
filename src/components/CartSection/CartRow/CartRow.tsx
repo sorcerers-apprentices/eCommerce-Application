@@ -1,10 +1,9 @@
-import { useContext, type JSX } from 'react'
+import { type JSX } from 'react'
 import { Link } from 'react-router-dom'
 import { MdDeleteForever } from 'react-icons/md'
 import type { TCartItem } from '@/types/user-types'
 import s from '../CartSection.module.scss'
-import { api } from '@/server/api'
-import { CartContext } from '@/app/providers/CartProvider/CartContext'
+import { useCart } from '@/hooks/useCart'
 
 type TProperties = {
   productLink: string
@@ -13,7 +12,8 @@ type TProperties = {
 }
 
 export const CartRow = ({ cartItemData, productLink, refetch }: TProperties): JSX.Element => {
-  const { state } = useContext(CartContext)
+  const { addProductToCart, decrementProductInCart, removeProductFromCart } = useCart()
+
   return (
     <tr>
       <td>
@@ -27,8 +27,7 @@ export const CartRow = ({ cartItemData, productLink, refetch }: TProperties): JS
         <button
           type="button"
           onClick={async () => {
-            if (!state.id) return
-            await api.cart.addProductToCart(state.id, cartItemData.id, 1)
+            await addProductToCart(cartItemData.id, 1)
             refetch()
           }}
         >
@@ -38,8 +37,7 @@ export const CartRow = ({ cartItemData, productLink, refetch }: TProperties): JS
         <button
           type="button"
           onClick={async () => {
-            if (!state.id) return
-            await api.cart.decrementProductInCart(state.id, cartItemData.id)
+            await decrementProductInCart(cartItemData.id)
             refetch()
           }}
         >
@@ -51,8 +49,7 @@ export const CartRow = ({ cartItemData, productLink, refetch }: TProperties): JS
         <button
           type="button"
           onClick={async () => {
-            if (!state.id) return
-            await api.cart.removeProductFromCart(state.id, cartItemData.id)
+            await removeProductFromCart(cartItemData.id)
             refetch()
           }}
         >
