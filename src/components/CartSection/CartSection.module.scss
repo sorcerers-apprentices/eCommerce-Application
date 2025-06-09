@@ -16,3 +16,12 @@
 .empty {
   @include mixins.center(1rem);
 }
+
+.buttons {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 0 0;
+}

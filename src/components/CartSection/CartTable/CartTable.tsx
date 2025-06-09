@@ -1,4 +1,4 @@
-import type { JSX } from 'react'
+import { useState, type JSX } from 'react'
 import { CartRow } from '../CartRow/CartRow'
 import { RoutePath } from '@/shared/config/routeConfig/routeConfig'
 import { useFetch } from '@/shared/hooks/useFetch'
@@ -10,12 +10,31 @@ import { useCart } from '@/hooks/useCart'
 import s from '../CartSection.module.scss'
 import { Button } from '@/shared/ui/Button/Button'
 import { NavLink } from 'react-router-dom'
+import { Modal } from '@/shared/ui/Modal/Modal'
 
 export const CartTable = (): JSX.Element => {
   const { data, error, loading, refetch } = useFetch<ClientResponse<Cart>>(api.cart.fetchActiveCart)
   const { clearCart } = useCart()
+  const [modal, setModal] = useState(false)
+  const clearAllAndClose = async (): Promise<void> => {
+    if (data?.body.id) {
+      await clearCart()
+      refetch()
+      setModal(false)
+    }
+  }
   return (
     <div className="section">
+      <Modal isOpen={modal} onClose={() => setModal(false)}>
+        <div className="section">
+          <h2>Are you sure you want to clear your cart?</h2>
+          <p>Your pets will be heartbroken without their surprise treats.</p>
+          <div className={s.buttons}>
+            <Button onClick={() => setModal(false)}>Cancel</Button>
+            <Button onClick={clearAllAndClose}>Clear All</Button>
+          </div>
+        </div>
+      </Modal>
       {loading && <Loader />}
       {error && <div>{error.message}</div>}
 
@@ -29,17 +48,14 @@ export const CartTable = (): JSX.Element => {
                 <th>Quantity</th>
                 <th>Total</th>
                 <th>
-                  <button
+                  <Button
                     type="button"
-                    onClick={async () => {
-                      if (data?.body.id) {
-                        await clearCart()
-                        refetch()
-                      }
+                    onClick={() => {
+                      setModal(true)
                     }}
                   >
                     Clear all
-                  </button>
+                  </Button>
                 </th>
               </tr>
             </thead>
