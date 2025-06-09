@@ -15,10 +15,16 @@ import { type ReactElement, useCallback, useMemo, useState } from 'react'
 import { type SliderImage, Slider } from '@/components/Slider/Slider.tsx'
 import { Modal } from '@/shared/ui/Modal/Modal.tsx'
 import { CENTS_IN_DOLLAR } from '@/shared/utilities/price.ts'
+import Footer from '@/components/Footer/Footer.tsx'
+import { Button } from '@/shared/ui/Button/Button.tsx'
+import { toast } from 'react-hot-toast'
+import { useCart } from '@/hooks/useCart.tsx'
 
 const ProductPage = (): ReactElement => {
   const { id } = useParams()
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isProductInCart, setIsProductInCart] = useState(false)
+  const { addProductToCart, removeProductFromCart } = useCart()
 
   const handleOpenModal = (): void => {
     setIsModalOpen(true)
@@ -45,6 +51,24 @@ const ProductPage = (): ReactElement => {
     useMemo(() => ({ enabled: id !== undefined }), [id])
   )
 
+  useFetch(
+    api.cart.fetchActiveCart,
+    useMemo(
+      () => ({
+        onSuccess: (response): void => {
+          const productInCart = response.body.lineItems.find((lineItem) => lineItem.productId === id)
+          if (productInCart) {
+            setIsProductInCart(true)
+          }
+        },
+        onFailure: (): void => {
+          toast.error('Cannot find product cart')
+        },
+      }),
+      []
+    )
+  )
+
   const {
     data: categories,
     error: categoriesError,
@@ -54,18 +78,10 @@ const ProductPage = (): ReactElement => {
   const price: Price | undefined = (product?.body.masterVariant?.prices ?? [])[0]
   const discountPrice = price?.discounted?.value.centAmount
   const centPrice = price?.value.centAmount
-  const brand: string | undefined = product?.body.masterVariant.attributes?.find(
-    (attribute) => attribute.name === 'brand'
-  )?.value
-  const size: string | undefined = product?.body.masterVariant.attributes?.find(
-    (attribute) => attribute.name === 'size'
-  )?.value
-  const volume: string | undefined = product?.body.masterVariant.attributes?.find(
-    (attribute) => attribute.name === 'volume'
-  )?.value
-  const weight: string | undefined = product?.body.masterVariant.attributes?.find(
-    (attribute) => attribute.name === 'weight'
-  )?.value
+
+  const findAttributeData = (name: string): string | undefined => {
+    return product?.body.masterVariant.attributes?.find((attribute) => attribute.name === name)?.value
+  }
   const category: Category | undefined = product?.body.categories?.[0]?.id
     ? categories?.body.results.find((category) => category.id === product.body.categories?.[0].id)
     : undefined
@@ -75,6 +91,19 @@ const ProductPage = (): ReactElement => {
       name: img.label,
     }
   })
+
+  const addToCartHandler = async (): Promise<void> => {
+    if (id) {
+      await addProductToCart(id, 1)
+      setIsProductInCart(true)
+    }
+  }
+  const removeFromCartHandler = async (): Promise<void> => {
+    if (id) {
+      await removeProductFromCart(id)
+      setIsProductInCart(false)
+    }
+  }
 
   return (
     <>
@@ -100,16 +129,28 @@ const ProductPage = (): ReactElement => {
             {discountPrice && <p className={s.productprice}>€ {discountPrice / CENTS_IN_DOLLAR}</p>}
           </div>
           {product?.body.description && <p>{`${product.body.description?.['en-US']}`}</p>}
-          {brand && <h3>Brand: {brand}</h3>}
-          {size && <h3>Size: {size}</h3>}
-          {volume && <h3>Volume: {volume} ml</h3>}
-          {weight && <h3>Weight: {weight} kg</h3>}
+          {findAttributeData('brand') && <h3>Brand: {findAttributeData('brand')}</h3>}
+          {findAttributeData('size') && <h3>Size: {findAttributeData('size')}</h3>}
+          {findAttributeData('volume') && <h3>Volume: {findAttributeData('volume')} ml</h3>}
+          {findAttributeData('weight') && <h3>Weight: {findAttributeData('weight')} kg</h3>}
+          <div>
+            {isProductInCart ? (
+              <Button onClick={async () => removeFromCartHandler()} disabled={!isProductInCart}>
+                Remove from Cart
+              </Button>
+            ) : (
+              <Button onClick={async () => addToCartHandler()} disabled={isProductInCart}>
+                Add to Cart
+              </Button>
+            )}
+          </div>
         </div>
         <div className={s.producdescription}>
           <h2>Full description:</h2>
           {category && <p>{`${category.description?.['en-US']}`}</p>}
         </div>
       </div>
+      <Footer />
     </>
   )
 }
