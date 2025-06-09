@@ -5,7 +5,7 @@ import { CartAction } from '@/app/providers/CartProvider/CartReducer'
 import type { Cart, ClientResponse } from '@commercetools/platform-sdk'
 import { toast } from 'react-hot-toast'
 
-export type BasketOperations = {
+export type CartOperations = {
   loading: boolean
   error: Error | null
   addProductToCart: (productId: string, quantity?: number) => Promise<void>
@@ -14,7 +14,7 @@ export type BasketOperations = {
   clearCart: () => Promise<void>
 }
 
-export const useCart = (): BasketOperations => {
+export const useCart = (): CartOperations => {
   const { state, dispatch } = useCartContext()
   const { data, error, loading } = useFetch<ClientResponse<Cart>>(api.cart.fetchActiveCart)
 
