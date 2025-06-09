@@ -1,0 +1,42 @@
+import type { ReactElement } from 'react'
+import s from './AboutSection.module.scss'
+import AboutCard, { type AboutCardProps } from '@/components/AboutCard/AboutCard'
+
+const ArtemDataProps: AboutCardProps = {
+  name: 'Artem Gassan',
+  activities: 'feature',
+  gitHubName: 'artemgassan',
+  gitHubLink: 'https://github.com/artemgassan',
+  avatarLink: 'https://avatars.githubusercontent.com/u/158855420?v=4',
+  description: 'There will be a description here later',
+}
+
+const DaryaDataProps: AboutCardProps = {
+  name: 'Darya Kolenchenko',
+  activities: 'feature',
+  gitHubName: 'dariechka',
+  gitHubLink: 'https://github.com/dariechka',
+  avatarLink: 'https://avatars.githubusercontent.com/u/149780473?v=4',
+  description: 'There will be a description here later',
+}
+
+const AnnaDataProps: AboutCardProps = {
+  name: 'Anna Vasilevich',
+  activities: 'feature',
+  gitHubName: 'dzichonka',
+  gitHubLink: 'https://github.com/dzichonka',
+  avatarLink: 'https://avatars.githubusercontent.com/u/73832561?v=4',
+  description: 'There will be a description here later',
+}
+
+const AboutSection = (): ReactElement => {
+  return (
+    <section className={s.section}>
+      <AboutCard {...DaryaDataProps} />
+      <AboutCard {...AnnaDataProps} />
+      <AboutCard {...ArtemDataProps} />
+    </section>
+  )
+}
+
+export default AboutSection

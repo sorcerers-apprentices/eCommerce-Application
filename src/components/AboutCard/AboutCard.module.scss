@@ -1,0 +1,16 @@
+@use '@/styles/variables.scss' as vars;
+
+.card {
+  width: 40rem;
+  height: 40rem;
+  padding: 2rem;
+  border: 1px solid vars.$color-primary;
+  border-top: 3rem solid vars.$color-primary;
+  border-radius: 2rem;
+  box-shadow: 7px 10px 8px 0 rgb(34 60 80 / 20%);
+}
+
+.avatar {
+  width: 5rem;
+  border-radius: 4rem;
+}
