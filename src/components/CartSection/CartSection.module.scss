@@ -17,6 +17,16 @@
   @include mixins.center(1rem);
 }
 
+.link {
+  @include mixins.link;
+}
+
+.clear {
+  text-decoration: underline;
+
+  @include mixins.link;
+}
+
 .buttons {
   display: flex;
   flex-direction: row;

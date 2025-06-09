@@ -17,44 +17,50 @@ export const CartRow = ({ cartItemData, productLink, refetch }: TProperties): JS
   return (
     <tr>
       <td>
-        <Link to={productLink} className={s.image}>
-          <img src={cartItemData.image} alt={cartItemData.name} />
-        </Link>
-        <Link to={productLink}>{cartItemData.name}</Link>
+        <div>
+          <Link to={productLink} className={s.image}>
+            <img src={cartItemData.image} alt={cartItemData.name} />
+          </Link>
+          <Link to={productLink}>{cartItemData.name}</Link>
+        </div>
       </td>
-      <td>{cartItemData.price}</td>
       <td>
-        <button
-          type="button"
-          onClick={async () => {
-            await addProductToCart(cartItemData.id, 1)
-            refetch()
-          }}
-        >
-          +
-        </button>
-        <span>{cartItemData.quantity}</span>
-        <button
-          type="button"
-          onClick={async () => {
-            await decrementProductInCart(cartItemData.id)
-            refetch()
-          }}
-        >
-          -
-        </button>
+        <div>{`${cartItemData.price} €`}</div>
       </td>
-      <td>{cartItemData.total}</td>
       <td>
-        <button
-          type="button"
+        <div>
+          <div
+            className={s.link}
+            onClick={async () => {
+              await addProductToCart(cartItemData.id, 1)
+              refetch()
+            }}
+          >
+            +
+          </div>
+          <span>{cartItemData.quantity}</span>
+          <div
+            className={s.link}
+            onClick={async () => {
+              await decrementProductInCart(cartItemData.id)
+              refetch()
+            }}
+          >
+            -
+          </div>
+        </div>
+      </td>
+      <td className={s.td}>{`${cartItemData.total} €`}</td>
+      <td className={s.td}>
+        <div
+          className={s.link}
           onClick={async () => {
             await removeProductFromCart(cartItemData.id)
             refetch()
           }}
         >
           <MdDeleteForever />
-        </button>
+        </div>
       </td>
     </tr>
   )

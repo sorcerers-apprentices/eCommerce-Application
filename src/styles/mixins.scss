@@ -201,11 +201,12 @@
   border-bottom: 2px solid transparent;
   font-weight: 600;
   color: vars.$color-black;
-  transition: all 0.4s ease-in-out;
+  transition: all 0.4s ease;
 
   @media (hover: hover) {
     &:hover {
-      border-bottom: 2px solid vars.$color-primary;
+      cursor: pointer;
+      scale: 1.1;
       color: vars.$color-primary;
     }
   }

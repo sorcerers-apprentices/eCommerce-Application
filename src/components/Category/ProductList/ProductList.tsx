@@ -32,7 +32,7 @@ export const ProductList = ({
   const { state } = useContext(CartContext)
   const { addProductToCart } = useCart()
 
-  useFetch(
+  const { refetch } = useFetch(
     api.cart.fetchActiveCart,
     useMemo(
       () => ({
@@ -56,6 +56,7 @@ export const ProductList = ({
     setLoadingProductIds((prev) => [...prev, productId])
     setProductsInCart((prev) => [...prev, productId])
     await addProductToCart(productId, 1)
+    refetch()
     setLoadingProductIds((prev) => prev.filter((id) => id !== productId))
   }
 
