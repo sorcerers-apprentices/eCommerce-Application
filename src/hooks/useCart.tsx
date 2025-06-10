@@ -13,6 +13,7 @@ export type CartOperations = {
   decrementProductInCart: (productId: string) => Promise<void>
   removeProductFromCart: (productId: string) => Promise<void>
   clearCart: () => Promise<void>
+  applyDiscountCode: (code: string) => Promise<void>
 }
 
 export const useCart = (): CartOperations => {
@@ -77,6 +78,18 @@ export const useCart = (): CartOperations => {
       toast.error('Error clearing cart')
     }
   }
+  const applyDiscountCode = async (code: string): Promise<void> => {
+    if (state.id) {
+      try {
+        const response = await api.cart.applyDiscountCode(state.id, code)
+        setStateData(response)
+        toast.success(`Promo code is applied`)
+        console.log(response)
+      } catch {
+        toast.error('There is no such promotion')
+      }
+    }
+  }
   return {
     loading,
     error,
@@ -84,5 +97,6 @@ export const useCart = (): CartOperations => {
     decrementProductInCart,
     removeProductFromCart,
     clearCart,
+    applyDiscountCode,
   }
 }
