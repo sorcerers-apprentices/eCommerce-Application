@@ -4,7 +4,7 @@ import AboutCard, { type AboutCardProps } from '@/components/AboutCard/AboutCard
 
 const ArtemDataProps: AboutCardProps = {
   name: 'Artem Gassan',
-  activities: 'feature',
+  activities: ['feature', 'styles', 'refactor'],
   gitHubName: 'artemgassan',
   gitHubLink: 'https://github.com/artemgassan',
   avatarLink: 'https://avatars.githubusercontent.com/u/158855420?v=4',
@@ -13,7 +13,7 @@ const ArtemDataProps: AboutCardProps = {
 
 const DaryaDataProps: AboutCardProps = {
   name: 'Darya Kolenchenko',
-  activities: 'feature',
+  activities: ['tests', 'CI/CD', 'API'],
   gitHubName: 'dariechka',
   gitHubLink: 'https://github.com/dariechka',
   avatarLink: 'https://avatars.githubusercontent.com/u/149780473?v=4',
@@ -22,7 +22,7 @@ const DaryaDataProps: AboutCardProps = {
 
 const AnnaDataProps: AboutCardProps = {
   name: 'Anna Vasilevich',
-  activities: 'feature',
+  activities: ['routing', 'feature', 'chore'],
   gitHubName: 'dzichonka',
   gitHubLink: 'https://github.com/dzichonka',
   avatarLink: 'https://avatars.githubusercontent.com/u/73832561?v=4',

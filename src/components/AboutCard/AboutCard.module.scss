@@ -50,6 +50,74 @@
       opacity: 1;
     }
   }
+
+  .activities {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+    width: 100%;
+    margin: 1rem 0;
+  }
+
+  .activity {
+    display: flex;
+    gap: 0.4rem;
+    align-items: center;
+    padding: 0.4rem 0.8rem;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    background: vars.$neutral-gray868686;
+    transition: all 0.3s ease;
+
+    &[data-type='feature'] {
+      color: #1890ff;
+      background: #e6f7ff;
+    }
+
+    &[data-type='CI/CD'] {
+      color: #52c41a;
+      background: #f6ffed;
+    }
+
+    &[data-type='chore'] {
+      color: #faad14;
+      background: #fffbe6;
+    }
+
+    &[data-type='tests'] {
+      color: #eb2f96;
+      background: #fff0f6;
+    }
+
+    &[data-type='styles'] {
+      color: #722ed1;
+      background: #f9f0ff;
+    }
+
+    &[data-type='refactor'] {
+      color: #13c2c2;
+      background: #e6fffb;
+    }
+
+    &[data-type='API'] {
+      color: #2f54eb;
+      background: #f0f5ff;
+    }
+
+    &[data-type='routing'] {
+      color: #2f54eb;
+      background: #f0f5ff;
+    }
+  }
+}
+
+.card:hover {
+  .activity {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgb(0 0 0 / 10%);
+  }
 }
 
 .name {
