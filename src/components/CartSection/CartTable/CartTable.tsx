@@ -14,7 +14,7 @@ import { Modal } from '@/shared/ui/Modal/Modal'
 
 export const CartTable = (): JSX.Element => {
   const { data, error, loading, refetch } = useFetch<ClientResponse<Cart>>(api.cart.fetchActiveCart)
-  const { clearCart } = useCart()
+  const { clearCart, applyDiscountCode } = useCart()
   const [modal, setModal] = useState(false)
   const clearAllAndClose = async (): Promise<void> => {
     if (data?.body.id) {
@@ -55,6 +55,9 @@ export const CartTable = (): JSX.Element => {
                     }}
                   >
                     Clear all
+                  </Button>
+                  <Button type="button" onClick={async () => await applyDiscountCode('Reviewer20')}>
+                    Apply promo code
                   </Button>
                 </th>
               </tr>
