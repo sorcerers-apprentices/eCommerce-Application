@@ -1,5 +1,6 @@
 import s from './AboutCard.module.scss'
 import type { ReactElement } from 'react'
+import { FaGithub } from 'react-icons/fa'
 
 export type ActivitiesTypes = 'feature' | 'CI/CD' | 'chore' | 'tests' | 'styles' | 'refactor' | 'API' | 'routing'
 
@@ -15,9 +16,13 @@ export type AboutCardProps = {
 const AboutCard = (props: AboutCardProps): ReactElement => {
   return (
     <div className={s.card}>
-      <h3>{props.name}</h3>
       <img src={props.avatarLink} alt={props.gitHubName} className={s.avatar} />
-      <p>{props.description}</p>
+      <h3 className={s.name}>{props.name}</h3>
+      <p className={s.description}>{props.description}</p>
+      <a href={props.gitHubLink} target="_blank" className={s.githublink}>
+        <FaGithub className={s.githubicon} />
+        <span>{props.gitHubName}</span>
+      </a>
     </div>
   )
 }
