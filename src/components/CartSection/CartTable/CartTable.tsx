@@ -14,7 +14,7 @@ import { Modal } from '@/shared/ui/Modal/Modal'
 
 export const CartTable = (): JSX.Element => {
   const { data, error, loading, refetch } = useFetch<ClientResponse<Cart>>(api.cart.fetchActiveCart)
-  const { clearCart, applyDiscountCode } = useCart()
+  const { clearCart } = useCart()
   const [modal, setModal] = useState(false)
   const clearAllAndClose = async (): Promise<void> => {
     if (data?.body.id) {
@@ -40,34 +40,33 @@ export const CartTable = (): JSX.Element => {
 
       {data &&
         (data?.body.lineItems.length ? (
-          <table>
-            <thead>
-              <tr>
-                <th>Product</th>
-                <th>Price</th>
-                <th>Quantity</th>
-                <th>Total</th>
-                <th>
-                  <Button
-                    type="button"
-                    onClick={() => {
-                      setModal(true)
-                    }}
-                  >
-                    Clear all
-                  </Button>
-                  <Button type="button" onClick={async () => await applyDiscountCode('Reviewer20')}>
-                    Apply promo code
-                  </Button>
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {CartMapper.toCartView(data.body).map((product) => (
-                <CartRow key={product.id} cartItemData={product} productLink={RoutePath.MAIN} refetch={refetch} />
-              ))}
-            </tbody>
-          </table>
+          <div>
+            <table>
+              <thead>
+                <tr>
+                  <th>Product</th>
+                  <th>Price</th>
+                  <th>Quantity</th>
+                  <th>Total</th>
+                  <th>
+                    <div
+                      className={s.clear}
+                      onClick={() => {
+                        setModal(true)
+                      }}
+                    >
+                      Clear all
+                    </div>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {CartMapper.toCartView(data.body).map((product) => (
+                  <CartRow key={product.id} cartItemData={product} refetch={refetch} />
+                ))}
+              </tbody>
+            </table>
+          </div>
         ) : (
           <div className={s.empty}>
             <div>
