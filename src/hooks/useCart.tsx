@@ -10,6 +10,7 @@ export type CartOperations = {
   data: ClientResponse<Cart> | null
   loading: boolean
   error: Error | null
+  refetch: () => void
   addProductToCart: (productId: string, quantity?: number) => Promise<void>
   decrementProductInCart: (productId: string) => Promise<void>
   removeProductFromCart: (productId: string) => Promise<void>
@@ -19,7 +20,7 @@ export type CartOperations = {
 
 export const useCart = (): CartOperations => {
   const { state, dispatch } = useCartContext()
-  const { data, error, loading } = useFetch<ClientResponse<Cart>>(api.cart.fetchActiveCart)
+  const { data, error, loading, refetch } = useFetch<ClientResponse<Cart>>(api.cart.fetchActiveCart)
 
   const [stateData, setStateData] = useState<ClientResponse<Cart> | null>(null)
   const [stateLoading, setStateLoading] = useState<boolean>(loading)
@@ -136,6 +137,7 @@ export const useCart = (): CartOperations => {
     data: stateData,
     loading: stateLoading,
     error: stateError,
+    refetch,
     addProductToCart,
     decrementProductInCart,
     removeProductFromCart,
