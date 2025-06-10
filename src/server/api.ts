@@ -9,6 +9,7 @@ import {
 import { builder } from '@/server/client.ts'
 import type { SortType } from '@/components/Category/SortComponent/SortControlComponent.tsx'
 import type {
+  MyCartAddDiscountCodeAction,
   MyCartAddLineItemAction,
   MyCartUpdateAction,
   MyCustomerUpdateAction,
@@ -233,8 +234,17 @@ export const api = {
         })
         .execute()
     },
-    receiveCartWithProducts: async (cartId: string): Promise<ClientResponse<Cart>> => {
-      return builder().me().carts().withId({ ID: cartId }).get().execute()
+    applyDiscountCode: async (cartId: string, code: string): Promise<ClientResponse<Cart>> => {
+      const updateAction: MyCartAddDiscountCodeAction = {
+        action: 'addDiscountCode',
+        code,
+      }
+      return builder()
+        .me()
+        .carts()
+        .withId({ ID: cartId })
+        .post({ body: { version: (await api.cart.fetchActiveCart()).body.version, actions: [updateAction] } })
+        .execute()
     },
   },
 }
