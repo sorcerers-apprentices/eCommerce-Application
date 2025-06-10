@@ -4,6 +4,7 @@ import { useCartContext } from '@/hooks/useCartContext'
 import { CartAction } from '@/app/providers/CartProvider/CartReducer'
 import type { Cart, ClientResponse } from '@commercetools/platform-sdk'
 import { toast } from 'react-hot-toast'
+import { useEffect, useState } from 'react'
 
 export type CartOperations = {
   loading: boolean
@@ -17,15 +18,20 @@ export type CartOperations = {
 export const useCart = (): CartOperations => {
   const { state, dispatch } = useCartContext()
   const { data, error, loading } = useFetch<ClientResponse<Cart>>(api.cart.fetchActiveCart)
+  const [stateData, setStateData] = useState<ClientResponse<Cart> | null>(null)
 
+  useEffect(() => {
+    if (data) setStateData(data)
+  }, [data])
   const addProductToCart = async (productId: string, quantity?: number): Promise<void> => {
     if (state.id) {
       try {
         const response = await api.cart.addProductToCart(state.id, productId, quantity ?? 1)
+        setStateData(response)
         const productName = response.body.lineItems.find((item) => item.productId === productId)?.name['en-US'] ?? ''
         toast.success(`${productName} added to cart`)
-        const num = response?.body?.totalLineItemQuantity ?? 0
-        dispatch({ type: CartAction.SET_COUNTER, payload: { countProducts: num } })
+        const total = response.body?.totalLineItemQuantity ?? 0
+        dispatch({ type: CartAction.SET_COUNTER, payload: { countProducts: total } })
       } catch {
         toast.error('Error adding product to cart')
       }
@@ -34,11 +40,12 @@ export const useCart = (): CartOperations => {
   const decrementProductInCart = async (productId: string): Promise<void> => {
     if (state.id) {
       try {
-        const productName = data?.body.lineItems.find((item) => item.productId === productId)?.name['en-US'] ?? ''
+        const productName = stateData?.body.lineItems.find((item) => item.productId === productId)?.name['en-US'] ?? ''
         const response = await api.cart.decrementProductInCart(state.id, productId)
+        setStateData(response)
         toast.success(`${productName} deleted from cart`)
-        const num = response?.body?.totalLineItemQuantity ?? 0
-        dispatch({ type: CartAction.SET_COUNTER, payload: { countProducts: num } })
+        const total = response.body?.totalLineItemQuantity ?? 0
+        dispatch({ type: CartAction.SET_COUNTER, payload: { countProducts: total } })
       } catch {
         toast.error('Error adding product to cart')
       }
@@ -47,11 +54,12 @@ export const useCart = (): CartOperations => {
   const removeProductFromCart = async (productId: string): Promise<void> => {
     if (state.id) {
       try {
-        const productName = data?.body.lineItems.find((item) => item.productId === productId)?.name['en-US'] ?? ''
+        const productName = stateData?.body.lineItems.find((item) => item.productId === productId)?.name['en-US'] ?? ''
         const response = await api.cart.removeProductFromCart(state.id, productId)
+        setStateData(response)
         toast.success(`${productName} deleted from cart`)
-        const num = response?.body?.totalLineItemQuantity ?? 0
-        dispatch({ type: CartAction.SET_COUNTER, payload: { countProducts: num } })
+        const total = response.body?.totalLineItemQuantity ?? 0
+        dispatch({ type: CartAction.SET_COUNTER, payload: { countProducts: total } })
       } catch {
         toast.error('Error adding product to cart')
       }
@@ -61,6 +69,7 @@ export const useCart = (): CartOperations => {
     if (!state.id) return
     try {
       const response = await api.cart.clearCart(state.id)
+      setStateData(response)
       toast.success('Cart cleared')
       const total = response.body.totalLineItemQuantity ?? 0
       dispatch({ type: CartAction.SET_COUNTER, payload: { countProducts: total } })
