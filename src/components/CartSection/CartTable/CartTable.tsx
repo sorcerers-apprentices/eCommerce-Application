@@ -48,14 +48,14 @@ export const CartTable = (): JSX.Element => {
                 <th>Quantity</th>
                 <th>Total</th>
                 <th>
-                  <Button
-                    type="button"
+                  <div
+                    className={s.clear}
                     onClick={() => {
                       setModal(true)
                     }}
                   >
                     Clear all
-                  </Button>
+                  </div>
                 </th>
               </tr>
             </thead>
