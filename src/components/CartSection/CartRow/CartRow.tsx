@@ -6,22 +6,21 @@ import s from '../CartSection.module.scss'
 import { useCart } from '@/hooks/useCart'
 
 type TProperties = {
-  productLink: string
   cartItemData: TCartItem
   refetch: () => void
 }
 
-export const CartRow = ({ cartItemData, productLink, refetch }: TProperties): JSX.Element => {
+export const CartRow = ({ cartItemData, refetch }: TProperties): JSX.Element => {
   const { addProductToCart, decrementProductInCart, removeProductFromCart } = useCart()
 
   return (
     <tr>
       <td>
         <div>
-          <Link to={productLink} className={s.image}>
+          <Link to={`/product/${cartItemData.id}`} className={s.image}>
             <img src={cartItemData.image} alt={cartItemData.name} />
           </Link>
-          <Link to={productLink}>{cartItemData.name}</Link>
+          <Link to={`/product/${cartItemData.id}`}>{cartItemData.name}</Link>
         </div>
       </td>
       <td>

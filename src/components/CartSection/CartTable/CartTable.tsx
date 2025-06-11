@@ -12,10 +12,24 @@ import { Button } from '@/shared/ui/Button/Button'
 import { NavLink } from 'react-router-dom'
 import { Modal } from '@/shared/ui/Modal/Modal'
 
+const CENTS_IN_DOLLAR = 100
+const DECIMAL_PLACES = 2
+
 export const CartTable = (): JSX.Element => {
   const { data, error, loading, refetch } = useFetch<ClientResponse<Cart>>(api.cart.fetchActiveCart)
   const { clearCart, applyDiscountCode } = useCart()
   const [modal, setModal] = useState(false)
+
+  const totalPrice =
+    data?.body.totalPrice?.centAmount !== undefined
+      ? Number((data.body.totalPrice.centAmount / CENTS_IN_DOLLAR).toFixed(DECIMAL_PLACES))
+      : 0
+
+  const discountSum =
+    data?.body.discountOnTotalPrice?.discountedAmount.centAmount !== undefined
+      ? Number((data.body.discountOnTotalPrice.discountedAmount.centAmount / CENTS_IN_DOLLAR).toFixed(DECIMAL_PLACES))
+      : 0
+  const subtotalPrice = totalPrice + discountSum
   const clearAllAndClose = async (): Promise<void> => {
     if (data?.body.id) {
       await clearCart()
@@ -40,34 +54,49 @@ export const CartTable = (): JSX.Element => {
 
       {data &&
         (data?.body.lineItems.length ? (
-          <table>
-            <thead>
-              <tr>
-                <th>Product</th>
-                <th>Price</th>
-                <th>Quantity</th>
-                <th>Total</th>
-                <th>
-                  <Button
-                    type="button"
-                    onClick={() => {
-                      setModal(true)
-                    }}
-                  >
-                    Clear all
-                  </Button>
-                  <Button type="button" onClick={async () => await applyDiscountCode('Reviewer20')}>
-                    Apply promo code
-                  </Button>
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {CartMapper.toCartView(data.body).map((product) => (
-                <CartRow key={product.id} cartItemData={product} productLink={RoutePath.MAIN} refetch={refetch} />
-              ))}
-            </tbody>
-          </table>
+          <div className={s.section}>
+            <table>
+              <thead>
+                <tr>
+                  <th>Product</th>
+                  <th>Price</th>
+                  <th>Quantity</th>
+                  <th>Total</th>
+                  <th>
+                    <div
+                      className={s.clear}
+                      onClick={() => {
+                        setModal(true)
+                      }}
+                    >
+                      Clear all
+                    </div>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {CartMapper.toCartView(data.body).map((product) => (
+                  <CartRow key={product.id} cartItemData={product} refetch={refetch} />
+                ))}
+              </tbody>
+            </table>
+            <div className={s.total}>
+              <h2 className="title">Price</h2>
+              <div>Price: {subtotalPrice} €</div>
+              <div>Discount: {discountSum} €</div>
+              <div>Total price: {totalPrice} €</div>
+
+              <Button
+                type="button"
+                onClick={async () => {
+                  await applyDiscountCode('Reviewer20')
+                  refetch()
+                }}
+              >
+                Apply promo
+              </Button>
+            </div>
+          </div>
         ) : (
           <div className={s.empty}>
             <div>
