@@ -1,4 +1,4 @@
-import { useState, type JSX } from 'react'
+import { useState, type JSX, type FormEvent, type ChangeEvent, useEffect } from 'react'
 import { CartRow } from '../CartRow/CartRow'
 import { RoutePath } from '@/shared/config/routeConfig/routeConfig'
 import { useFetch } from '@/shared/hooks/useFetch'
@@ -11,25 +11,63 @@ import s from '../CartSection.module.scss'
 import { Button } from '@/shared/ui/Button/Button'
 import { NavLink } from 'react-router-dom'
 import { Modal } from '@/shared/ui/Modal/Modal'
+import { InputComponent } from '@/shared/ui/InputComponent/InputComponent.tsx'
+import { Form } from '@/shared/ui/Form/Form.tsx'
+import { FormButton } from '@/components/LoginForm/FormButton.tsx'
+import { CENTS_IN_DOLLAR, DECIMAL_PLACES } from '@/shared/utilities/price.ts'
 
-const CENTS_IN_DOLLAR = 100
-const DECIMAL_PLACES = 2
+type PriceData = {
+  initialPrice: number
+  discountPrice: number
+  totalPrice: number
+}
+
+type Code = {
+  name: string | undefined
+  id: string
+}
 
 export const CartTable = (): JSX.Element => {
   const { data, error, loading, refetch } = useFetch<ClientResponse<Cart>>(api.cart.fetchActiveCart)
   const { clearCart, applyDiscountCode } = useCart()
   const [modal, setModal] = useState(false)
+  const [formData, setFormData] = useState({ promo: { value: '' } })
 
-  const totalPrice =
-    data?.body.totalPrice?.centAmount !== undefined
-      ? Number((data.body.totalPrice.centAmount / CENTS_IN_DOLLAR).toFixed(DECIMAL_PLACES))
-      : 0
+  const calculatePrices = (data?: Cart): PriceData => {
+    if (!data) {
+      return { initialPrice: 0, discountPrice: 0, totalPrice: 0 }
+    }
 
-  const discountSum =
-    data?.body.discountOnTotalPrice?.discountedAmount.centAmount !== undefined
-      ? Number((data.body.discountOnTotalPrice.discountedAmount.centAmount / CENTS_IN_DOLLAR).toFixed(DECIMAL_PLACES))
+    const discountPrice = data.discountOnTotalPrice
+      ? Number((data.discountOnTotalPrice.discountedAmount.centAmount / CENTS_IN_DOLLAR).toFixed(DECIMAL_PLACES))
       : 0
-  const subtotalPrice = totalPrice + discountSum
+    const initialPrice = Number((data.totalPrice.centAmount / CENTS_IN_DOLLAR).toFixed(DECIMAL_PLACES)) + discountPrice
+    const totalPrice = initialPrice - discountPrice
+    return { initialPrice: initialPrice, discountPrice: discountPrice, totalPrice: totalPrice }
+  }
+
+  const findPromoCodes = (data?: Cart): Array<Code> => {
+    if (!data) {
+      return []
+    }
+    return data.discountCodes.map((code) => {
+      return {
+        name: code.discountCode.obj?.name?.['en-US'],
+        id: code.discountCode.id,
+      }
+    })
+  }
+
+  const [priceData, setPriceData] = useState(calculatePrices(data?.body))
+  const [promoCodes, setPromoCodes] = useState(findPromoCodes(data?.body))
+
+  useEffect(() => {
+    if (!data?.body) return
+
+    setPriceData(calculatePrices(data.body))
+    setPromoCodes(findPromoCodes(data?.body))
+  }, [data])
+
   const clearAllAndClose = async (): Promise<void> => {
     if (data?.body.id) {
       await clearCart()
@@ -37,6 +75,21 @@ export const CartTable = (): JSX.Element => {
       setModal(false)
     }
   }
+
+  const onSubmitPromoCode = async (event: FormEvent<HTMLFormElement>): Promise<void> => {
+    event.preventDefault()
+    const cart = await applyDiscountCode(formData.promo.value)
+    if (cart) {
+      setPriceData(calculatePrices(cart.body))
+      setPromoCodes(findPromoCodes(cart.body))
+    }
+  }
+
+  const handleChange = (event: ChangeEvent<HTMLInputElement>): void => {
+    const { value } = event.target
+    setFormData((previous) => ({ ...previous, promo: { value } }))
+  }
+
   return (
     <div className="section">
       <Modal isOpen={modal} onClose={() => setModal(false)}>
@@ -82,19 +135,26 @@ export const CartTable = (): JSX.Element => {
             </table>
             <div className={s.total}>
               <h2 className="title">Price</h2>
-              <div>Price: {subtotalPrice} €</div>
-              <div>Discount: {discountSum} €</div>
-              <div>Total price: {totalPrice} €</div>
-
-              <Button
-                type="button"
-                onClick={async () => {
-                  await applyDiscountCode('Reviewer20')
-                  refetch()
-                }}
-              >
-                Apply promo
-              </Button>
+              <Form className={['form', 'section']} onSubmit={onSubmitPromoCode}>
+                <InputComponent
+                  value={formData.promo.value}
+                  name={'promo'}
+                  title={'Apply promo code'}
+                  type={'text'}
+                  placeholder={'Enter promo code'}
+                  onChange={handleChange}
+                />
+                <FormButton value={'Apply promo code'} disabled={false} />
+              </Form>
+              <div>Price: {priceData.initialPrice} €</div>
+              <div>Cart Discount: {priceData.discountPrice} €</div>
+              <div>Total price: {priceData.totalPrice} €</div>
+              {promoCodes.map((code) => (
+                <div key={code.id}>
+                  <p>{code.name?.toString() || 'Loading…'}</p>
+                  <Button onClick={() => {}}>Remove</Button>
+                </div>
+              ))}
             </div>
           </div>
         ) : (

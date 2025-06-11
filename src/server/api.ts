@@ -135,7 +135,13 @@ export const api = {
   },
   cart: {
     fetchActiveCart: async (): Promise<ClientResponse<Cart>> => {
-      return builder().me().activeCart().get().execute()
+      return builder()
+        .me()
+        .activeCart()
+        .get({
+          queryArgs: { expand: ['discountCodes[*].discountCode'] },
+        })
+        .execute()
     },
     createCart: async (): Promise<ClientResponse<Cart>> => {
       return builder()
@@ -243,7 +249,10 @@ export const api = {
         .me()
         .carts()
         .withId({ ID: cartId })
-        .post({ body: { version: (await api.cart.fetchActiveCart()).body.version, actions: [updateAction] } })
+        .post({
+          body: { version: (await api.cart.fetchActiveCart()).body.version, actions: [updateAction] },
+          queryArgs: { expand: ['discountCodes[*].discountCode'] },
+        })
         .execute()
     },
   },
