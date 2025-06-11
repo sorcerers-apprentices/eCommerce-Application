@@ -29,6 +29,7 @@
   background-position: center;
   background-origin: border-box;
   background-size: cover; // contain - fully visible,cover - cover container
+  filter: sepia(0.3);
 }
 
 .content {
