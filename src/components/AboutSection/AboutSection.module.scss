@@ -1,0 +1,15 @@
+.section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2.5rem;
+  justify-content: center;
+  max-width: 75rem;
+  margin: 3rem auto;
+  padding: 0 2rem;
+
+  @media (width <= 768px) {
+    flex-direction: column;
+    gap: 3.5rem;
+    align-items: center;
+  }
+}

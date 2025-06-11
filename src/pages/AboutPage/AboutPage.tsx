@@ -1,12 +1,14 @@
+import s from './AboutPage.module.scss'
 import type { ReactElement } from 'react'
 import Footer from '@/components/Footer/Footer'
+import { Magic } from '@/components/Magic/Magic'
 import { Header } from '@/components/Header/Header'
 
 const AboutPage = (): ReactElement => {
   return (
-    <div>
+    <div className={s.page}>
       <Header />
-      <h1 className="title">About Page</h1>
+      <Magic />
       <Footer />
     </div>
   )
