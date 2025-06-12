@@ -39,11 +39,28 @@ export const CartTable = (): JSX.Element => {
       return { initialPrice: 0, discountPrice: 0, totalPrice: 0 }
     }
 
-    const discountPrice = data.discountOnTotalPrice
-      ? Number((data.discountOnTotalPrice.discountedAmount.centAmount / CENTS_IN_DOLLAR).toFixed(DECIMAL_PLACES))
-      : 0
-    const initialPrice = Number((data.totalPrice.centAmount / CENTS_IN_DOLLAR).toFixed(DECIMAL_PLACES)) + discountPrice
-    const totalPrice = initialPrice - discountPrice
+    let discountPriceCents = 0
+    discountPriceCents += data.lineItems.reduce((acc, item) => {
+      const cartDiscountPerItem = item.discountedPricePerQuantity?.find((discount) =>
+        discount.discountedPrice.includedDiscounts.some((incl) => incl.discount.typeId === 'cart-discount')
+      )
+      if (!cartDiscountPerItem) return acc
+
+      const discountAmount =
+        cartDiscountPerItem.discountedPrice.includedDiscounts.find((incl) => incl.discount.typeId === 'cart-discount')
+          ?.discountedAmount.centAmount ?? 0
+
+      return acc + discountAmount * cartDiscountPerItem.quantity
+    }, 0)
+
+    if (data.discountOnTotalPrice) {
+      discountPriceCents += data.discountOnTotalPrice.discountedAmount.centAmount
+    }
+
+    const discountPrice = discountPriceCents / CENTS_IN_DOLLAR
+
+    const initialPrice = Number((data.totalPrice.centAmount / CENTS_IN_DOLLAR + discountPrice).toFixed(DECIMAL_PLACES))
+    const totalPrice = Number((initialPrice - discountPrice).toFixed(DECIMAL_PLACES))
     return { initialPrice: initialPrice, discountPrice: discountPrice, totalPrice: totalPrice }
   }
 
