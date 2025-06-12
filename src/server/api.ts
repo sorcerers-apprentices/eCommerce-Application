@@ -11,6 +11,7 @@ import type { SortType } from '@/components/Category/SortComponent/SortControlCo
 import type {
   MyCartAddDiscountCodeAction,
   MyCartAddLineItemAction,
+  MyCartRemoveDiscountCodeAction,
   MyCartUpdateAction,
   MyCustomerUpdateAction,
 } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/me'
@@ -251,6 +252,21 @@ export const api = {
         .withId({ ID: cartId })
         .post({
           body: { version: (await api.cart.fetchActiveCart()).body.version, actions: [updateAction] },
+          queryArgs: { expand: ['discountCodes[*].discountCode'] },
+        })
+        .execute()
+    },
+    removeDiscountCode: async (cartId: string, discountCodeId: string): Promise<ClientResponse<Cart>> => {
+      const removeAction: MyCartRemoveDiscountCodeAction = {
+        action: 'removeDiscountCode',
+        discountCode: { typeId: 'discount-code', id: discountCodeId },
+      }
+      return builder()
+        .me()
+        .carts()
+        .withId({ ID: cartId })
+        .post({
+          body: { version: (await api.cart.fetchActiveCart()).body.version, actions: [removeAction] },
           queryArgs: { expand: ['discountCodes[*].discountCode'] },
         })
         .execute()

@@ -15,6 +15,7 @@ import { InputComponent } from '@/shared/ui/InputComponent/InputComponent.tsx'
 import { Form } from '@/shared/ui/Form/Form.tsx'
 import { FormButton } from '@/components/LoginForm/FormButton.tsx'
 import { CENTS_IN_DOLLAR, DECIMAL_PLACES } from '@/shared/utilities/price.ts'
+import { toast } from 'react-hot-toast'
 
 type PriceData = {
   initialPrice: number
@@ -90,6 +91,21 @@ export const CartTable = (): JSX.Element => {
     setFormData((previous) => ({ ...previous, promo: { value } }))
   }
 
+  const removePromoCode = async (promoCodeId: string): Promise<void> => {
+    if (!data?.body.id) {
+      return
+    }
+    try {
+      const cart = await api.cart.removeDiscountCode(data.body.id, promoCodeId)
+      if (cart) {
+        setPriceData(calculatePrices(cart.body))
+        setPromoCodes(findPromoCodes(cart.body))
+      }
+    } catch {
+      toast.error('Could not remove promo code')
+    }
+  }
+
   return (
     <div className="section">
       <Modal isOpen={modal} onClose={() => setModal(false)}>
@@ -152,7 +168,7 @@ export const CartTable = (): JSX.Element => {
               {promoCodes.map((code) => (
                 <div key={code.id}>
                   <p>{code.name?.toString() || 'Loading…'}</p>
-                  <Button onClick={() => {}}>Remove</Button>
+                  <Button onClick={async () => await removePromoCode(code.id.toString())}>Remove</Button>
                 </div>
               ))}
             </div>
