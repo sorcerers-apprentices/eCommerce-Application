@@ -100,6 +100,7 @@ export const builder = (): ByProjectKeyRequestBuilder => {
 
 export const resetClients = (): void => {
   localStorage.removeItem(tokenCacheKey)
+  localStorage.removeItem(flagCacheKey)
   refreshBuilder = undefined
   anonymousBuilder = createAnonymousRequestBuilder()
 }

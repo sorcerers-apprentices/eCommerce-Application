@@ -16,6 +16,7 @@ import { Form } from '@/shared/ui/Form/Form.tsx'
 import { FormButton } from '@/components/LoginForm/FormButton.tsx'
 import { CENTS_IN_DOLLAR, DECIMAL_PLACES } from '@/shared/utilities/price.ts'
 import { toast } from 'react-hot-toast'
+import type { TCartItem } from '@/types/user-types.ts'
 
 type PriceData = {
   initialPrice: number
@@ -78,12 +79,14 @@ export const CartTable = (): JSX.Element => {
 
   const [priceData, setPriceData] = useState(calculatePrices(data?.body))
   const [promoCodes, setPromoCodes] = useState(findPromoCodes(data?.body))
+  const [viewData, setViewData] = useState<TCartItem[]>([])
 
   useEffect(() => {
     if (!data?.body) return
 
     setPriceData(calculatePrices(data.body))
     setPromoCodes(findPromoCodes(data?.body))
+    setViewData(CartMapper.toCartView(data.body))
   }, [data])
 
   const clearAllAndClose = async (): Promise<void> => {
@@ -100,6 +103,7 @@ export const CartTable = (): JSX.Element => {
     if (cart) {
       setPriceData(calculatePrices(cart.body))
       setPromoCodes(findPromoCodes(cart.body))
+      setViewData(CartMapper.toCartView(cart.body))
     }
   }
 
@@ -117,6 +121,7 @@ export const CartTable = (): JSX.Element => {
       if (cart) {
         setPriceData(calculatePrices(cart.body))
         setPromoCodes(findPromoCodes(cart.body))
+        setViewData(CartMapper.toCartView(cart.body))
       }
     } catch {
       toast.error('Could not remove promo code')
@@ -161,11 +166,12 @@ export const CartTable = (): JSX.Element => {
                 </tr>
               </thead>
               <tbody>
-                {CartMapper.toCartView(data.body).map((product) => (
+                {viewData.map((product) => (
                   <CartRow key={product.id} cartItemData={product} refetch={refetch} />
                 ))}
               </tbody>
             </table>
+
             <div className={s.total}>
               <h2 className="title">Price</h2>
               <Form className={['form', 'section']} onSubmit={onSubmitPromoCode}>
@@ -183,7 +189,7 @@ export const CartTable = (): JSX.Element => {
               <div>Cart Discount: {priceData.discountPrice} €</div>
               <div>Total price: {priceData.totalPrice} €</div>
               {promoCodes.map((code) => (
-                <div key={code.id}>
+                <div key={code.id} className={s.promocode}>
                   <p>{code.name?.toString() || 'Loading…'}</p>
                   <Button onClick={async () => await removePromoCode(code.id.toString())}>Remove</Button>
                 </div>

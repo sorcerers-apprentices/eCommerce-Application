@@ -24,7 +24,14 @@ export const CartRow = ({ cartItemData, refetch }: TProperties): JSX.Element => 
         </div>
       </td>
       <td>
-        <div>{`${cartItemData.price} €`}</div>
+        {cartItemData.price * cartItemData.quantity === cartItemData.total ? (
+          <div>{`${cartItemData.total / cartItemData.quantity} €`}</div>
+        ) : (
+          <>
+            <div>{`${cartItemData.total / cartItemData.quantity} €`}</div>
+            <div className={s.price}>{`${cartItemData.price} €`}</div>
+          </>
+        )}
       </td>
       <td>
         <div>
@@ -49,7 +56,16 @@ export const CartRow = ({ cartItemData, refetch }: TProperties): JSX.Element => 
           </div>
         </div>
       </td>
-      <td className={s.td}>{`${cartItemData.total} €`}</td>
+      <td className={s.td}>
+        {cartItemData.price * cartItemData.quantity === cartItemData.total ? (
+          <div>{`${cartItemData.total} €`}</div>
+        ) : (
+          <>
+            <div>{`${cartItemData.total} €`}</div>
+            <div className={s.price}>{`${cartItemData.price * cartItemData.quantity} €`}</div>
+          </>
+        )}
+      </td>
       <td className={s.td}>
         <div
           className={s.link}
