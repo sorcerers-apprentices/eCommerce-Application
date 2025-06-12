@@ -5,6 +5,7 @@ import {
   type HttpMiddlewareOptions,
   type PasswordAuthMiddlewareOptions,
   type RefreshAuthMiddlewareOptions,
+  type TokenCacheOptions,
   type TokenStore,
 } from '@commercetools/sdk-client-v2'
 import { environment } from '@/app/types/environment'
@@ -26,6 +27,31 @@ const tokenCache: TokenCache = {
   },
 }
 
+const flagCacheKey = 'COMMERCE_TOOLS_ANONYMOUS_FLAG'
+const authenticatedTokenCache: TokenCache = {
+  get(tokenCacheOptions: TokenCacheOptions | undefined): TokenStore {
+    return tokenCache.get(tokenCacheOptions)
+  },
+  set(cache: TokenStore, tokenCacheOptions: TokenCacheOptions | undefined): void {
+    localStorage.setItem(flagCacheKey, JSON.stringify(false))
+    tokenCache.set(cache, tokenCacheOptions)
+  },
+}
+
+const anonymousTokenCache: TokenCache = {
+  get(tokenCacheOptions: TokenCacheOptions | undefined): TokenStore {
+    return tokenCache.get(tokenCacheOptions)
+  },
+  set(cache: TokenStore, tokenCacheOptions: TokenCacheOptions | undefined): void {
+    localStorage.setItem(flagCacheKey, JSON.stringify(true))
+    tokenCache.set(cache, tokenCacheOptions)
+  },
+}
+
+export const isAnonymous = (): boolean => {
+  return JSON.parse(localStorage.getItem(flagCacheKey) || 'true') || Date.now() > tokenCache.get()?.expirationTime || 0
+}
+
 // Configure httpMiddlewareOptions
 const httpMiddlewareOptions: HttpMiddlewareOptions = {
   host: environment.API_URL,
@@ -41,7 +67,7 @@ const createAnonymousClient = (): Client => {
       clientSecret: environment.CLIENT_SECRET,
       anonymousId: crypto.randomUUID(),
     },
-    tokenCache: tokenCache,
+    tokenCache: anonymousTokenCache,
     scopes: environment.SCOPES,
     fetch,
   }
@@ -60,15 +86,6 @@ const createAnonymousRequestBuilder = (): ByProjectKeyRequestBuilder => {
 
 let anonymousBuilder: ByProjectKeyRequestBuilder = createAnonymousRequestBuilder()
 let refreshBuilder: ByProjectKeyRequestBuilder | undefined
-
-export const isAnonymous = (): boolean => {
-  const refreshToken = tokenCache.get()?.refreshToken
-  if (!refreshToken) {
-    return true
-  }
-  const expirationDate = tokenCache.get()?.expirationTime || 0
-  return Date.now() > expirationDate
-}
 
 export const builder = (): ByProjectKeyRequestBuilder => {
   if (refreshBuilder) {
@@ -134,7 +151,7 @@ const createPasswordClient = (username: string, password: string): Client => {
       clientSecret: environment.CLIENT_SECRET,
       user: { username, password },
     },
-    tokenCache: tokenCache,
+    tokenCache: authenticatedTokenCache,
     scopes: environment.SCOPES,
   }
 
@@ -154,7 +171,7 @@ const createRefreshClient = (): Client => {
       clientSecret: environment.CLIENT_SECRET,
     },
     refreshToken: tokenCache.get().refreshToken!,
-    tokenCache: tokenCache,
+    tokenCache: authenticatedTokenCache,
     fetch,
   }
   return new ClientBuilder()
