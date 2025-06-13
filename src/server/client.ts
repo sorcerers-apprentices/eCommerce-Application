@@ -1,5 +1,4 @@
 import {
-  type AuthMiddlewareOptions,
   type Client,
   ClientBuilder,
   type HttpMiddlewareOptions,
@@ -109,11 +108,6 @@ export const getRefreshToken = (): string | undefined => {
   return tokenCache.get()?.refreshToken
 }
 
-export const createRegistrationRequestBuilder = (): ByProjectKeyRequestBuilder => {
-  const client = createRegistrationClient()
-  return createApiBuilderFromCtpClient(client).withProjectKey({ projectKey: environment.PROJECT_KEY })
-}
-
 export const createPasswordRequestBuilder = (username: string, password: string): ByProjectKeyRequestBuilder => {
   const client = createPasswordClient(username, password)
   return createApiBuilderFromCtpClient(client).withProjectKey({ projectKey: environment.PROJECT_KEY })
@@ -122,25 +116,6 @@ export const createPasswordRequestBuilder = (username: string, password: string)
 export const createRefreshBuilder = (): ByProjectKeyRequestBuilder => {
   const client = createRefreshClient()
   return createApiBuilderFromCtpClient(client).withProjectKey({ projectKey: environment.PROJECT_KEY })
-}
-
-const createRegistrationClient = (): Client => {
-  const authMiddlewareOptions: AuthMiddlewareOptions = {
-    host: environment.AUTH_URL,
-    projectKey: environment.PROJECT_KEY,
-    credentials: {
-      clientId: environment.CLIENT_ID,
-      clientSecret: environment.CLIENT_SECRET,
-    },
-    scopes: environment.SCOPES,
-    fetch,
-  }
-
-  return new ClientBuilder()
-    .withProjectKey(environment.PROJECT_KEY)
-    .withHttpMiddleware(httpMiddlewareOptions)
-    .withClientCredentialsFlow(authMiddlewareOptions)
-    .build()
 }
 
 const createPasswordClient = (username: string, password: string): Client => {
