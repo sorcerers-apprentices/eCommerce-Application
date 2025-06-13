@@ -36,11 +36,16 @@
 .producdescription {
   grid-column: 1 / span 2;
   max-width: 1440px;
-  margin-top: 20px;
+  margin: 2rem 0;
 
   @media (width <= 630px) {
     grid-area: 4/1;
+    margin-bottom: 4rem;
   }
+}
+
+.producdescription > h2 {
+  margin-bottom: 1rem;
 }
 
 .pricecontainer {
