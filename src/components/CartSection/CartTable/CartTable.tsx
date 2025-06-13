@@ -15,6 +15,8 @@ import { InputComponent } from '@/shared/ui/InputComponent/InputComponent.tsx'
 import { Form } from '@/shared/ui/Form/Form.tsx'
 import { FormButton } from '@/components/LoginForm/FormButton.tsx'
 import { CENTS_IN_DOLLAR, DECIMAL_PLACES } from '@/shared/utilities/price.ts'
+import { toast } from 'react-hot-toast'
+import type { TCartItem } from '@/types/user-types.ts'
 
 type PriceData = {
   initialPrice: number
@@ -38,11 +40,28 @@ export const CartTable = (): JSX.Element => {
       return { initialPrice: 0, discountPrice: 0, totalPrice: 0 }
     }
 
-    const discountPrice = data.discountOnTotalPrice
-      ? Number((data.discountOnTotalPrice.discountedAmount.centAmount / CENTS_IN_DOLLAR).toFixed(DECIMAL_PLACES))
-      : 0
-    const initialPrice = Number((data.totalPrice.centAmount / CENTS_IN_DOLLAR).toFixed(DECIMAL_PLACES)) + discountPrice
-    const totalPrice = initialPrice - discountPrice
+    let discountPriceCents = 0
+    discountPriceCents += data.lineItems.reduce((acc, item) => {
+      const cartDiscountPerItem = item.discountedPricePerQuantity?.find((discount) =>
+        discount.discountedPrice.includedDiscounts.some((incl) => incl.discount.typeId === 'cart-discount')
+      )
+      if (!cartDiscountPerItem) return acc
+
+      const discountAmount =
+        cartDiscountPerItem.discountedPrice.includedDiscounts.find((incl) => incl.discount.typeId === 'cart-discount')
+          ?.discountedAmount.centAmount ?? 0
+
+      return acc + discountAmount * cartDiscountPerItem.quantity
+    }, 0)
+
+    if (data.discountOnTotalPrice) {
+      discountPriceCents += data.discountOnTotalPrice.discountedAmount.centAmount
+    }
+
+    const discountPrice = discountPriceCents / CENTS_IN_DOLLAR
+
+    const initialPrice = Number((data.totalPrice.centAmount / CENTS_IN_DOLLAR + discountPrice).toFixed(DECIMAL_PLACES))
+    const totalPrice = Number((initialPrice - discountPrice).toFixed(DECIMAL_PLACES))
     return { initialPrice: initialPrice, discountPrice: discountPrice, totalPrice: totalPrice }
   }
 
@@ -60,12 +79,14 @@ export const CartTable = (): JSX.Element => {
 
   const [priceData, setPriceData] = useState(calculatePrices(data?.body))
   const [promoCodes, setPromoCodes] = useState(findPromoCodes(data?.body))
+  const [viewData, setViewData] = useState<TCartItem[]>([])
 
   useEffect(() => {
     if (!data?.body) return
 
     setPriceData(calculatePrices(data.body))
     setPromoCodes(findPromoCodes(data?.body))
+    setViewData(CartMapper.toCartView(data.body))
   }, [data])
 
   const clearAllAndClose = async (): Promise<void> => {
@@ -82,12 +103,29 @@ export const CartTable = (): JSX.Element => {
     if (cart) {
       setPriceData(calculatePrices(cart.body))
       setPromoCodes(findPromoCodes(cart.body))
+      setViewData(CartMapper.toCartView(cart.body))
     }
   }
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>): void => {
     const { value } = event.target
     setFormData((previous) => ({ ...previous, promo: { value } }))
+  }
+
+  const removePromoCode = async (promoCodeId: string): Promise<void> => {
+    if (!data?.body.id) {
+      return
+    }
+    try {
+      const cart = await api.cart.removeDiscountCode(data.body.id, promoCodeId)
+      if (cart) {
+        setPriceData(calculatePrices(cart.body))
+        setPromoCodes(findPromoCodes(cart.body))
+        setViewData(CartMapper.toCartView(cart.body))
+      }
+    } catch {
+      toast.error('Could not remove promo code')
+    }
   }
 
   return (
@@ -128,11 +166,12 @@ export const CartTable = (): JSX.Element => {
                 </tr>
               </thead>
               <tbody>
-                {CartMapper.toCartView(data.body).map((product) => (
+                {viewData.map((product) => (
                   <CartRow key={product.id} cartItemData={product} refetch={refetch} />
                 ))}
               </tbody>
             </table>
+
             <div className={s.total}>
               <h2 className="title">Price</h2>
               <Form className={['form', 'section']} onSubmit={onSubmitPromoCode}>
@@ -150,9 +189,9 @@ export const CartTable = (): JSX.Element => {
               <div>Cart Discount: {priceData.discountPrice} €</div>
               <div>Total price: {priceData.totalPrice} €</div>
               {promoCodes.map((code) => (
-                <div key={code.id}>
+                <div key={code.id} className={s.promocode}>
                   <p>{code.name?.toString() || 'Loading…'}</p>
-                  <Button onClick={() => {}}>Remove</Button>
+                  <Button onClick={async () => await removePromoCode(code.id.toString())}>Remove</Button>
                 </div>
               ))}
             </div>

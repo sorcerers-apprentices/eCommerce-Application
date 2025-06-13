@@ -1,10 +1,4 @@
-import {
-  builder,
-  createPasswordRequestBuilder,
-  createRegistrationRequestBuilder,
-  getRefreshToken,
-  resetClients,
-} from '@/server/client'
+import { builder, createPasswordRequestBuilder, getRefreshToken, resetClients } from '@/server/client'
 import type { ClientResponse } from '@commercetools/platform-sdk'
 import type { CustomerSignInResult } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/customer'
 import { environment } from '@/app/types/environment.ts'
@@ -32,9 +26,7 @@ export type RegistrationParameters = {
 
 export const authApi = {
   register: async (parameters: RegistrationParameters): Promise<ClientResponse<CustomerSignInResult>> => {
-    resetClients()
-    const registrationBuilder = createRegistrationRequestBuilder()
-    await registrationBuilder
+    await builder()
       .me()
       .signup()
       .post({
@@ -63,6 +55,7 @@ export const authApi = {
         },
       })
       .execute()
+    resetClients()
     return authApi.authenticate(parameters.email, parameters.password)
   },
   authenticate: async (email: string, password: string): Promise<ClientResponse<CustomerSignInResult>> => {

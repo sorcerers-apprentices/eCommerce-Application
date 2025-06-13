@@ -57,3 +57,14 @@
   padding: 1rem;
   background-color: vars.$color-primary25;
 }
+
+.price {
+  text-decoration: line-through;
+}
+
+.promocode {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.2rem;
+}
