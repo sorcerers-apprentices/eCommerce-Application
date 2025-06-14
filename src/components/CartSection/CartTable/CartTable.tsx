@@ -16,6 +16,7 @@ import { Form } from '@/shared/ui/Form/Form.tsx'
 import { FormButton } from '@/components/LoginForm/FormButton.tsx'
 import { toast } from 'react-hot-toast'
 import type { TCartItem } from '@/types/user-types.ts'
+import { MdDeleteForever } from 'react-icons/md'
 import { calculatePrices, findPromoCodes } from '@/shared/utilities/type-utilities.ts'
 
 export const CartTable = (): JSX.Element => {
