@@ -14,68 +14,15 @@ import { Modal } from '@/shared/ui/Modal/Modal'
 import { InputComponent } from '@/shared/ui/InputComponent/InputComponent.tsx'
 import { Form } from '@/shared/ui/Form/Form.tsx'
 import { FormButton } from '@/components/LoginForm/FormButton.tsx'
-import { CENTS_IN_DOLLAR, DECIMAL_PLACES } from '@/shared/utilities/price.ts'
 import { toast } from 'react-hot-toast'
 import type { TCartItem } from '@/types/user-types.ts'
-
-type PriceData = {
-  initialPrice: number
-  discountPrice: number
-  totalPrice: number
-}
-
-type Code = {
-  name: string | undefined
-  id: string
-}
+import { calculatePrices, findPromoCodes } from '@/shared/utilities/type-utilities.ts'
 
 export const CartTable = (): JSX.Element => {
   const { data, error, loading, refetch } = useFetch<ClientResponse<Cart>>(api.cart.fetchActiveCart)
   const { clearCart, applyDiscountCode } = useCart()
   const [modal, setModal] = useState(false)
   const [formData, setFormData] = useState({ promo: { value: '' } })
-
-  const calculatePrices = (data?: Cart): PriceData => {
-    if (!data) {
-      return { initialPrice: 0, discountPrice: 0, totalPrice: 0 }
-    }
-
-    let discountPriceCents = 0
-    discountPriceCents += data.lineItems.reduce((acc, item) => {
-      const cartDiscountPerItem = item.discountedPricePerQuantity?.find((discount) =>
-        discount.discountedPrice.includedDiscounts.some((incl) => incl.discount.typeId === 'cart-discount')
-      )
-      if (!cartDiscountPerItem) return acc
-
-      const discountAmount =
-        cartDiscountPerItem.discountedPrice.includedDiscounts.find((incl) => incl.discount.typeId === 'cart-discount')
-          ?.discountedAmount.centAmount ?? 0
-
-      return acc + discountAmount * cartDiscountPerItem.quantity
-    }, 0)
-
-    if (data.discountOnTotalPrice) {
-      discountPriceCents += data.discountOnTotalPrice.discountedAmount.centAmount
-    }
-
-    const discountPrice = discountPriceCents / CENTS_IN_DOLLAR
-
-    const initialPrice = Number((data.totalPrice.centAmount / CENTS_IN_DOLLAR + discountPrice).toFixed(DECIMAL_PLACES))
-    const totalPrice = Number((initialPrice - discountPrice).toFixed(DECIMAL_PLACES))
-    return { initialPrice: initialPrice, discountPrice: discountPrice, totalPrice: totalPrice }
-  }
-
-  const findPromoCodes = (data?: Cart): Array<Code> => {
-    if (!data) {
-      return []
-    }
-    return data.discountCodes.map((code) => {
-      return {
-        name: code.discountCode.obj?.name?.['en-US'],
-        id: code.discountCode.id,
-      }
-    })
-  }
 
   const [priceData, setPriceData] = useState(calculatePrices(data?.body))
   const [promoCodes, setPromoCodes] = useState(findPromoCodes(data?.body))
