@@ -2,7 +2,17 @@ import s from './AboutCard.module.scss'
 import type { ReactElement } from 'react'
 import { FaGithub } from 'react-icons/fa'
 
-export type ActivitiesTypes = 'feature' | 'CI/CD' | 'chore' | 'tests' | 'styles' | 'refactor' | 'API' | 'routing'
+export type ActivitiesTypes =
+  | 'feature'
+  | 'CI/CD'
+  | 'chore'
+  | 'tests'
+  | 'styles'
+  | 'refactor'
+  | 'API'
+  | 'routing'
+  | 'backend'
+  | 'design'
 
 export type AboutCardProps = {
   name: string
@@ -11,6 +21,7 @@ export type AboutCardProps = {
   gitHubLink: string
   avatarLink: string
   description: string
+  part: string
 }
 
 const activityLabels = {
@@ -22,6 +33,8 @@ const activityLabels = {
   refactor: '♻️ Refactoring',
   API: '🌐 API',
   routing: '🛣️ Routing',
+  backend: '⚙️ Backend',
+  design: '🖼️ Design',
 }
 
 const AboutCard = (props: AboutCardProps): ReactElement => {
@@ -37,7 +50,7 @@ const AboutCard = (props: AboutCardProps): ReactElement => {
           </div>
         ))}
       </div>
-
+      <p className={s.part}>{props.part}</p>
       <p className={s.description}>{props.description}</p>
       <a href={props.gitHubLink} target="_blank" className={s.githublink}>
         <FaGithub className={s.githubicon} />

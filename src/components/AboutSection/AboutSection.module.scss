@@ -1,3 +1,9 @@
+.component {
+  display: flex;
+  flex-direction: column;
+  place-content: center center;
+}
+
 .section {
   display: flex;
   flex-wrap: wrap;
