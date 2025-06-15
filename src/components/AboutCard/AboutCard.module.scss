@@ -7,7 +7,7 @@
   flex-direction: column;
   align-items: center;
   width: 100%;
-  max-width: 20rem;
+  max-width: 22rem;
   min-height: 23.75rem;
   padding: 2.5rem 2rem;
   border-radius: 1rem;
@@ -110,6 +110,16 @@
       color: #2f54eb;
       background: #f0f5ff;
     }
+
+    &[data-type='backend'] {
+      color: #52c41a;
+      background: #f6ffed;
+    }
+
+    &[data-type='design'] {
+      color: #52c41a;
+      background: #f6ffed;
+    }
   }
 }
 
@@ -154,6 +164,15 @@
 
   flex-grow: 1;
   margin: 1rem 0 1.5rem;
+  line-height: 1.5;
+  color: vars.$color-primary700;
+  text-align: right;
+  text-transform: none;
+}
+
+.part {
+  @include mix.body-m;
+
   line-height: 1.7;
   color: vars.$color-primary700;
   text-align: center;
@@ -170,33 +189,25 @@
   background: vars.$color-primary200;
   transition: all 0.3s ease;
 
-  span {
-    color: vars.$color-primary700;
-  }
-
   &:hover {
     background: vars.$color-primary;
-
-    .githubicon {
-      fill: vars.$color-white;
-    }
 
     span {
       color: vars.$color-white;
     }
   }
-}
 
-span {
-  @include mix.caption;
+  span {
+    @include mix.caption;
 
-  color: vars.$color-primary700;
-  transition: color 0.3s ease;
-}
+    color: vars.$color-primary700;
+    transition: color 0.3s ease;
+  }
 
-.githubicon {
-  width: 20px;
-  height: 20px;
-  fill: vars.$color-primary700;
-  transition: all 0.3s ease;
+  .githubicon {
+    width: 20px;
+    height: 20px;
+    fill: vars.$color-primary700;
+    transition: fill 0.3s ease;
+  }
 }
