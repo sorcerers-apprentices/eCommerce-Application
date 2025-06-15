@@ -14,68 +14,16 @@ import { Modal } from '@/shared/ui/Modal/Modal'
 import { InputComponent } from '@/shared/ui/InputComponent/InputComponent.tsx'
 import { Form } from '@/shared/ui/Form/Form.tsx'
 import { FormButton } from '@/components/LoginForm/FormButton.tsx'
-import { CENTS_IN_DOLLAR, DECIMAL_PLACES } from '@/shared/utilities/price.ts'
 import { toast } from 'react-hot-toast'
 import type { TCartItem } from '@/types/user-types.ts'
-
-type PriceData = {
-  initialPrice: number
-  discountPrice: number
-  totalPrice: number
-}
-
-type Code = {
-  name: string | undefined
-  id: string
-}
+import { MdDeleteForever } from 'react-icons/md'
+import { calculatePrices, findPromoCodes } from '@/shared/utilities/type-utilities.ts'
 
 export const CartTable = (): JSX.Element => {
   const { data, error, loading, refetch } = useFetch<ClientResponse<Cart>>(api.cart.fetchActiveCart)
   const { clearCart, applyDiscountCode } = useCart()
   const [modal, setModal] = useState(false)
   const [formData, setFormData] = useState({ promo: { value: '' } })
-
-  const calculatePrices = (data?: Cart): PriceData => {
-    if (!data) {
-      return { initialPrice: 0, discountPrice: 0, totalPrice: 0 }
-    }
-
-    let discountPriceCents = 0
-    discountPriceCents += data.lineItems.reduce((acc, item) => {
-      const cartDiscountPerItem = item.discountedPricePerQuantity?.find((discount) =>
-        discount.discountedPrice.includedDiscounts.some((incl) => incl.discount.typeId === 'cart-discount')
-      )
-      if (!cartDiscountPerItem) return acc
-
-      const discountAmount =
-        cartDiscountPerItem.discountedPrice.includedDiscounts.find((incl) => incl.discount.typeId === 'cart-discount')
-          ?.discountedAmount.centAmount ?? 0
-
-      return acc + discountAmount * cartDiscountPerItem.quantity
-    }, 0)
-
-    if (data.discountOnTotalPrice) {
-      discountPriceCents += data.discountOnTotalPrice.discountedAmount.centAmount
-    }
-
-    const discountPrice = discountPriceCents / CENTS_IN_DOLLAR
-
-    const initialPrice = Number((data.totalPrice.centAmount / CENTS_IN_DOLLAR + discountPrice).toFixed(DECIMAL_PLACES))
-    const totalPrice = Number((initialPrice - discountPrice).toFixed(DECIMAL_PLACES))
-    return { initialPrice: initialPrice, discountPrice: discountPrice, totalPrice: totalPrice }
-  }
-
-  const findPromoCodes = (data?: Cart): Array<Code> => {
-    if (!data) {
-      return []
-    }
-    return data.discountCodes.map((code) => {
-      return {
-        name: code.discountCode.obj?.name?.['en-US'],
-        id: code.discountCode.id,
-      }
-    })
-  }
 
   const [priceData, setPriceData] = useState(calculatePrices(data?.body))
   const [promoCodes, setPromoCodes] = useState(findPromoCodes(data?.body))
@@ -173,7 +121,10 @@ export const CartTable = (): JSX.Element => {
             </table>
 
             <div className={s.total}>
-              <h2 className="title">Price</h2>
+              <div className={s.row}>
+                <div>Price before discount:</div>
+                <div>{priceData.initialPrice} €</div>
+              </div>
               <Form className={['form', 'section']} onSubmit={onSubmitPromoCode}>
                 <InputComponent
                   value={formData.promo.value}
@@ -185,15 +136,22 @@ export const CartTable = (): JSX.Element => {
                 />
                 <FormButton value={'Apply promo code'} disabled={false} />
               </Form>
-              <div>Price: {priceData.initialPrice} €</div>
-              <div>Cart Discount: {priceData.discountPrice} €</div>
-              <div>Total price: {priceData.totalPrice} €</div>
               {promoCodes.map((code) => (
                 <div key={code.id} className={s.promocode}>
                   <p>{code.name?.toString() || 'Loading…'}</p>
-                  <Button onClick={async () => await removePromoCode(code.id.toString())}>Remove</Button>
+                  <div className={s.link} onClick={async () => await removePromoCode(code.id.toString())}>
+                    <MdDeleteForever />
+                  </div>
                 </div>
               ))}
+              <div className={s.row}>
+                <div>Discount:</div>
+                <div>{priceData.discountPrice} €</div>
+              </div>
+              <div className={s.row}>
+                <div className="title">Price:</div>
+                <div className="title">{priceData.totalPrice} €</div>
+              </div>
             </div>
           </div>
         ) : (

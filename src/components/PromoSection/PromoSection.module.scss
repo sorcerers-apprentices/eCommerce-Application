@@ -21,6 +21,10 @@
   }
 }
 
+.content {
+  margin: 0 auto;
+}
+
 .image {
   width: 22rem;
   height: 30rem;
@@ -32,13 +36,18 @@
   filter: sepia(0.3);
 }
 
-.content {
+.title {
+  text-transform: none;
+}
+
+.slide {
   display: flex;
   flex-direction: column;
   gap: 1rem;
   align-items: center;
   justify-content: center;
-  max-width: 20rem;
+  max-width: 15rem;
+  min-height: 15rem;
   margin: 0 auto;
   color: vars.$color-primary;
 

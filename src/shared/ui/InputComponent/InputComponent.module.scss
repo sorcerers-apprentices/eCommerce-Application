@@ -22,6 +22,8 @@
 
 .label {
   @include mixins.body-m;
+
+  margin-bottom: 0.2rem;
 }
 
 .input {
