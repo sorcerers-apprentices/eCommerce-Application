@@ -19,6 +19,7 @@ import Footer from '@/components/Footer/Footer.tsx'
 import { Button } from '@/shared/ui/Button/Button.tsx'
 import { toast } from 'react-hot-toast'
 import { useCart } from '@/hooks/useCart.tsx'
+import { findAttributeData } from '@/shared/utilities/type-utilities.ts'
 
 const ProductPage = (): ReactElement => {
   const { id } = useParams()
@@ -79,9 +80,6 @@ const ProductPage = (): ReactElement => {
   const discountPrice = price?.discounted?.value.centAmount
   const centPrice = price?.value.centAmount
 
-  const findAttributeData = (name: string): string | undefined => {
-    return product?.body.masterVariant.attributes?.find((attribute) => attribute.name === name)?.value
-  }
   const category: Category | undefined = product?.body.categories?.[0]?.id
     ? categories?.body.results.find((category) => category.id === product.body.categories?.[0].id)
     : undefined
@@ -129,10 +127,10 @@ const ProductPage = (): ReactElement => {
             {discountPrice && <p className={s.productprice}>€ {discountPrice / CENTS_IN_DOLLAR}</p>}
           </div>
           {product?.body.description && <p>{`${product.body.description?.['en-US']}`}</p>}
-          {findAttributeData('brand') && <h3>Brand: {findAttributeData('brand')}</h3>}
-          {findAttributeData('size') && <h3>Size: {findAttributeData('size')}</h3>}
-          {findAttributeData('volume') && <h3>Volume: {findAttributeData('volume')} ml</h3>}
-          {findAttributeData('weight') && <h3>Weight: {findAttributeData('weight')} kg</h3>}
+          {findAttributeData('brand', product) && <h3>Brand: {findAttributeData('brand', product)}</h3>}
+          {findAttributeData('size', product) && <h3>Size: {findAttributeData('size', product)}</h3>}
+          {findAttributeData('volume', product) && <h3>Volume: {findAttributeData('volume', product)} ml</h3>}
+          {findAttributeData('weight', product) && <h3>Weight: {findAttributeData('weight', product)} kg</h3>}
           <div>
             {isProductInCart ? (
               <Button onClick={async () => removeFromCartHandler()} disabled={!isProductInCart}>
