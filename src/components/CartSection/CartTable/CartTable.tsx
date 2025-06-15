@@ -17,6 +17,7 @@ import { FormButton } from '@/components/LoginForm/FormButton.tsx'
 import { CENTS_IN_DOLLAR, DECIMAL_PLACES } from '@/shared/utilities/price.ts'
 import { toast } from 'react-hot-toast'
 import type { TCartItem } from '@/types/user-types.ts'
+import { MdDeleteForever } from 'react-icons/md'
 
 type PriceData = {
   initialPrice: number
@@ -173,7 +174,10 @@ export const CartTable = (): JSX.Element => {
             </table>
 
             <div className={s.total}>
-              <h2 className="title">Price</h2>
+              <div className={s.row}>
+                <div>Price before discount:</div>
+                <div>{priceData.initialPrice} €</div>
+              </div>
               <Form className={['form', 'section']} onSubmit={onSubmitPromoCode}>
                 <InputComponent
                   value={formData.promo.value}
@@ -185,15 +189,22 @@ export const CartTable = (): JSX.Element => {
                 />
                 <FormButton value={'Apply promo code'} disabled={false} />
               </Form>
-              <div>Price: {priceData.initialPrice} €</div>
-              <div>Cart Discount: {priceData.discountPrice} €</div>
-              <div>Total price: {priceData.totalPrice} €</div>
               {promoCodes.map((code) => (
                 <div key={code.id} className={s.promocode}>
                   <p>{code.name?.toString() || 'Loading…'}</p>
-                  <Button onClick={async () => await removePromoCode(code.id.toString())}>Remove</Button>
+                  <div className={s.link} onClick={async () => await removePromoCode(code.id.toString())}>
+                    <MdDeleteForever />
+                  </div>
                 </div>
               ))}
+              <div className={s.row}>
+                <div>Discount:</div>
+                <div>{priceData.discountPrice} €</div>
+              </div>
+              <div className={s.row}>
+                <div className="title">Price:</div>
+                <div className="title">{priceData.totalPrice} €</div>
+              </div>
             </div>
           </div>
         ) : (

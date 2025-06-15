@@ -8,7 +8,7 @@
   align-items: flex-start;
   justify-content: space-between;
 
-  @media (width <= 700px) {
+  @media (width <= 1170px) {
     flex-direction: column;
     align-items: end;
   }
@@ -53,9 +53,7 @@
 
 .total {
   display: block;
-  min-width: 21rem;
-  padding: 1rem;
-  background-color: vars.$color-primary25;
+  min-width: 20rem;
 }
 
 .price {
@@ -66,5 +64,14 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 0.2rem;
+  padding: 0.5rem 0;
+  font-size: 1.2rem;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+  color: vars.$color-primary;
 }
