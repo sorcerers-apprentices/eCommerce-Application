@@ -1,21 +1,54 @@
-.component {
-  display: flex;
-  flex-direction: column;
-  place-content: center center;
-}
+@use '@/styles/variables.scss' as vars;
+@use '@/styles/mixins.scss' as mixins;
 
 .section {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 2.5rem;
-  justify-content: center;
-  max-width: 75rem;
-  margin: 3rem auto;
-  padding: 0 2rem;
+  background-color: vars.$color-primary25;
+}
 
-  @media (width <= 768px) {
-    flex-direction: column;
-    gap: 3.5rem;
-    align-items: center;
+.white {
+  background-color: vars.$color-white;
+}
+
+.magic {
+  max-width: 30rem;
+  min-height: 30vh;
+
+  @include mixins.center(1rem);
+}
+
+.loading {
+  max-width: 30rem;
+  min-height: 30vh;
+  background-image: url('/images/cat.png');
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+
+  @include mixins.center(1rem);
+
+  & p {
+    transform: translate(5rem, 5rem);
+    rotate: -14deg;
+    font-size: 2rem;
+    font-weight: 600;
+
+    @media (width <= 700px) {
+      transform: translate(4rem, 5rem);
+      font-size: 1.5rem;
+    }
+
+    @media (width <= 400px) {
+      transform: translate(3rem, 4rem);
+      font-size: 1rem;
+    }
   }
+}
+
+.abracadabra {
+  font-weight: 600;
+  color: vars.$state-color-error;
+}
+
+.buttons {
+  @include mixins.flex-row;
 }

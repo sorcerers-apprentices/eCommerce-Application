@@ -11,6 +11,7 @@ import type { SortType } from '@/components/Category/SortComponent/SortControlCo
 import type {
   MyCartAddDiscountCodeAction,
   MyCartAddLineItemAction,
+  MyCartRemoveDiscountCodeAction,
   MyCartUpdateAction,
   MyCustomerUpdateAction,
 } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/me'
@@ -135,7 +136,13 @@ export const api = {
   },
   cart: {
     fetchActiveCart: async (): Promise<ClientResponse<Cart>> => {
-      return builder().me().activeCart().get().execute()
+      return builder()
+        .me()
+        .activeCart()
+        .get({
+          queryArgs: { expand: ['discountCodes[*].discountCode'] },
+        })
+        .execute()
     },
     createCart: async (): Promise<ClientResponse<Cart>> => {
       return builder()
@@ -243,7 +250,25 @@ export const api = {
         .me()
         .carts()
         .withId({ ID: cartId })
-        .post({ body: { version: (await api.cart.fetchActiveCart()).body.version, actions: [updateAction] } })
+        .post({
+          body: { version: (await api.cart.fetchActiveCart()).body.version, actions: [updateAction] },
+          queryArgs: { expand: ['discountCodes[*].discountCode'] },
+        })
+        .execute()
+    },
+    removeDiscountCode: async (cartId: string, discountCodeId: string): Promise<ClientResponse<Cart>> => {
+      const removeAction: MyCartRemoveDiscountCodeAction = {
+        action: 'removeDiscountCode',
+        discountCode: { typeId: 'discount-code', id: discountCodeId },
+      }
+      return builder()
+        .me()
+        .carts()
+        .withId({ ID: cartId })
+        .post({
+          body: { version: (await api.cart.fetchActiveCart()).body.version, actions: [removeAction] },
+          queryArgs: { expand: ['discountCodes[*].discountCode'] },
+        })
         .execute()
     },
   },

@@ -1,52 +1,76 @@
 import type { ReactElement } from 'react'
+import { useEffect, useState } from 'react'
+import { About } from './About/About'
 import s from './AboutSection.module.scss'
-import AboutUs from '@/components/AboutUs/AboutUs'
-import AboutCard, { type AboutCardProps } from '@/components/AboutCard/AboutCard'
+import { Button } from '@/shared/ui/Button/Button'
+import { RoutePath } from '@/shared/config/routeConfig/routeConfig'
+import { Link } from 'react-router-dom'
 
-const ArtemDataProps: AboutCardProps = {
-  name: 'Artem Gassan',
-  activities: ['feature', 'routing', 'CI/CD', 'tests', 'refactor'],
-  gitHubName: 'artemgassan',
-  gitHubLink: 'https://github.com/artemgassan',
-  avatarLink: 'https://avatars.githubusercontent.com/u/158855420?v=4',
-  description:
-    'Allowed myself to provide the project with navigational precision in tricky routing scenarios and providing the team with slightly more convenient CI/CD processes. Excellent at wearing out the team by searching for and implementing more optimal practices. Behind the scenes of the project — a navigator, that slightly guides its infrastructure and ensures that the project is maintained in production.',
-  part: 'Team lead',
-}
+export const AboutSection = (): ReactElement => {
+  const [magicOne, setMagicOne] = useState(true)
+  const [magicTwo, setMagicTwo] = useState(false)
+  const [magicThree, setMagicThree] = useState(false)
+  const [about, setAbout] = useState(false)
+  const TIME_OF_MAGIC = 2000
+  useEffect(() => {
+    if (magicThree) {
+      const timer = setTimeout(() => {
+        setAbout(true)
+        setMagicThree(false)
+      }, TIME_OF_MAGIC)
 
-const DaryaDataProps: AboutCardProps = {
-  name: 'Darya Kolenchenko',
-  activities: ['feature', 'tests', 'API', 'backend', 'refactor'],
-  gitHubName: 'dariechka',
-  gitHubLink: 'https://github.com/dariechka',
-  avatarLink: 'https://avatars.githubusercontent.com/u/149780473?v=4',
-  description:
-    'Our hardworking and responsible guide in the world of backlog, the general master of negotiations between the frontend and the server, possessing amazing self-discipline. By closing and resolving any issues clearly, confidently and coolly, she allowed the whole team to work calmly with asynchronous data without being distracted by the technical complexities of communicating with the server. No magic - just precise requests, painstaking results and nerves of steel when dealing with unstable answers.',
-  part: 'Lead API Integration Specialist',
-}
-
-const AnnaDataProps: AboutCardProps = {
-  name: 'Anna Vasilevich',
-  activities: ['feature', 'styles', 'chore', 'tests', 'design'],
-  gitHubName: 'dzichonka',
-  gitHubLink: 'https://github.com/dzichonka',
-  avatarLink: 'https://avatars.githubusercontent.com/u/73832561?v=4',
-  description:
-    'An artist and engineer in one person, our main UI architect and visual designer: from the very start, the project acquired its character through her independent and competent visual solutions. She set the tone for the interface and took full and clear control over the tasks so that “it not only worked, but also looked good,” finding and taking into account the critical nuances of frontend development. Her attention to detail has saved us from bugs and unnecessary edits more than once, and her creative solutions have sometimes turned out to be exactly what was missing for the final touch.',
-  part: 'Chief UX/UI Officer',
-}
-
-const AboutSection = (): ReactElement => {
+      return (): void => clearTimeout(timer)
+    }
+  }, [magicThree])
   return (
-    <section className={s.component}>
-      <div className={s.section}>
-        <AboutCard {...DaryaDataProps} />
-        <AboutCard {...AnnaDataProps} />
-        <AboutCard {...ArtemDataProps} />
-      </div>
-      <AboutUs />
+    <section className={`section ${s.section} ${magicThree ? s.white : ''}`}>
+      {magicOne && (
+        <div className={s.magic}>
+          <p>To uncover the secret knowledge of the Sorcerer's Apprentices, you must cast a powerful spell...</p>
+          <p>
+            Say the magic words <span className={s.abracadabra}>"Abracadabra!"</span> and then click the button below.
+          </p>
+          <Button
+            onClick={() => {
+              setMagicTwo(true)
+              setMagicOne(false)
+            }}
+          >
+            Abracadabra!
+          </Button>
+        </div>
+      )}
+      {magicTwo && (
+        <div className={s.magic}>
+          <p>No, no, no... </p>
+          <p>
+            You must say <span className={s.abracadabra}>"Abracadabra!"</span> loudly and clearly!
+          </p>
+          <p>Or perhaps... you're just a Muggle?</p>
+          <div className={s.buttons}>
+            <Button
+              onClick={() => {
+                setMagicThree(true)
+                setMagicTwo(false)
+              }}
+            >
+              ABRAKADABRA!
+            </Button>
+            <Link to={RoutePath.MAIN}>
+              <Button onClick={() => setMagicTwo(false)}>I'm a Muggle :(</Button>
+            </Link>
+          </div>
+        </div>
+      )}
+      {magicThree && (
+        <div className={s.loading}>
+          <p>
+            Secret knowledge <br />
+            is loading...
+          </p>
+        </div>
+      )}
+      {about && <About />}
     </section>
   )
 }
-
-export default AboutSection

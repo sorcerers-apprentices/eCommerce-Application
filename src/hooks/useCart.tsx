@@ -7,25 +7,40 @@ import { toast } from 'react-hot-toast'
 import { useEffect, useState } from 'react'
 
 export type CartOperations = {
+  data: ClientResponse<Cart> | null
   loading: boolean
   error: Error | null
+  refetch: () => void
   addProductToCart: (productId: string, quantity?: number) => Promise<void>
   decrementProductInCart: (productId: string) => Promise<void>
   removeProductFromCart: (productId: string) => Promise<void>
   clearCart: () => Promise<void>
-  applyDiscountCode: (code: string) => Promise<void>
+  applyDiscountCode: (code: string) => Promise<ClientResponse<Cart> | undefined>
 }
 
 export const useCart = (): CartOperations => {
   const { state, dispatch } = useCartContext()
-  const { data, error, loading } = useFetch<ClientResponse<Cart>>(api.cart.fetchActiveCart)
+  const { data, error, loading, refetch } = useFetch<ClientResponse<Cart>>(api.cart.fetchActiveCart)
+
   const [stateData, setStateData] = useState<ClientResponse<Cart> | null>(null)
+  const [stateLoading, setStateLoading] = useState<boolean>(loading)
+  const [stateError, setStateError] = useState<Error | null>(error)
 
   useEffect(() => {
-    if (data) setStateData(data)
+    setStateData(data)
   }, [data])
+
+  useEffect(() => {
+    setStateLoading(loading)
+  }, [loading])
+
+  useEffect(() => {
+    setStateError(error instanceof Error ? error : null)
+  }, [error])
   const addProductToCart = async (productId: string, quantity?: number): Promise<void> => {
     if (state.id) {
+      setStateLoading(true)
+      setStateError(null)
       try {
         const response = await api.cart.addProductToCart(state.id, productId, quantity ?? 1)
         setStateData(response)
@@ -33,13 +48,19 @@ export const useCart = (): CartOperations => {
         toast.success(`${productName} added to cart`)
         const total = response.body?.totalLineItemQuantity ?? 0
         dispatch({ type: CartAction.SET_COUNTER, payload: { countProducts: total } })
-      } catch {
+      } catch (error) {
+        setStateError(error instanceof Error ? error : null)
         toast.error('Error adding product to cart')
+      } finally {
+        setStateLoading(false)
       }
     }
   }
+
   const decrementProductInCart = async (productId: string): Promise<void> => {
     if (state.id) {
+      setStateLoading(true)
+      setStateError(null)
       try {
         const productName = stateData?.body.lineItems.find((item) => item.productId === productId)?.name['en-US'] ?? ''
         const response = await api.cart.decrementProductInCart(state.id, productId)
@@ -47,13 +68,19 @@ export const useCart = (): CartOperations => {
         toast.success(`${productName} deleted from cart`)
         const total = response.body?.totalLineItemQuantity ?? 0
         dispatch({ type: CartAction.SET_COUNTER, payload: { countProducts: total } })
-      } catch {
-        toast.error('Error adding product to cart')
+      } catch (error) {
+        setStateError(error instanceof Error ? error : null)
+        toast.error('Error removing product from cart')
+      } finally {
+        setStateLoading(false)
       }
     }
   }
+
   const removeProductFromCart = async (productId: string): Promise<void> => {
     if (state.id) {
+      setStateLoading(true)
+      setStateError(null)
       try {
         const productName = stateData?.body.lineItems.find((item) => item.productId === productId)?.name['en-US'] ?? ''
         const response = await api.cart.removeProductFromCart(state.id, productId)
@@ -61,38 +88,56 @@ export const useCart = (): CartOperations => {
         toast.success(`${productName} deleted from cart`)
         const total = response.body?.totalLineItemQuantity ?? 0
         dispatch({ type: CartAction.SET_COUNTER, payload: { countProducts: total } })
-      } catch {
-        toast.error('Error adding product to cart')
+      } catch (error) {
+        setStateError(error instanceof Error ? error : null)
+        toast.error('Error removing product from cart')
+      } finally {
+        setStateLoading(false)
       }
     }
   }
+
   const clearCart = async (): Promise<void> => {
     if (!state.id) return
+    setStateLoading(true)
+    setStateError(null)
     try {
       const response = await api.cart.clearCart(state.id)
       setStateData(response)
       toast.success('Cart cleared')
       const total = response.body.totalLineItemQuantity ?? 0
       dispatch({ type: CartAction.SET_COUNTER, payload: { countProducts: total } })
-    } catch {
+    } catch (error) {
+      setStateError(error instanceof Error ? error : null)
       toast.error('Error clearing cart')
+    } finally {
+      setStateLoading(false)
     }
   }
-  const applyDiscountCode = async (code: string): Promise<void> => {
+
+  const applyDiscountCode = async (code: string): Promise<ClientResponse<Cart> | undefined> => {
     if (state.id) {
+      setStateLoading(true)
+      setStateError(null)
       try {
         const response = await api.cart.applyDiscountCode(state.id, code)
         setStateData(response)
         toast.success(`Promo code is applied`)
-        console.log(response)
-      } catch {
+        return response
+      } catch (error) {
+        setStateError(error instanceof Error ? error : null)
         toast.error('There is no such promotion')
+      } finally {
+        setStateLoading(false)
       }
     }
   }
+
   return {
-    loading,
-    error,
+    data: stateData,
+    loading: stateLoading,
+    error: stateError,
+    refetch,
     addProductToCart,
     decrementProductInCart,
     removeProductFromCart,

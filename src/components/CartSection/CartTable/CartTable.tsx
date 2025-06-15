@@ -1,4 +1,4 @@
-import { useState, type JSX } from 'react'
+import { useState, type JSX, type FormEvent, type ChangeEvent, useEffect } from 'react'
 import { CartRow } from '../CartRow/CartRow'
 import { RoutePath } from '@/shared/config/routeConfig/routeConfig'
 import { useFetch } from '@/shared/hooks/useFetch'
@@ -11,11 +11,84 @@ import s from '../CartSection.module.scss'
 import { Button } from '@/shared/ui/Button/Button'
 import { NavLink } from 'react-router-dom'
 import { Modal } from '@/shared/ui/Modal/Modal'
+import { InputComponent } from '@/shared/ui/InputComponent/InputComponent.tsx'
+import { Form } from '@/shared/ui/Form/Form.tsx'
+import { FormButton } from '@/components/LoginForm/FormButton.tsx'
+import { CENTS_IN_DOLLAR, DECIMAL_PLACES } from '@/shared/utilities/price.ts'
+import { toast } from 'react-hot-toast'
+import type { TCartItem } from '@/types/user-types.ts'
+
+type PriceData = {
+  initialPrice: number
+  discountPrice: number
+  totalPrice: number
+}
+
+type Code = {
+  name: string | undefined
+  id: string
+}
 
 export const CartTable = (): JSX.Element => {
   const { data, error, loading, refetch } = useFetch<ClientResponse<Cart>>(api.cart.fetchActiveCart)
   const { clearCart, applyDiscountCode } = useCart()
   const [modal, setModal] = useState(false)
+  const [formData, setFormData] = useState({ promo: { value: '' } })
+
+  const calculatePrices = (data?: Cart): PriceData => {
+    if (!data) {
+      return { initialPrice: 0, discountPrice: 0, totalPrice: 0 }
+    }
+
+    let discountPriceCents = 0
+    discountPriceCents += data.lineItems.reduce((acc, item) => {
+      const cartDiscountPerItem = item.discountedPricePerQuantity?.find((discount) =>
+        discount.discountedPrice.includedDiscounts.some((incl) => incl.discount.typeId === 'cart-discount')
+      )
+      if (!cartDiscountPerItem) return acc
+
+      const discountAmount =
+        cartDiscountPerItem.discountedPrice.includedDiscounts.find((incl) => incl.discount.typeId === 'cart-discount')
+          ?.discountedAmount.centAmount ?? 0
+
+      return acc + discountAmount * cartDiscountPerItem.quantity
+    }, 0)
+
+    if (data.discountOnTotalPrice) {
+      discountPriceCents += data.discountOnTotalPrice.discountedAmount.centAmount
+    }
+
+    const discountPrice = discountPriceCents / CENTS_IN_DOLLAR
+
+    const initialPrice = Number((data.totalPrice.centAmount / CENTS_IN_DOLLAR + discountPrice).toFixed(DECIMAL_PLACES))
+    const totalPrice = Number((initialPrice - discountPrice).toFixed(DECIMAL_PLACES))
+    return { initialPrice: initialPrice, discountPrice: discountPrice, totalPrice: totalPrice }
+  }
+
+  const findPromoCodes = (data?: Cart): Array<Code> => {
+    if (!data) {
+      return []
+    }
+    return data.discountCodes.map((code) => {
+      return {
+        name: code.discountCode.obj?.name?.['en-US'],
+        id: code.discountCode.id,
+      }
+    })
+  }
+
+  const [priceData, setPriceData] = useState(calculatePrices(data?.body))
+  const [promoCodes, setPromoCodes] = useState(findPromoCodes(data?.body))
+  const [viewData, setViewData] = useState<TCartItem[]>([])
+
+  useEffect(() => {
+    if (!data?.body) return
+
+    setPriceData(calculatePrices(data.body))
+    setPromoCodes(findPromoCodes(data?.body))
+    setViewData(CartMapper.toCartView(data.body))
+  }, [data])
+
   const clearAllAndClose = async (): Promise<void> => {
     if (data?.body.id) {
       await clearCart()
@@ -23,6 +96,38 @@ export const CartTable = (): JSX.Element => {
       setModal(false)
     }
   }
+
+  const onSubmitPromoCode = async (event: FormEvent<HTMLFormElement>): Promise<void> => {
+    event.preventDefault()
+    const cart = await applyDiscountCode(formData.promo.value)
+    if (cart) {
+      setPriceData(calculatePrices(cart.body))
+      setPromoCodes(findPromoCodes(cart.body))
+      setViewData(CartMapper.toCartView(cart.body))
+    }
+  }
+
+  const handleChange = (event: ChangeEvent<HTMLInputElement>): void => {
+    const { value } = event.target
+    setFormData((previous) => ({ ...previous, promo: { value } }))
+  }
+
+  const removePromoCode = async (promoCodeId: string): Promise<void> => {
+    if (!data?.body.id) {
+      return
+    }
+    try {
+      const cart = await api.cart.removeDiscountCode(data.body.id, promoCodeId)
+      if (cart) {
+        setPriceData(calculatePrices(cart.body))
+        setPromoCodes(findPromoCodes(cart.body))
+        setViewData(CartMapper.toCartView(cart.body))
+      }
+    } catch {
+      toast.error('Could not remove promo code')
+    }
+  }
+
   return (
     <div className="section">
       <Modal isOpen={modal} onClose={() => setModal(false)}>
@@ -40,34 +145,57 @@ export const CartTable = (): JSX.Element => {
 
       {data &&
         (data?.body.lineItems.length ? (
-          <table>
-            <thead>
-              <tr>
-                <th>Product</th>
-                <th>Price</th>
-                <th>Quantity</th>
-                <th>Total</th>
-                <th>
-                  <Button
-                    type="button"
-                    onClick={() => {
-                      setModal(true)
-                    }}
-                  >
-                    Clear all
-                  </Button>
-                  <Button type="button" onClick={async () => await applyDiscountCode('Reviewer20')}>
-                    Apply promo code
-                  </Button>
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {CartMapper.toCartView(data.body).map((product) => (
-                <CartRow key={product.id} cartItemData={product} productLink={RoutePath.MAIN} refetch={refetch} />
+          <div className={s.section}>
+            <table>
+              <thead>
+                <tr>
+                  <th>Product</th>
+                  <th>Price</th>
+                  <th>Quantity</th>
+                  <th>Total</th>
+                  <th>
+                    <div
+                      className={s.clear}
+                      onClick={() => {
+                        setModal(true)
+                      }}
+                    >
+                      Clear all
+                    </div>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {viewData.map((product) => (
+                  <CartRow key={product.id} cartItemData={product} refetch={refetch} />
+                ))}
+              </tbody>
+            </table>
+
+            <div className={s.total}>
+              <h2 className="title">Price</h2>
+              <Form className={['form', 'section']} onSubmit={onSubmitPromoCode}>
+                <InputComponent
+                  value={formData.promo.value}
+                  name={'promo'}
+                  title={'Apply promo code'}
+                  type={'text'}
+                  placeholder={'Enter promo code'}
+                  onChange={handleChange}
+                />
+                <FormButton value={'Apply promo code'} disabled={false} />
+              </Form>
+              <div>Price: {priceData.initialPrice} €</div>
+              <div>Cart Discount: {priceData.discountPrice} €</div>
+              <div>Total price: {priceData.totalPrice} €</div>
+              {promoCodes.map((code) => (
+                <div key={code.id} className={s.promocode}>
+                  <p>{code.name?.toString() || 'Loading…'}</p>
+                  <Button onClick={async () => await removePromoCode(code.id.toString())}>Remove</Button>
+                </div>
               ))}
-            </tbody>
-          </table>
+            </div>
+          </div>
         ) : (
           <div className={s.empty}>
             <div>

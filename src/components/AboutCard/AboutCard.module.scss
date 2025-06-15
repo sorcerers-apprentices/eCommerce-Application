@@ -186,28 +186,36 @@
   padding: 0.7rem 1.5rem;
   border-radius: 50px;
   opacity: 0;
-  background: vars.$color-black;
+  background: vars.$color-primary200;
   transition: all 0.3s ease;
+
+  span {
+    color: vars.$color-primary700;
+  }
 
   &:hover {
     background: vars.$color-primary;
+
+    .githubicon {
+      fill: vars.$color-white;
+    }
 
     span {
       color: vars.$color-white;
     }
   }
+}
 
-  span {
-    @include mix.caption;
+span {
+  @include mix.caption;
 
-    color: vars.$color-primary700;
-    transition: color 0.3s ease;
-  }
+  color: vars.$color-primary700;
+  transition: color 0.3s ease;
+}
 
-  .githubicon {
-    width: 20px;
-    height: 20px;
-    fill: vars.$color-primary700;
-    transition: fill 0.3s ease;
-  }
+.githubicon {
+  width: 20px;
+  height: 20px;
+  fill: vars.$color-primary700;
+  transition: all 0.3s ease;
 }
