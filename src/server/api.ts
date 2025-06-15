@@ -1,15 +1,18 @@
-import type {
-  Cart,
-  CategoryPagedQueryResponse,
-  ClientResponse,
-  Customer,
-  ProductProjection,
-  ProductProjectionPagedSearchResponse,
+import {
+  type Cart,
+  type CategoryPagedQueryResponse,
+  type ClientResponse,
+  type Customer,
+  type ProductProjection,
+  type ProductProjectionPagedSearchResponse,
 } from '@commercetools/platform-sdk'
 import { builder } from '@/server/client.ts'
 import type { SortType } from '@/components/Category/SortComponent/SortControlComponent.tsx'
 import type {
+  MyCartAddDiscountCodeAction,
   MyCartAddLineItemAction,
+  MyCartRemoveDiscountCodeAction,
+  MyCartUpdateAction,
   MyCustomerUpdateAction,
 } from '@commercetools/platform-sdk/dist/declarations/src/generated/models/me'
 
@@ -111,7 +114,6 @@ export const api = {
               : {}),
             sort,
             priceCurrency: 'EUR',
-            priceCountry: 'ES',
           },
         })
         .execute()
@@ -134,7 +136,13 @@ export const api = {
   },
   cart: {
     fetchActiveCart: async (): Promise<ClientResponse<Cart>> => {
-      return builder().me().activeCart().get().execute()
+      return builder()
+        .me()
+        .activeCart()
+        .get({
+          queryArgs: { expand: ['discountCodes[*].discountCode'] },
+        })
+        .execute()
     },
     createCart: async (): Promise<ClientResponse<Cart>> => {
       return builder()
@@ -153,7 +161,114 @@ export const api = {
         .me()
         .carts()
         .withId({ ID: cartId })
-        .post({ body: { version: (await api.user.fetchMe()).body.version, actions: [updateAction] } })
+        .post({ body: { version: (await api.cart.fetchActiveCart()).body.version, actions: [updateAction] } })
+        .execute()
+    },
+    decrementProductInCart: async (cartId: string, productId: string): Promise<ClientResponse<Cart>> => {
+      const activeCart = await api.cart.fetchActiveCart()
+      const version = activeCart.body.version
+      const item = activeCart.body.lineItems.find((i) => i.productId === productId)
+      if (!item) {
+        throw new Error('Product not found in cart')
+      }
+      const newQuantity = item.quantity - 1
+      const action: MyCartUpdateAction =
+        newQuantity > 0
+          ? {
+              action: 'changeLineItemQuantity',
+              lineItemId: item.id,
+              quantity: newQuantity,
+            }
+          : {
+              action: 'removeLineItem',
+              lineItemId: item.id,
+            }
+      return builder()
+        .me()
+        .carts()
+        .withId({ ID: cartId })
+        .post({
+          body: {
+            version,
+            actions: [action],
+          },
+        })
+        .execute()
+    },
+    removeProductFromCart: async (cartId: string, productId: string): Promise<ClientResponse<Cart>> => {
+      const activeCart = await api.cart.fetchActiveCart()
+      const version = activeCart.body.version
+      const actions: MyCartUpdateAction[] = activeCart.body.lineItems
+        .filter((item) => item.productId === productId)
+        .map((item) => ({
+          action: 'removeLineItem',
+          lineItemId: item.id,
+        }))
+      if (actions.length === 0) {
+        throw new Error('Product not found in cart')
+      }
+      return builder()
+        .me()
+        .carts()
+        .withId({ ID: cartId })
+        .post({
+          body: {
+            version,
+            actions,
+          },
+        })
+        .execute()
+    },
+    clearCart: async (cartId: string): Promise<ClientResponse<Cart>> => {
+      const activeCart = await api.cart.fetchActiveCart()
+      const version = activeCart.body.version
+      const lineItems = activeCart.body.lineItems
+
+      const actions: MyCartUpdateAction[] = lineItems.map((item) => ({
+        action: 'removeLineItem',
+        lineItemId: item.id,
+      }))
+
+      return builder()
+        .me()
+        .carts()
+        .withId({ ID: cartId })
+        .post({
+          body: {
+            version,
+            actions,
+          },
+        })
+        .execute()
+    },
+    applyDiscountCode: async (cartId: string, code: string): Promise<ClientResponse<Cart>> => {
+      const updateAction: MyCartAddDiscountCodeAction = {
+        action: 'addDiscountCode',
+        code,
+      }
+      return builder()
+        .me()
+        .carts()
+        .withId({ ID: cartId })
+        .post({
+          body: { version: (await api.cart.fetchActiveCart()).body.version, actions: [updateAction] },
+          queryArgs: { expand: ['discountCodes[*].discountCode'] },
+        })
+        .execute()
+    },
+    removeDiscountCode: async (cartId: string, discountCodeId: string): Promise<ClientResponse<Cart>> => {
+      const removeAction: MyCartRemoveDiscountCodeAction = {
+        action: 'removeDiscountCode',
+        discountCode: { typeId: 'discount-code', id: discountCodeId },
+      }
+      return builder()
+        .me()
+        .carts()
+        .withId({ ID: cartId })
+        .post({
+          body: { version: (await api.cart.fetchActiveCart()).body.version, actions: [removeAction] },
+          queryArgs: { expand: ['discountCodes[*].discountCode'] },
+        })
         .execute()
     },
   },

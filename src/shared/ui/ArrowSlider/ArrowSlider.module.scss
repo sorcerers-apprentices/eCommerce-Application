@@ -1,0 +1,26 @@
+@use '@/styles/variables.scss' as vars;
+
+.slider {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wrapper {
+  width: 100%;
+  text-align: center;
+}
+
+.arrow {
+  cursor: pointer;
+  border: none;
+  font-size: 3rem;
+  color: vars.$color-primary400;
+  background: none;
+  transition: color 0.3s;
+}
+
+.arrow:hover {
+  color: vars.$color-primary700;
+}
