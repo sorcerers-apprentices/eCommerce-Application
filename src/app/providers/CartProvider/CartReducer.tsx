@@ -3,9 +3,6 @@ import type { CartState } from './CartContext'
 export enum CartAction {
   SET_CART_ID = 'SET_CART_ID',
   SET_COUNTER = 'SET_COUNTER',
-  ADD_COUNT = 'ADD_COUNT',
-  REMOVE_COUNT = 'REMOVE_COUNT',
-  CLEAR_COUNTER = 'CLEAR_COUNTER',
 }
 
 export type CartActionType =
