@@ -11,7 +11,7 @@
 
 .magic {
   max-width: 30rem;
-  min-height: 30vh;
+  min-height: 80vh;
 
   @include mixins.center(1rem);
 }

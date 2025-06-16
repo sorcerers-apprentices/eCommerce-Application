@@ -19,6 +19,7 @@ import {
   validateStreet,
 } from '@/shared/utilities/validation.ts'
 import { toast } from 'react-hot-toast'
+import Footer from '@/components/Footer/Footer.tsx'
 
 type ModalState = {
   state?: 'editAddress' | 'addShippingAddress' | 'addBillingAddress'
@@ -398,6 +399,7 @@ const AddressPage = (): ReactElement => {
           </Modal>
         </div>
       )}
+      <Footer />
     </>
   )
 }
