@@ -32,7 +32,7 @@ const AnnaDataProps: AboutCardProps = {
   gitHubLink: 'https://github.com/dzichonka',
   avatarLink: 'https://avatars.githubusercontent.com/u/73832561?v=4',
   description:
-    ' I’m Anna — a front-end developer with a passion for clean design, smooth user experiences, and just the right touch of JavaScript magic. Originally from Belarus, I’ve been living in Warsaw for the past three years. My journey into IT began with Java, but I soon realized that I’m most inspired when working on the visual side of things. That’s how I found my place in frontend — where design meets functionality. I absolutely love RS-school course. The final team project was a real highlight — working with an amazing team taught me a lot about collaboration, code reviews, and creative problem-solving. Now, I’m looking ahead with excitement — thinking about my first position as a front-end developer fills me with inspiration and motivation.',
+    ' I’m Anna — a front-end developer with a passion for clean design, smooth user experiences, and just the right touch of JavaScript magic. My journey into IT began with Java, but I soon realized that I’m most inspired when working on the visual side of things. That’s how I found my place in frontend — where design meets functionality. I absolutely love RS-school course. The final team project was a real highlight: working with an amazing team taught me a lot about collaboration, code reviews, and creative problem-solving.',
   part: 'Chief UX/UI Officer',
 }
 

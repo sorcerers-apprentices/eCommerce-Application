@@ -61,13 +61,11 @@
   }
 
   .activity {
-    display: flex;
-    gap: 0.4rem;
-    align-items: center;
     padding: 0.4rem 0.8rem;
     border-radius: 50px;
     font-size: 0.75rem;
     font-weight: 600;
+    word-spacing: 0.5rem;
     background: vars.$neutral-gray868686;
     transition: all 0.3s ease;
 
@@ -166,7 +164,8 @@
   margin: 1rem 0 1.5rem;
   line-height: 1.5;
   color: vars.$color-primary700;
-  text-align: right;
+  text-align: justify;
+  text-indent: 2rem;
   text-transform: none;
 }
 
@@ -194,6 +193,10 @@
 
     span {
       color: vars.$color-white;
+    }
+
+    .githubicon {
+      fill: vars.$color-white;
     }
   }
 
