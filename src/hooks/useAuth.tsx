@@ -24,7 +24,11 @@ export const useAuth = (): AuthContextOperations => {
       success: 'Successfully logged in',
       error: 'Login failed',
     })
+    const cart = result?.body?.cart
+    const total = cart?.totalLineItemQuantity ?? 0
     userDispatch({ type: UserActionType.LOGIN, payload: { email: result.body.customer.email } })
+    cartDispatch({ type: CartAction.SET_CART_ID, payload: { id: cart?.id } })
+    cartDispatch({ type: CartAction.SET_COUNTER, payload: { countProducts: total } })
   }
 
   const logout = async (): Promise<void> => {

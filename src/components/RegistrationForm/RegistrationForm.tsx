@@ -25,13 +25,16 @@ import { isCommerceToolsError } from '@/shared/utilities/type-utilities'
 import { UserActionType } from '@/app/providers/UserProvider/UserReducer'
 import { InputComponent } from '@/shared/ui/InputComponent/InputComponent'
 import { type ChangeEvent, type FormEvent, type JSX, useState } from 'react'
+import { CartAction } from '@/app/providers/CartProvider/CartReducer.tsx'
+import { useCartContext } from '@/hooks/useCartContext.tsx'
 
 export const RegistrationForm = (): JSX.Element => {
   const [sameAddress, setSameAddress] = useState(false)
   const [defaultShippingValue, setDefaultShippingValue] = useState(false)
   const [defaultBillingValue, setDefaultBillingValue] = useState(false)
   const navigation = useNavigate()
-  const { dispatch } = useUserContext()
+  const { dispatch: userDispatch } = useUserContext()
+  const { dispatch: cartDispatch } = useCartContext()
 
   const [formData, setFormData] = useState({
     email: { value: '', touched: false },
@@ -113,7 +116,11 @@ export const RegistrationForm = (): JSX.Element => {
         defaultShippingAddress: defaultShippingValue ? 0 : undefined,
         defaultBillingAddress: defaultBillingValue ? 1 : undefined,
       })
-      dispatch({ type: UserActionType.LOGIN, payload: { email: result.body.customer.email } })
+      const cart = result?.body?.cart
+      const total = cart?.totalLineItemQuantity ?? 0
+      userDispatch({ type: UserActionType.LOGIN, payload: { email: result.body.customer.email } })
+      cartDispatch({ type: CartAction.SET_CART_ID, payload: { id: cart?.id } })
+      cartDispatch({ type: CartAction.SET_COUNTER, payload: { countProducts: total } })
       navigation(RoutePath.MAIN)
       toast.success('Account created successfully')
     } catch (error) {
