@@ -213,6 +213,10 @@
     text-align: center;
   }
 
+  &:hover {
+    outline: 0.1rem solid vars.$color-primary;
+  }
+
   @media (width <= 1000px) {
     min-height: 20rem;
   }
@@ -240,11 +244,6 @@
   text-decoration: line-through;
 }
 
-.productitem:hover {
-  transform: scale(1.05);
-  outline: 0.1rem solid vars.$color-primary;
-}
-
 .sortcontainer {
   display: flex;
   flex-wrap: wrap;
@@ -260,16 +259,16 @@
   cursor: pointer;
   position: absolute;
   z-index: 5;
-  top: 3%;
+  top: 5%;
   left: 85%;
   width: 10%;
-  padding: 0.5rem;
-  border: 1px solid vars.$color-black;
-  border-radius: 0.2rem;
+  padding: 1rem;
   background-color: transparent;
 
+  @include mixins.icon;
+
   &:hover {
-    border-color: vars.$color-primary;
+    transform: scale(1.4);
   }
 
   &:hover > svg {
@@ -278,13 +277,11 @@
 
   &:disabled {
     cursor: auto;
-    opacity: 0.5;
-    background-color: vars.$color-primary50;
+    opacity: 0.15;
   }
 
   &:disabled:hover {
-    border-color: vars.$color-primary50;
-    background-color: vars.$color-primary50;
+    transform: scale(1);
   }
 
   &:disabled:hover > svg {
