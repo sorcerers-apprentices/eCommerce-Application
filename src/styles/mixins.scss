@@ -222,10 +222,12 @@
 
   &:disabled {
     cursor: auto;
+    color: vars.$color-black;
     opacity: 0.15;
 
     &:hover {
       transform: scale(1);
+      color: vars.$color-black;
 
       svg {
         transform: scale(1);
