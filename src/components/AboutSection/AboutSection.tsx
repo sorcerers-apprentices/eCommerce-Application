@@ -11,7 +11,7 @@ export const AboutSection = (): ReactElement => {
   const [magicTwo, setMagicTwo] = useState(false)
   const [magicThree, setMagicThree] = useState(false)
   const [about, setAbout] = useState(false)
-  const TIME_OF_MAGIC = 600
+  const TIME_OF_MAGIC = 1000
   useEffect(() => {
     if (magicThree) {
       const timer = setTimeout(() => {

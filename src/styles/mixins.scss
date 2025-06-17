@@ -174,6 +174,7 @@
   padding: 1rem 2rem;
   border: none;
   background: vars.$color-primary;
+  outline: none;
 
   @include body-m(vars.$color-white);
 
@@ -213,20 +214,45 @@
 }
 
 @mixin icon {
+  transform: scale(1);
+  border: none;
   color: vars.$color-black;
-  transition: all 0.4s ease-in-out;
+  background-color: transparent;
+  outline: none;
+  transition: all 0.3s ease-in-out;
+
+  &:disabled {
+    cursor: auto;
+    color: vars.$color-black;
+    opacity: 0.15;
+
+    &:hover {
+      transform: scale(1);
+      color: vars.$color-black;
+
+      svg {
+        transform: scale(1);
+        color: vars.$color-black;
+      }
+    }
+  }
 
   @media (hover: hover) {
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 0;
-    border: none;
     background-color: transparent;
 
     &:hover {
       cursor: pointer;
+      transform: scale(1.2);
       color: vars.$color-primary;
+
+      svg {
+        transform: scale(1);
+        color: vars.$color-primary;
+      }
     }
   }
 }

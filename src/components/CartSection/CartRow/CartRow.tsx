@@ -38,21 +38,21 @@ export const CartRow = ({ cartItemData, refetch }: TProperties): JSX.Element => 
           <div
             className={s.link}
             onClick={async () => {
-              await addProductToCart(cartItemData.id, 1)
-              refetch()
-            }}
-          >
-            +
-          </div>
-          <span>{cartItemData.quantity}</span>
-          <div
-            className={s.link}
-            onClick={async () => {
               await decrementProductInCart(cartItemData.id)
               refetch()
             }}
           >
             -
+          </div>
+          <span>{cartItemData.quantity}</span>
+          <div
+            className={s.link}
+            onClick={async () => {
+              await addProductToCart(cartItemData.id, 1)
+              refetch()
+            }}
+          >
+            +
           </div>
         </div>
       </td>

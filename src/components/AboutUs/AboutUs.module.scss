@@ -31,7 +31,8 @@
   p {
     line-height: 1.5;
     color: vars.$color-primary700;
-    text-align: right;
+    text-align: justify;
+    text-indent: 2rem;
   }
 
   @media (width <= 768px) {

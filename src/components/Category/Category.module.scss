@@ -199,6 +199,7 @@
   min-height: 25rem;
   padding: 0.5rem;
   background-color: vars.$color-white;
+  outline: 0.1rem solid transparent;
   transition: all 0.3s ease-in-out;
 
   & > img {
@@ -211,6 +212,10 @@
 
   & > p {
     text-align: center;
+  }
+
+  &:hover {
+    outline: 0.1rem solid vars.$color-primary;
   }
 
   @media (width <= 1000px) {
@@ -240,11 +245,6 @@
   text-decoration: line-through;
 }
 
-.productitem:hover {
-  transform: scale(1.05);
-  outline: 0.1rem solid vars.$color-primary;
-}
-
 .sortcontainer {
   display: flex;
   flex-wrap: wrap;
@@ -257,38 +257,11 @@
 }
 
 .iconcontainer {
-  cursor: pointer;
   position: absolute;
   z-index: 5;
-  top: 3%;
+  top: 5%;
   left: 85%;
   width: 10%;
-  padding: 0.5rem;
-  border: 1px solid vars.$color-black;
-  border-radius: 0.2rem;
-  background-color: transparent;
 
-  &:hover {
-    border-color: vars.$color-primary;
-  }
-
-  &:hover > svg {
-    color: vars.$color-primary;
-  }
-
-  &:disabled {
-    cursor: auto;
-    opacity: 0.5;
-    background-color: vars.$color-primary50;
-  }
-
-  &:disabled:hover {
-    border-color: vars.$color-primary50;
-    background-color: vars.$color-primary50;
-  }
-
-  &:disabled:hover > svg {
-    cursor: auto;
-    color: vars.$color-black;
-  }
+  @include mixins.icon;
 }
