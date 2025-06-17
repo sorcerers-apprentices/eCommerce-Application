@@ -181,6 +181,17 @@
       width: calc(100% - 1rem);
     }
   }
+
+  li {
+    cursor: pointer;
+    outline: 0.1rem solid transparent;
+    transition: all 0.3s ease-in-out;
+
+    &:hover {
+      transform: scale(1.03);
+      outline: 0.1rem solid vars.$color-primary;
+    }
+  }
 }
 
 .pricecontainer {
@@ -189,7 +200,6 @@
 }
 
 .productitem {
-  cursor: pointer;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -199,8 +209,6 @@
   min-height: 25rem;
   padding: 0.5rem;
   background-color: vars.$color-white;
-  outline: 0.1rem solid transparent;
-  transition: all 0.3s ease-in-out;
 
   & > img {
     max-height: 50%;
@@ -212,10 +220,6 @@
 
   & > p {
     text-align: center;
-  }
-
-  &:hover {
-    outline: 0.1rem solid vars.$color-primary;
   }
 
   @media (width <= 1000px) {
@@ -261,7 +265,11 @@
   z-index: 5;
   top: 5%;
   left: 85%;
-  width: 10%;
 
   @include mixins.icon;
+
+  svg {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
 }
