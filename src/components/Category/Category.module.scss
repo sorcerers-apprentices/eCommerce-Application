@@ -199,6 +199,7 @@
   min-height: 25rem;
   padding: 0.5rem;
   background-color: vars.$color-white;
+  outline: 0.1rem solid transparent;
   transition: all 0.3s ease-in-out;
 
   & > img {
@@ -256,37 +257,11 @@
 }
 
 .iconcontainer {
-  cursor: pointer;
   position: absolute;
   z-index: 5;
   top: 5%;
   left: 85%;
   width: 10%;
-  padding: 1rem;
-  border: none;
-  background-color: transparent;
 
   @include mixins.icon;
-
-  &:hover {
-    transform: scale(1.4);
-  }
-
-  &:hover > svg {
-    color: vars.$color-primary;
-  }
-
-  &:disabled {
-    cursor: auto;
-    opacity: 0.15;
-  }
-
-  &:disabled:hover {
-    transform: scale(1);
-  }
-
-  &:disabled:hover > svg {
-    cursor: auto;
-    color: vars.$color-black;
-  }
 }
