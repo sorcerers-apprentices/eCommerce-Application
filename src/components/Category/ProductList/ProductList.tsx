@@ -4,7 +4,7 @@ import { type ReactElement, useContext, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Pagination } from '@/components/Pagination/Pagination.tsx'
 import { HiOutlineShoppingCart } from 'react-icons/hi'
-import { CENTS_IN_DOLLAR } from '@/shared/utilities/price.ts'
+import { CENTS_IN_EURO } from '@/shared/utilities/price.ts'
 import { CartContext } from '@/app/providers/CartProvider/CartContext.ts'
 import { api } from '@/server/api.ts'
 import { useFetch } from '@/shared/hooks/useFetch.tsx'
@@ -67,7 +67,7 @@ export const ProductList = ({
           const id = product.id
           const centPrice = product.masterVariant.scopedPrice?.value.centAmount ?? 0
           const discountPrice = product.masterVariant.scopedPrice?.discounted?.value.centAmount
-          const discount = discountPrice && CENTS_IN_DOLLAR - (discountPrice / centPrice) * CENTS_IN_DOLLAR
+          const discount = discountPrice && CENTS_IN_EURO - (discountPrice / centPrice) * CENTS_IN_EURO
           return (
             <li key={product.id}>
               <button
@@ -89,10 +89,10 @@ export const ProductList = ({
                 <div className={s.pricecontainer}>
                   {centPrice && (
                     <p className={`${s.productprice} ${discountPrice ? s.onsale : ''}`}>
-                      € {centPrice / CENTS_IN_DOLLAR}
+                      € {centPrice / CENTS_IN_EURO}
                     </p>
                   )}
-                  {discountPrice && <p className={s.productprice}>€ {discountPrice / CENTS_IN_DOLLAR}</p>}
+                  {discountPrice && <p className={s.productprice}>€ {discountPrice / CENTS_IN_EURO}</p>}
                 </div>
                 {product.description?.['en-US'] && <p>{product.description['en-US']}</p>}
               </Link>

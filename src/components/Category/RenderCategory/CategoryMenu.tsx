@@ -2,7 +2,7 @@ import s from '../Category.module.scss'
 import { useSearchParams } from 'react-router-dom'
 import type { Category } from '@commercetools/platform-sdk'
 import { type MouseEvent, type ReactElement, useEffect, useState, useRef } from 'react'
-import { findDirectChildren, findRootCategories } from '@/shared/utilities/type-utilities.ts'
+import { findDirectChildren, findRootCategories } from '@/shared/utilities/commerceTools-utilities.ts'
 
 type CategoryMenuProperties = {
   categories: Array<Category> | undefined

@@ -1,6 +1,6 @@
 import { describe, expect } from 'vitest'
-import { calculatePrices, type Code, findPromoCodes } from '@/shared/utilities/type-utilities.ts'
 import type { Cart, LineItem } from '@commercetools/platform-sdk'
+import { calculatePrices, type Code, findPromoCodes } from '@/shared/utilities/commerceTools-utilities.ts'
 
 const makeLineItem = (id: string, priceCents: number, qty = 1, discountCentsPerUnit: number | undefined): LineItem => {
   return {

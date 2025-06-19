@@ -15,10 +15,10 @@ import { ProductList } from '@/components/Category/ProductList/ProductList'
 import { CategoryMenu } from '@/components/Category/RenderCategory/CategoryMenu'
 import { SortControlComponent } from '@/components/Category/SortComponent/SortControlComponent'
 import { type ChangeEvent, type ReactElement, useCallback, useEffect, useMemo, useState } from 'react'
+import { CENTS_IN_EURO } from '@/shared/utilities/price.ts'
 
 const ITEMS_PER_PAGE = 6
 
-const CENTS_IN_EURO = 100
 const DEFAULT_PRICE_FROM_EUR = 1
 const DEFAULT_PRICE_TO_EUR = 1000
 

@@ -14,12 +14,12 @@ import Breadcrumbs from '@/components/Breadcrumbs/Breadcrumbs'
 import { type ReactElement, useCallback, useMemo, useState } from 'react'
 import { type SliderImage, Slider } from '@/components/Slider/Slider.tsx'
 import { Modal } from '@/shared/ui/Modal/Modal.tsx'
-import { CENTS_IN_DOLLAR } from '@/shared/utilities/price.ts'
+import { CENTS_IN_EURO } from '@/shared/utilities/price.ts'
 import Footer from '@/components/Footer/Footer.tsx'
 import { Button } from '@/shared/ui/Button/Button.tsx'
 import { toast } from 'react-hot-toast'
 import { useCart } from '@/hooks/useCart.tsx'
-import { findAttributeData } from '@/shared/utilities/type-utilities.ts'
+import { findAttributeData } from '@/shared/utilities/commerceTools-utilities.ts'
 
 const ProductPage = (): ReactElement => {
   const { id } = useParams()
@@ -122,9 +122,9 @@ const ProductPage = (): ReactElement => {
           {product?.body.name && <h2>{`${product.body.name?.['en-US']}`}</h2>}
           <div className={s.pricecontainer}>
             {centPrice && (
-              <p className={`${s.productprice} ${discountPrice ? s.onsale : ''}`}>€ {centPrice / CENTS_IN_DOLLAR}</p>
+              <p className={`${s.productprice} ${discountPrice ? s.onsale : ''}`}>€ {centPrice / CENTS_IN_EURO}</p>
             )}
-            {discountPrice && <p className={s.productprice}>€ {discountPrice / CENTS_IN_DOLLAR}</p>}
+            {discountPrice && <p className={s.productprice}>€ {discountPrice / CENTS_IN_EURO}</p>}
           </div>
           {product?.body.description && <p>{`${product.body.description?.['en-US']}`}</p>}
           {findAttributeData('brand', product) && <h3>Brand: {findAttributeData('brand', product)}</h3>}
