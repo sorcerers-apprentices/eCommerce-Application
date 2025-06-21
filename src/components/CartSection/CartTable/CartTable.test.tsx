@@ -1,3 +1,10 @@
+import { describe, it, expect, vi } from 'vitest'
+import { CartTable } from './CartTable'
+import { render, screen } from '@testing-library/react'
+import type { Cart, ClientResponse } from '@commercetools/platform-sdk'
+import { MemoryRouter } from 'react-router-dom'
+import { RoutePath } from '@/shared/config/routeConfig/routeConfig'
+
 const mockData = {
   body: {
     lineItems: [],
@@ -25,12 +32,6 @@ vi.mock('@/shared/hooks/useFetch', () => ({
 vi.mock('@/server/client', () => ({
   client: {},
 }))
-import { describe, it, expect, vi } from 'vitest'
-import { CartTable } from './CartTable'
-import { render, screen } from '@testing-library/react'
-import type { Cart, ClientResponse } from '@commercetools/platform-sdk'
-import { MemoryRouter } from 'react-router-dom'
-import { RoutePath } from '@/shared/config/routeConfig/routeConfig'
 describe('CartTable component', () => {
   it('renders empty cart message and "Go to catalog" button', () => {
     render(
