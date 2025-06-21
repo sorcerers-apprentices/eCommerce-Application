@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 export type FetchParameters<T> = {
   enabled?: boolean
@@ -21,7 +21,7 @@ export const useFetch = <T,>(
   const [data, setData] = useState<null | T>(defaultValue)
   const [loading, setLoading] = useState(enabled)
   const [error, setError] = useState<null | Error>(null)
-  const execute = (): void => {
+  const execute = useCallback(() => {
     setLoading(true)
     fetcher()
       .then((response) => {
@@ -39,28 +39,13 @@ export const useFetch = <T,>(
         onFailure?.(error)
       })
       .finally(() => setLoading(false))
-  }
-  useEffect(() => {
-    if (!enabled) {
-      return
-    }
+  }, [fetcher, onFailure, onSuccess])
 
-    fetcher()
-      .then((response) => {
-        if (response instanceof Error) {
-          setError(response)
-          onFailure?.(response)
-        } else {
-          setData(response)
-          onSuccess?.(response)
-        }
-      })
-      .catch((error) => {
-        setError(error)
-        onFailure?.(error)
-      })
-      .finally(() => setLoading(false))
-  }, [fetcher, parameters, enabled, onFailure, onSuccess])
+  useEffect(() => {
+    if (enabled) {
+      execute()
+    }
+  }, [enabled, execute])
 
   return {
     data,

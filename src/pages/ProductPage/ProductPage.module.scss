@@ -5,8 +5,7 @@
   display: grid;
   grid-template-columns: 24rem 3fr;
   grid-template-rows: 30px 20rem 1fr;
-  gap: 3%;
-  padding: 1rem 5rem;
+  gap: 1rem;
 
   @media (width <= 630px) {
     grid-template-columns: 100%;
@@ -26,7 +25,7 @@
   display: flex;
   grid-area: 2 / 2;
   flex-direction: column;
-  gap: 9%;
+  gap: 1rem;
 
   @media (width <= 630px) {
     grid-area: 3/1;
@@ -36,11 +35,15 @@
 .producdescription {
   grid-column: 1 / span 2;
   max-width: 1440px;
-  margin-top: 20px;
 
   @media (width <= 630px) {
     grid-area: 4/1;
+    margin-bottom: 4rem;
   }
+}
+
+.producdescription > h2 {
+  margin-bottom: 1rem;
 }
 
 .pricecontainer {

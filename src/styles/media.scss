@@ -6,6 +6,26 @@
   }
 }
 
+@media (width <= 580px) {
+  table {
+    font-size: 0.8rem;
+  }
+
+  td {
+    padding: 0.2rem;
+
+    & > div {
+      gap: 0.2rem;
+    }
+  }
+
+  th {
+    min-width: 4rem;
+    padding: 0.2rem;
+    font-weight: 400;
+  }
+}
+
 @media (width <= 390px) {
   html {
     font-size: 10px;

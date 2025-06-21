@@ -57,5 +57,12 @@ export default tseslint.config(
         { blankLine: 'always', prev: 'import', next: 'const' },
       ],
     },
+  },
+  {
+    files: ['**/*.test.{ts,tsx}'],
+    rules: {
+      '@typescript-eslint/consistent-type-assertions': 'off',
+      '@typescript-eslint/no-magic-numbers': 'off',
+    },
   }
 )

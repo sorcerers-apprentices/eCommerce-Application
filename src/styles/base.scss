@@ -16,7 +16,8 @@ html {
 }
 
 .container {
-  overflow: hidden;
+  display: flex;
+  flex-direction: column;
   max-width: 1440px;
   min-height: 100vh;
   margin: 0 auto;
@@ -45,4 +46,42 @@ html {
 
 .icon {
   @include mixins.icon;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  background-color: vars.$color-primary25;
+}
+
+td {
+  padding: 0.5rem;
+  text-align: center;
+
+  & div {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &:nth-child(1) {
+    text-align: left;
+
+    & > div {
+      justify-content: flex-start;
+    }
+  }
+}
+
+th {
+  min-width: 5.5rem;
+  padding: 0.5rem;
+  font-weight: 600;
+  background-color: vars.$color-primary50;
+}
+
+tr:nth-child(even) {
+  background-color: vars.$color-primary50;
 }
