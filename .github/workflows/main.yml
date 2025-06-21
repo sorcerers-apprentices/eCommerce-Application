@@ -14,10 +14,23 @@ jobs:
     steps:
       - name: Checkout git repository
         uses: actions/checkout@v4
+
       - name: Install Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
+
+      - name: Create .env from GitHub Secrets
+        run: |
+          cat <<EOF > .env
+          VITE_PROJECT_KEY=${{ secrets.VITE_PROJECT_KEY }}
+          VITE_CLIENT_ID=${{ secrets.VITE_CLIENT_ID }}
+          VITE_CLIENT_SECRET=${{ secrets.VITE_CLIENT_SECRET }}
+          VITE_SCOPES=${{ secrets.VITE_SCOPES }}
+          VITE_API_URL=${{ secrets.VITE_API_URL }}
+          VITE_AUTH_URL=${{ secrets.VITE_AUTH_URL }}
+          EOF
+
       - name: install modules
         run: npm ci
       - name: build production project
