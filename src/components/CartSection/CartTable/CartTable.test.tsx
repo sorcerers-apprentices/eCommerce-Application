@@ -22,6 +22,9 @@ vi.mock('@/shared/hooks/useFetch', () => ({
     refetch: vi.fn(),
   }),
 }))
+vi.mock('@/server/client', () => ({
+  client: {},
+}))
 import { describe, it, expect, vi } from 'vitest'
 import { CartTable } from './CartTable'
 import { render, screen } from '@testing-library/react'
