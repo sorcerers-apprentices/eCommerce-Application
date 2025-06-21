@@ -1,4 +1,4 @@
-import type { TCartItem } from '@/types/user-types'
+import type { TCartItem } from '@/types/cart-types'
 import type { Cart } from '@commercetools/platform-sdk'
 
 const DECIMAL_BASE = 10

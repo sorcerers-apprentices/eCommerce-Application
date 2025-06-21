@@ -1,7 +1,7 @@
 import { type JSX } from 'react'
 import { Link } from 'react-router-dom'
 import { MdDeleteForever } from 'react-icons/md'
-import type { TCartItem } from '@/types/user-types'
+import type { TCartItem } from '@/types/cart-types'
 import s from '../CartSection.module.scss'
 import { useCart } from '@/hooks/useCart'
 

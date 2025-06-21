@@ -15,7 +15,7 @@ import { InputComponent } from '@/shared/ui/InputComponent/InputComponent.tsx'
 import { Form } from '@/shared/ui/Form/Form.tsx'
 import { FormButton } from '@/components/LoginForm/FormButton.tsx'
 import { toast } from 'react-hot-toast'
-import type { TCartItem } from '@/types/user-types.ts'
+import type { TCartItem } from '@/types/cart-types.ts'
 import { MdDeleteForever } from 'react-icons/md'
 import { calculatePrices, findPromoCodes } from '@/shared/utilities/type-utilities.ts'
 
