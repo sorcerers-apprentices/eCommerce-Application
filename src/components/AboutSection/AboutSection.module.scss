@@ -1,0 +1,54 @@
+@use '@/styles/variables.scss' as vars;
+@use '@/styles/mixins.scss' as mixins;
+
+.section {
+  background-color: vars.$color-primary25;
+}
+
+.white {
+  background-color: vars.$color-white;
+}
+
+.magic {
+  max-width: 30rem;
+  min-height: 80vh;
+
+  @include mixins.center(1rem);
+}
+
+.loading {
+  max-width: 30rem;
+  min-height: 80vh;
+  background-image: url('/images/cat.png');
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: contain;
+
+  @include mixins.center(1rem);
+
+  & p {
+    transform: translate(5rem, 5rem);
+    rotate: -14deg;
+    font-size: 2rem;
+    font-weight: 600;
+
+    @media (width <= 700px) {
+      transform: translate(4rem, 5rem);
+      font-size: 1.5rem;
+    }
+
+    @media (width <= 400px) {
+      transform: translate(3rem, 4rem);
+      font-size: 1rem;
+    }
+  }
+}
+
+.abracadabra {
+  font-weight: 600;
+  color: vars.$state-color-error;
+}
+
+.buttons {
+  @include mixins.flex-row;
+}

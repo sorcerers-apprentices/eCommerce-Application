@@ -3,6 +3,7 @@ import type {
   ClientResponse,
   ProductProjection,
   CategoryPagedQueryResponse,
+  Price,
 } from '@commercetools/platform-sdk'
 import { api } from '@/server/api'
 import s from './ProductPage.module.scss'
@@ -13,11 +14,18 @@ import Breadcrumbs from '@/components/Breadcrumbs/Breadcrumbs'
 import { type ReactElement, useCallback, useMemo, useState } from 'react'
 import { type SliderImage, Slider } from '@/components/Slider/Slider.tsx'
 import { Modal } from '@/shared/ui/Modal/Modal.tsx'
+import { CENTS_IN_EURO } from '@/shared/utilities/price.ts'
+import Footer from '@/components/Footer/Footer.tsx'
+import { Button } from '@/shared/ui/Button/Button.tsx'
+import { toast } from 'react-hot-toast'
+import { useCart } from '@/hooks/useCart.tsx'
+import { findAttributeData } from '@/shared/utilities/commerceTools-utilities.ts'
 
 const ProductPage = (): ReactElement => {
-  const CENTS_IN_DOLLAR = 100
   const { id } = useParams()
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isProductInCart, setIsProductInCart] = useState(false)
+  const { addProductToCart, removeProductFromCart } = useCart()
 
   const handleOpenModal = (): void => {
     setIsModalOpen(true)
@@ -44,26 +52,34 @@ const ProductPage = (): ReactElement => {
     useMemo(() => ({ enabled: id !== undefined }), [id])
   )
 
+  useFetch(
+    api.cart.fetchActiveCart,
+    useMemo(
+      () => ({
+        onSuccess: (response): void => {
+          const productInCart = response.body.lineItems.find((lineItem) => lineItem.productId === id)
+          if (productInCart) {
+            setIsProductInCart(true)
+          }
+        },
+        onFailure: (): void => {
+          toast.error('Cannot find product cart')
+        },
+      }),
+      []
+    )
+  )
+
   const {
     data: categories,
     error: categoriesError,
     loading: categoriesLoading,
   } = useFetch<ClientResponse<CategoryPagedQueryResponse>>(api.product.fetchCategories)
 
-  const discountPrice = product?.body.masterVariant.prices?.find((price) => price.discounted)?.value.centAmount
-  const centPrice = product?.body.masterVariant.prices?.find((price) => price.country === 'ES')?.value.centAmount
-  const brand: string | undefined = product?.body.masterVariant.attributes?.find(
-    (attribute) => attribute.name === 'brand'
-  )?.value
-  const size: string | undefined = product?.body.masterVariant.attributes?.find(
-    (attribute) => attribute.name === 'size'
-  )?.value
-  const volume: string | undefined = product?.body.masterVariant.attributes?.find(
-    (attribute) => attribute.name === 'volume'
-  )?.value
-  const weight: string | undefined = product?.body.masterVariant.attributes?.find(
-    (attribute) => attribute.name === 'weight'
-  )?.value
+  const price: Price | undefined = (product?.body.masterVariant?.prices ?? [])[0]
+  const discountPrice = price?.discounted?.value.centAmount
+  const centPrice = price?.value.centAmount
+
   const category: Category | undefined = product?.body.categories?.[0]?.id
     ? categories?.body.results.find((category) => category.id === product.body.categories?.[0].id)
     : undefined
@@ -73,6 +89,19 @@ const ProductPage = (): ReactElement => {
       name: img.label,
     }
   })
+
+  const addToCartHandler = async (): Promise<void> => {
+    if (id) {
+      await addProductToCart(id, 1)
+      setIsProductInCart(true)
+    }
+  }
+  const removeFromCartHandler = async (): Promise<void> => {
+    if (id) {
+      await removeProductFromCart(id)
+      setIsProductInCart(false)
+    }
+  }
 
   return (
     <>
@@ -93,21 +122,33 @@ const ProductPage = (): ReactElement => {
           {product?.body.name && <h2>{`${product.body.name?.['en-US']}`}</h2>}
           <div className={s.pricecontainer}>
             {centPrice && (
-              <p className={`${s.productprice} ${discountPrice ? s.onsale : ''}`}>€ {centPrice / CENTS_IN_DOLLAR}</p>
+              <p className={`${s.productprice} ${discountPrice ? s.onsale : ''}`}>€ {centPrice / CENTS_IN_EURO}</p>
             )}
-            {discountPrice && <p className={s.productprice}>€ {discountPrice / CENTS_IN_DOLLAR}</p>}
+            {discountPrice && <p className={s.productprice}>€ {discountPrice / CENTS_IN_EURO}</p>}
           </div>
           {product?.body.description && <p>{`${product.body.description?.['en-US']}`}</p>}
-          {brand && <h3>Brand: {brand}</h3>}
-          {size && <h3>Size: {size}</h3>}
-          {volume && <h3>Volume: {volume} ml</h3>}
-          {weight && <h3>Weight: {weight} kg</h3>}
+          {findAttributeData('brand', product) && <h3>Brand: {findAttributeData('brand', product)}</h3>}
+          {findAttributeData('size', product) && <h3>Size: {findAttributeData('size', product)}</h3>}
+          {findAttributeData('volume', product) && <h3>Volume: {findAttributeData('volume', product)} ml</h3>}
+          {findAttributeData('weight', product) && <h3>Weight: {findAttributeData('weight', product)} kg</h3>}
+          <div>
+            {isProductInCart ? (
+              <Button onClick={async () => removeFromCartHandler()} disabled={!isProductInCart}>
+                Remove from Cart
+              </Button>
+            ) : (
+              <Button onClick={async () => addToCartHandler()} disabled={isProductInCart}>
+                Add to Cart
+              </Button>
+            )}
+          </div>
         </div>
         <div className={s.producdescription}>
           <h2>Full description:</h2>
           {category && <p>{`${category.description?.['en-US']}`}</p>}
         </div>
       </div>
+      <Footer />
     </>
   )
 }

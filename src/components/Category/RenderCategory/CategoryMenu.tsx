@@ -2,6 +2,7 @@ import s from '../Category.module.scss'
 import { useSearchParams } from 'react-router-dom'
 import type { Category } from '@commercetools/platform-sdk'
 import { type MouseEvent, type ReactElement, useEffect, useState, useRef } from 'react'
+import { findDirectChildren, findRootCategories } from '@/shared/utilities/commerceTools-utilities.ts'
 
 type CategoryMenuProperties = {
   categories: Array<Category> | undefined
@@ -24,11 +25,6 @@ export const CategoryMenu = ({ categories, onCategoryClick }: CategoryMenuProper
       initializedRef.current = true
     }
   }, [categories, searchParams, onCategoryClick])
-
-  const findRootCategories = (): Array<Category> | undefined =>
-    categories?.filter((category) => category.parent === undefined)
-  const findDirectChildren = (parent: Category): Array<Category> | undefined =>
-    categories?.filter((category: Category) => category.parent?.id === parent.id)
 
   const getMatchingCategoryIds = (categories: Category[], searchParams: URLSearchParams): string[] => {
     const slugs = [...searchParams.getAll('category'), ...searchParams.getAll('subcategory')].map((slug) =>
@@ -75,7 +71,7 @@ export const CategoryMenu = ({ categories, onCategoryClick }: CategoryMenuProper
   }
 
   const renderCategory = (category: Category): ReactElement => {
-    const children = findDirectChildren(category)
+    const children = findDirectChildren(category, categories)
     return (
       <li
         onClick={handleCategoryClick(category)}
@@ -90,5 +86,9 @@ export const CategoryMenu = ({ categories, onCategoryClick }: CategoryMenuProper
     )
   }
 
-  return <ul className={`${s.categorylist}`}>{findRootCategories()?.map((category) => renderCategory(category))}</ul>
+  return (
+    <ul className={`${s.categorylist}`}>
+      {findRootCategories(categories)?.map((category) => renderCategory(category))}
+    </ul>
+  )
 }

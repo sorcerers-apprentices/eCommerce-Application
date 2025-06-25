@@ -1,0 +1,77 @@
+@use '@/styles/variables' as vars;
+@use '@/styles/mixins' as mixins;
+
+.section {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  @media (width <= 1170px) {
+    flex-direction: column;
+    align-items: end;
+  }
+}
+
+.image {
+  display: inline-block;
+  width: 3rem;
+  height: 3rem;
+
+  & img {
+    object-fit: contain;
+  }
+
+  @media (width <= 530px) {
+    display: none;
+  }
+}
+
+.empty {
+  @include mixins.center(1rem);
+}
+
+.link {
+  @include mixins.link;
+}
+
+.clear {
+  text-decoration: underline;
+
+  @include mixins.link;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 0 0;
+}
+
+.total {
+  display: block;
+  min-width: 20rem;
+}
+
+.price {
+  text-decoration: line-through;
+}
+
+.promocode {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+  font-size: 1.2rem;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+  color: vars.$color-primary;
+}
